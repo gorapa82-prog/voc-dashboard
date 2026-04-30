@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>물류 VOC 및 고객만족율 실적 대시보드 (2026년)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f0f2f5; color: #2c3e50; }
+
+    header {
+      background: linear-gradient(135deg, #1a3a5c, #2d6a9f);
+      color: #fff; padding: 20px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,.2);
+    }
+    header h1 { font-size: 20px; font-weight: 700; }
+    header span { font-size: 12px; opacity: .8; }
+
+    .layout { display: flex; min-height: calc(100vh - 64px); }
+
+    .sidebar {
+      width: 200px; min-width: 200px; background: #1a3a5c;
+      display: flex; flex-direction: column; padding: 20px 0;
+      box-shadow: 2px 0 8px rgba(0,0,0,.15);
+    }
+    .sidebar-section { margin-bottom: 8px; }
+    .sidebar-label {
+      font-size: 12px; font-weight: 700; color: #fff;
+      padding: 10px 20px 6px; display: flex; align-items: center; gap: 6px;
+      border-left: 3px solid #5dade2; margin: 0 0 4px 0;
+      background: rgba(255,255,255,.07);
+    }
+    .menu-item {
+      display: flex; align-items: center; gap: 10px; padding: 13px 20px;
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,.65);
+      cursor: pointer; border: none; background: none; width: 100%;
+      text-align: left; border-left: 3px solid transparent; transition: all .2s;
+    }
+    .menu-item:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .menu-item.active { background: rgba(255,255,255,.12); color: #fff; border-left-color: #5dade2; }
+    .menu-icon { font-size: 15px; }
+    .sidebar-divider { height: 1px; background: rgba(255,255,255,.1); margin: 10px 16px; }
+
+    .main-content { flex: 1; overflow-y: auto; background: #f0f2f5; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; padding: 20px 30px 8px; }
+    .kpi {
+      background: #fff; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07); border-left: 5px solid #2d6a9f;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .kpi.red    { border-left-color: #e74c3c; }
+    .kpi.orange { border-left-color: #e67e22; }
+    .kpi.green  { border-left-color: #27ae60; }
+    .kpi.blue   { border-left-color: #2980b9; }
+    .kpi.purple { border-left-color: #8e44ad; }
+    .kpi-label  { font-size: 11px; color: #888; font-weight: 600; }
+    .kpi-value  { font-size: 28px; font-weight: 800; color: #1a3a5c; }
+    .kpi-sub    { font-size: 11px; color: #aaa; }
+
+    .insight { margin: 8px 30px 6px; border-radius: 8px; padding: 12px 16px; font-size: 12px; line-height: 1.8; }
+    .insight.blue   { background: #e8f4fd; border-left: 4px solid #2980b9; color: #1a5276; }
+    .insight.yellow { background: #fff8e1; border-left: 4px solid #f39c12; color: #7d6608; }
+    .insight.green  { background: #eafaf1; border-left: 4px solid #27ae60; color: #1e6a3a; }
+    .insight strong { color: #c0392b; }
+    .insight .good  { color: #1e8449; font-weight: 700; }
+
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 12px 30px; }
+    .chart-card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+    .chart-card.wide { grid-column: span 2; }
+    .chart-title {
+      font-size: 13px; font-weight: 700; color: #1a3a5c;
+      margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #eef2f7;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .chart-title::before { content: ''; display: inline-block; width: 4px; height: 14px; background: #2d6a9f; border-radius: 2px; }
+    canvas { max-height: 260px; }
+
+    .table-section { padding: 0 30px 28px; }
+    .tbl-wrap { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.07); overflow: hidden; }
+    .tbl-title {
+      font-size: 13px; font-weight: 700; color: #1a3a5c;
+      padding: 14px 18px 10px; border-bottom: 2px solid #eef2f7;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .tbl-title::before { content: ''; display: inline-block; width: 4px; height: 14px; background: #2d6a9f; border-radius: 2px; }
+    table { width: 100%; border-collapse: collapse; border: 1px solid #c8d3de; }
+    thead th { background: #1a3a5c; color: #fff; padding: 10px 12px; font-size: 12px; font-weight: 600; text-align: center; border-right: 1px solid rgba(255,255,255,.15); border-bottom: 2px solid #0e2540; }
+    thead th:last-child { border-right: none; }
+    thead tr.sub-header th { background: #22527a; border-bottom: 2px solid #0e2540; }
+    tbody td { padding: 9px 12px; font-size: 12px; text-align: center; border-bottom: 1px solid #c8d3de; border-right: 1px solid #dde3ea; }
+    tbody td:last-child { border-right: none; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:nth-child(even) td { background: #f5f8fb; }
+    tbody tr.total-row td { font-weight: 700; background: #ddeeff; color: #1a3a5c; border-top: 2px solid #a0b8d8; border-bottom: none; }
+    tbody tr:hover td { background: #e8f0fa; }
+
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+    .badge-red    { background: #fdecea; color: #c0392b; }
+    .badge-green  { background: #eafaf1; color: #1e8449; }
+    .badge-blue   { background: #eaf0fb; color: #2471a3; }
+    .badge-orange { background: #fef5e7; color: #d35400; }
+
+    .rank { display: inline-block; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 700; line-height: 22px; text-align: center; }
+    .rank-1 { background: #f39c12; color: #fff; }
+    .rank-2 { background: #95a5a6; color: #fff; }
+    .rank-3 { background: #cd7f32; color: #fff; }
+    .rank-n { background: #eef2f7; color: #888; }
+
+    .bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .bar-bg { flex: 1; height: 8px; background: #f0f2f5; border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; background: #2d6a9f; }
+    .bar-fill.red    { background: #e74c3c; }
+    .bar-fill.orange { background: #e67e22; }
+
+    footer { text-align: center; padding: 14px; font-size: 11px; color: #aaa; }
+
+    /* 월별 실적 + 전월대비 증감 행높이 통일 */
+    .monthly-compare-grid table { table-layout: fixed; }
+    .monthly-compare-grid thead th { height: 52px; vertical-align: middle; }
+    .monthly-compare-grid tbody td { height: 44px; vertical-align: middle; padding: 0 12px; }
+    .monthly-compare-grid tbody tr.total-row td { height: 44px; vertical-align: middle; }
+
+    .month-btn {
+      padding: 5px 14px; font-size: 12px; font-weight: 600;
+      border: 2px solid #dde3ec; border-radius: 20px;
+      background: #fff; color: #888; cursor: pointer; transition: all .2s;
+    }
+    .month-btn:hover { border-color: #2d6a9f; color: #2d6a9f; }
+    .month-btn.active { background: #1a3a5c; border-color: #1a3a5c; color: #fff; }
+
+    /* 만족도 등급 색상 */
+    .rate-high   { color: #1e8449; font-weight: 700; }
+    .rate-mid    { color: #d35400; font-weight: 600; }
+    .rate-low    { color: #c0392b; font-weight: 700; }
+    .rate-cell   { font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
+  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-04-30 11:57:25</span>
+</header>
+
+<div class="layout">
+
+<!-- 사이드바 -->
+<div class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">📦 VOC 관리</div>
+    <button class="menu-item active" onclick="switchTab('monthly', this)">
+      <span class="menu-icon">📅</span> 월별 실적 비교
+    </button>
+    <button class="menu-item" onclick="switchTab('staff', this)">
+      <span class="menu-icon">👷</span> 기사별 실적
+    </button>
+    <button class="menu-item" onclick="switchTab('summary', this)">
+      <span class="menu-icon">📋</span> 고객 VOC 접수내역
+    </button>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">⭐ 고객만족율 조사</div>
+    <button class="menu-item" onclick="switchTab('cs-monthly', this)">
+      <span class="menu-icon">📊</span> 월별 만족도 현황
+    </button>
+    <button class="menu-item" onclick="switchTab('cs-staff', this)">
+      <span class="menu-icon">👤</span> 기사별 만족도 현황
+    </button>
+    <button class="menu-item" onclick="switchTab('cs-complaint', this)">
+      <span class="menu-icon">⚠️</span> 불만족 현황
+    </button>
+    <button class="menu-item" onclick="switchTab('cs-detail', this)">
+      <span class="menu-icon">📋</span> 고객 불만족 접수내역
+    </button>
+  </div>
+</div>
+
+<!-- 메인 콘텐츠 -->
+<div class="main-content">
+
+<!-- ==================== 탭1: 월별 실적 ==================== -->
+<div id="tab-monthly" class="tab-content active">
+
+  <div class="kpi-row">
+    <div class="kpi blue">
+      <div class="kpi-label">총 접수건수 (누계)</div>
+      <div class="kpi-value">41건</div>
+      <div class="kpi-sub">2026년 1월 ~ 4월</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-label">최근월 4월</div>
+      <div class="kpi-value">13건</div>
+      <div class="kpi-sub">전월(15건) 대비 <span style="color:#27ae60">▼ 13%</span></div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">최다 불만유형</div>
+      <div class="kpi-value" style="font-size:18px">취급부주의</div>
+      <div class="kpi-sub">18건 (44%) — 최다 불만유형</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">처리완료율</div>
+      <div class="kpi-value">100%</div>
+      <div class="kpi-sub">전건 완료 처리</div>
+    </div>
+  </div>
+
+  <div class="insight blue">
+    📊 <strong>추세 분석:</strong>
+    26년 1월(9건) → 2월(4건, <span class="good">▼56% 감소</span>) → 3월(15건, <strong>▲275% 급증</strong>) → 4월(13건, <span class="good">▼13% 감소</span>).
+<strong>취급부주의·응대불만</strong>이 매월 집중 발생하여 관리가 필요합니다.
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card wide">
+      <div class="chart-title">월별 VOC 접수 건수</div>
+      <div style="overflow-x:auto;">
+      <table style="width:100%;min-width:900px;border-collapse:collapse;margin-top:8px;"><thead><tr><th style="background:#1a3a5c;color:#fff;padding:9px 14px;font-size:12px;text-align:center;border-right:1px solid rgba(255,255,255,.15);">구분</th><th colspan="4" style="background:#2c5f8a;color:#fff;padding:9px 14px;font-size:12px;text-align:center;border-right:2px solid #0e2540;">25년 월별실적</th><th colspan="4" style="background:#1a3a5c;color:#fff;padding:9px 14px;font-size:12px;text-align:center;border-right:2px solid #0e2540;">26년 월별실적</th><th colspan="4" style="background:#1e6a3a;color:#fff;padding:9px 14px;font-size:12px;text-align:center;border-right:2px solid #0a3a1a;">전년동월 증감</th><th colspan="4" style="background:#7d3c98;color:#fff;padding:9px 14px;font-size:12px;text-align:center;">전월대비 증감</th></tr><tr><th style="background:#243f5c;color:#fff;padding:7px 14px;font-size:11px;text-align:center;border-right:1px solid rgba(255,255,255,.15);">항목</th><th style="background:#2c5f8a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">1월</th><th style="background:#2c5f8a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">2월</th><th style="background:#2c5f8a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">3월</th><th style="background:#2c5f8a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">4월</th><th style="background:#1a3a5c;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">1월</th><th style="background:#1a3a5c;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">2월</th><th style="background:#1a3a5c;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">3월</th><th style="background:#1a3a5c;color:#fff;padding:7px 10px;font-size:11px;text-align:center;border-right:2px solid #0e2540;">4월</th><th style="background:#1e6a3a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">1월</th><th style="background:#1e6a3a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">2월</th><th style="background:#1e6a3a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">3월</th><th style="background:#1e6a3a;color:#fff;padding:7px 10px;font-size:11px;text-align:center;border-right:2px solid #0a3a1a;">4월</th><th style="background:#7d3c98;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">1월</th><th style="background:#7d3c98;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">1월→2월</th><th style="background:#7d3c98;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">2월→3월</th><th style="background:#7d3c98;color:#fff;padding:7px 10px;font-size:11px;text-align:center;">3월→4월</th></tr></thead><tbody><tr style="background:#f8fafc;"><td style="padding:10px 14px;font-size:12px;font-weight:700;color:#1a3a5c;border-right:1px solid #dde3ea;">접수건수</td><td style="padding:10px 12px;font-size:13px;font-weight:600;text-align:center;color:#2c5f8a;">22건</td><td style="padding:10px 12px;font-size:13px;font-weight:600;text-align:center;color:#2c5f8a;">39건</td><td style="padding:10px 12px;font-size:13px;font-weight:600;text-align:center;color:#2c5f8a;">40건</td><td style="padding:10px 12px;font-size:13px;font-weight:600;text-align:center;color:#2c5f8a;border-right:2px solid #c8d3de;">29건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1a3a5c;">9건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1a3a5c;">4건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1a3a5c;">15건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1a3a5c;border-right:2px solid #c8d3de;">13건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1e8449;">▼ 13건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1e8449;">▼ 35건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1e8449;">▼ 25건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1e8449;border-right:2px solid #c8d3de;">▼ 16건</td><td style="padding:10px 12px;font-size:12px;text-align:center;color:#888;">기준</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1e8449;">▼ 5건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#e74c3c;">▲ 11건</td><td style="padding:10px 12px;font-size:13px;font-weight:700;text-align:center;color:#1e8449;">▼ 2건</td></tr><tr style="background:#eef5ff;"><td style="padding:9px 14px;font-size:12px;font-weight:700;color:#1a3a5c;border-right:1px solid #dde3ea;">증감율</td><td colspan="4" style="padding:9px 12px;font-size:11px;text-align:center;color:#888;border-right:2px solid #c8d3de;">— (기준년도) —</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 59%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 90%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 62%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;border-right:2px solid #c8d3de;">▼ 55%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 59%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 90%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 62%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;border-right:2px solid #c8d3de;">▼ 55%</td><td style="padding:9px 12px;font-size:12px;text-align:center;color:#888;">기준</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 56%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#e74c3c;">▲ 275%</td><td style="padding:9px 12px;font-size:12px;font-weight:700;text-align:center;color:#1e8449;">▼ 13%</td></tr></tbody></table>
+      </div>
+    </div>
+    <div class="chart-card wide">
+      <div class="chart-title">불만유형별 비율 (1~4월 누계)</div>
+      <canvas id="typeChart" style="max-height:380px;"></canvas>
+    </div>
+    <div class="chart-card wide">
+      <div class="chart-title">월별 불만유형 구성</div>
+      <canvas id="stackedChart" style="max-height:380px;"></canvas>
+    </div>
+  </div>
+
+  <div class="table-section">
+    <div class="tbl-wrap">
+      <div class="tbl-title">불만유형별 월별 상세 비교표 (전월대비 증감 포함)</div>
+      <table><thead><tr><th rowspan="2">접수유형</th><th>1월</th><th colspan="2">2월</th><th colspan="2">3월</th><th colspan="2">4월</th><th rowspan="2">합계</th><th rowspan="2">비중</th></tr><tr><th style="font-size:10px;font-weight:500;background:#243f5c;">건수</th><th style="font-size:10px;font-weight:500;background:#243f5c;">건수</th><th style="font-size:10px;font-weight:500;background:#243f5c;">증감</th><th style="font-size:10px;font-weight:500;background:#243f5c;">건수</th><th style="font-size:10px;font-weight:500;background:#243f5c;">증감</th><th style="font-size:10px;font-weight:500;background:#243f5c;">건수</th><th style="font-size:10px;font-weight:500;background:#243f5c;">증감</th></tr></thead><tbody><tr><td><strong>취급부주의</strong></td><td>3</td><td>3</td><td><span class="badge badge-blue">±0</span></td><td>5</td><td><span class="badge badge-red">▲2</span></td><td>7</td><td><span class="badge badge-red">▲2</span></td><td><strong>18</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#e74c3c"></div></div><span>44%</span></div></td></tr>
+<tr><td><strong>응대불만</strong></td><td>0</td><td>1</td><td><span class="badge badge-red">▲1</span></td><td>6</td><td><span class="badge badge-red">▲5</span></td><td>5</td><td><span class="badge badge-green">▼1</span></td><td><strong>12</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:67%;background:#e67e22"></div></div><span>29%</span></div></td></tr>
+<tr><td><strong>출고누락</strong></td><td>2</td><td>0</td><td><span class="badge badge-green">▼2</span></td><td>1</td><td><span class="badge badge-red">▲1</span></td><td>1</td><td><span class="badge badge-blue">±0</span></td><td><strong>4</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:22%;background:#f1c40f"></div></div><span>10%</span></div></td></tr>
+<tr><td><strong>시공불량</strong></td><td>2</td><td>0</td><td><span class="badge badge-green">▼2</span></td><td>0</td><td><span class="badge badge-blue">±0</span></td><td>0</td><td><span class="badge badge-blue">±0</span></td><td><strong>2</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11%;background:#2ecc71"></div></div><span>5%</span></div></td></tr>
+<tr><td><strong>업무누락</strong></td><td>0</td><td>0</td><td><span class="badge badge-blue">±0</span></td><td>2</td><td><span class="badge badge-red">▲2</span></td><td>0</td><td><span class="badge badge-green">▼2</span></td><td><strong>2</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11%;background:#1abc9c"></div></div><span>5%</span></div></td></tr>
+<tr><td><strong>배송누락</strong></td><td>1</td><td>0</td><td><span class="badge badge-green">▼1</span></td><td>0</td><td><span class="badge badge-blue">±0</span></td><td>0</td><td><span class="badge badge-blue">±0</span></td><td><strong>1</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6%;background:#3498db"></div></div><span>2%</span></div></td></tr>
+<tr><td><strong>오안내</strong></td><td>1</td><td>0</td><td><span class="badge badge-green">▼1</span></td><td>0</td><td><span class="badge badge-blue">±0</span></td><td>0</td><td><span class="badge badge-blue">±0</span></td><td><strong>1</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6%;background:#9b59b6"></div></div><span>2%</span></div></td></tr>
+<tr><td><strong>오출고</strong></td><td>0</td><td>0</td><td><span class="badge badge-blue">±0</span></td><td>1</td><td><span class="badge badge-red">▲1</span></td><td>0</td><td><span class="badge badge-green">▼1</span></td><td><strong>1</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6%;background:#95a5a6"></div></div><span>2%</span></div></td></tr>
+<tr class="total-row"><td><strong>합 계</strong></td><td><strong>9</strong></td><td><strong>4</strong></td><td><span class="badge badge-green">▼5</span></td><td><strong>15</strong></td><td><span class="badge badge-red">▲11</span></td><td><strong>13</strong></td><td><span class="badge badge-green">▼2</span></td><td><strong>41</strong></td><td><strong>100%</strong></td></tr></tbody></table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 탭2: 기사별 실적 ==================== -->
+<div id="tab-staff" class="tab-content">
+
+  <div class="kpi-row">
+    <div class="kpi purple">
+      <div class="kpi-label">담당 기사 수</div>
+      <div class="kpi-value">19명</div>
+      <div class="kpi-sub">내·외부 포함</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">최다 VOC 기사</div>
+      <div class="kpi-value" style="font-size:18px">정종철</div>
+      <div class="kpi-sub">7건 (1위)</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-label">주요 유형 (기사별)</div>
+      <div class="kpi-value" style="font-size:18px">취급부주의</div>
+      <div class="kpi-sub">응대불만과 함께 집중 발생</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">전원 처리완료율</div>
+      <div class="kpi-value">100%</div>
+      <div class="kpi-sub">전 기사 완료 처리</div>
+    </div>
+  </div>
+
+  <div class="insight yellow">
+    👷 <strong>기사별 분석:</strong>
+    <strong>정종철(7건)</strong>은 응대불만 4건·취급부주의 3건으로 복합적인 개선이 필요합니다.
+    <strong>문민수(6건)</strong>은 응대불만 3건·취급부주의 2건으로 복합적인 개선이 필요합니다.
+    <strong>김병우(4건)</strong>·<strong>박상현(4건)</strong>도 주의 관찰 대상입니다.
+    4월에는 윤옥성, 김재희, 모주완, 손명익, 정다운 등의 VOC가 발생했습니다.
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card wide">
+      <div class="chart-title">기사별 누계 VOC 건수 (상위)</div>
+      <canvas id="staffBarChart" style="max-height:380px;"></canvas>
+    </div>
+    <div class="chart-card wide">
+      <div class="chart-title">기사별 불만유형 분포</div>
+      <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
+        <button class="month-btn active" onclick="updateStaffTypeChart('all', this)">전체</button>
+        <button class="month-btn" onclick="updateStaffTypeChart('jan', this)">1월</button>
+        <button class="month-btn" onclick="updateStaffTypeChart('feb', this)">2월</button>
+        <button class="month-btn" onclick="updateStaffTypeChart('mar', this)">3월</button>
+        <button class="month-btn" onclick="updateStaffTypeChart('apr', this)">4월</button>
+      </div>
+      <canvas id="staffTypeChart" style="max-height:380px;"></canvas>
+    </div>
+  </div>
+
+  <div class="table-section">
+    <div class="tbl-wrap">
+      <div class="tbl-title">기사별 상세 실적표</div>
+      <table><thead><tr><th>순위</th><th>담당자</th><th>1월</th><th>2월</th><th>3월</th><th>4월</th><th>합계</th><th>취급부주의</th><th>응대불만</th><th>기타</th><th>VOC 비중</th></tr></thead><tbody><tr><td><span class="rank rank-1">1</span></td><td><strong>정종철</strong></td><td>1</td><td>2</td><td>1</td><td>3</td><td><strong>7</strong></td><td>3</td><td>4</td><td>0</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#e74c3c"></div></div><span>17.1%</span></div></td></tr><tr><td><span class="rank rank-1">2</span></td><td><strong>문민수</strong></td><td>1</td><td>0</td><td>2</td><td>3</td><td><strong>6</strong></td><td>2</td><td>3</td><td>1</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:86%;background:#e74c3c"></div></div><span>14.6%</span></div></td></tr><tr><td><span class="rank rank-3">3</span></td><td><strong>김병우</strong></td><td>1</td><td>0</td><td>3</td><td>0</td><td><strong>4</strong></td><td>1</td><td>1</td><td>2</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:57%;background:#e67e22"></div></div><span>9.8%</span></div></td></tr><tr><td><span class="rank rank-3">4</span></td><td><strong>박상현</strong></td><td>0</td><td>1</td><td>3</td><td>0</td><td><strong>4</strong></td><td>2</td><td>1</td><td>1</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:57%;background:#e67e22"></div></div><span>9.8%</span></div></td></tr><tr><td><span class="rank rank-n">5</span></td><td><strong>내부물류</strong></td><td>2</td><td>0</td><td>0</td><td>0</td><td><strong>2</strong></td><td>0</td><td>0</td><td>2</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:29%;background:#95a5a6"></div></div><span>4.9%</span></div></td></tr><tr><td><span class="rank rank-n">6</span></td><td><strong>변재선</strong></td><td>2</td><td>0</td><td>0</td><td>0</td><td><strong>2</strong></td><td>1</td><td>0</td><td>1</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:29%;background:#95a5a6"></div></div><span>4.9%</span></div></td></tr><tr><td><span class="rank rank-n">7</span></td><td><strong>윤옥성</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td><strong>2</strong></td><td>1</td><td>0</td><td>1</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:29%;background:#95a5a6"></div></div><span>4.9%</span></div></td></tr><tr><td><span class="rank rank-n">8</span></td><td><strong>임민우</strong></td><td>0</td><td>0</td><td>2</td><td>0</td><td><strong>2</strong></td><td>1</td><td>0</td><td>1</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:29%;background:#95a5a6"></div></div><span>4.9%</span></div></td></tr><tr><td><span class="rank rank-n">9</span></td><td><strong>김재희</strong></td><td>0</td><td>0</td><td>1</td><td>1</td><td><strong>2</strong></td><td>1</td><td>1</td><td>0</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:29%;background:#bdc3c7"></div></div><span>4.9%</span></div></td></tr></tbody></table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 탭3: 고객 VOC 접수내역 ==================== -->
+<div id="tab-summary" class="tab-content">
+
+  <div class="kpi-row">
+    <div class="kpi red">
+      <div class="kpi-label">취급부주의</div>
+      <div class="kpi-value">18건</div>
+      <div class="kpi-sub">전체 44% · 1위</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-label">응대불만</div>
+      <div class="kpi-value">12건</div>
+      <div class="kpi-sub">전체 29% · 2위</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">출고누락</div>
+      <div class="kpi-value">4건</div>
+      <div class="kpi-sub">전체 10% · 3위</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">기타 유형</div>
+      <div class="kpi-value">7건</div>
+      <div class="kpi-sub">시공불량·업무누락 등</div>
+    </div>
+  </div>
+
+  <div style="padding: 4px 30px 20px; display:flex; flex-direction:column; gap:16px;">
+
+    <!-- 취급부주의 -->
+    <div class="voc-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div class="voc-header" style="background:#e74c3c; color:#fff; padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:15px; font-weight:700;">🔴 취급부주의</span>
+        <span style="font-size:13px; background:rgba(255,255,255,.25); border-radius:20px; padding:3px 12px;">총 16건 (41%)</span>
+      </div>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; border-bottom:1px solid #f0f2f5;">
+        <div style="background:#fef9f9; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e74c3c; font-weight:700; margin-bottom:6px;">📌 주요 발생 패턴</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 배송·하역 중 제품 낙하 및 파손<br>
+            · 가죽 스크래치 (상하차 시 쓸림)<br>
+            · 시공 중 고객 댁 마루바닥 훼손<br>
+            · 포장재 이상 없어도 개봉 후 파손
+          </div>
+        </div>
+        <div style="background:#fef9f9; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e74c3c; font-weight:700; margin-bottom:6px;">🔍 공통 원인</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 기사 간 작업 호흡 불일치<br>
+            · 상하차 전 외관 검사 미실시<br>
+            · 협소 공간 무리한 진입<br>
+            · 사수·보조 역할 미명확
+          </div>
+        </div>
+        <div style="background:#fef9f9; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e74c3c; font-weight:700; margin-bottom:6px;">✅ 처리 결과 및 개선방향</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 대부분 새제품 맞교환 처리<br>
+            · 마루 훼손 건 금전 보상 진행<br>
+            · <b>개선:</b> 구두 신호 체계 도입<br>
+            · <b>개선:</b> 출고 전 외관검사 의무화
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 20px;">
+        <div style="font-size:11px; color:#888; font-weight:700; margin-bottom:8px;">📝 주요 접수 사례</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>1월 ㅇㅇㅇ</b> — 배송 중 차량에서 소파 낙하 파손 → 새제품 재배송
+          </div>
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>2월 ㅇㅇㅇ</b> — 기사가 소파를 끄는 방식으로 이동, 마루바닥 훼손 → 실리콘 교체 + 마루 보상
+          </div>
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 차량 내 하차 작업 중 사수·보조 간 호흡 미흡으로 스크래치 → 새제품 재제작
+          </div>
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 맞교환 중 현관문 벽지 훼손 → 인테리어 공사비 30만원 보상
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 응대불만 -->
+    <div class="voc-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div class="voc-header" style="background:#e67e22; color:#fff; padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:15px; font-weight:700;">🟠 응대불만</span>
+        <span style="font-size:13px; background:rgba(255,255,255,.25); border-radius:20px; padding:3px 12px;">총 12건 (31%)</span>
+      </div>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; border-bottom:1px solid #f0f2f5;">
+        <div style="background:#fef6ee; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e67e22; font-weight:700; margin-bottom:6px;">📌 주요 발생 패턴</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 기사의 무례하거나 불친절한 현장 응대<br>
+            · 배송 시간 일방 변경 후 통보<br>
+            · 고객 요청사항(사전 연락 등) 미반영<br>
+            · 과실 인정 거부·언쟁 발생<br>
+            · 설치 후 제품 안내 없이 이탈
+          </div>
+        </div>
+        <div style="background:#fef6ee; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e67e22; font-weight:700; margin-bottom:6px;">🔍 공통 원인</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 고객 응대 서비스 교육 부족<br>
+            · 해피콜 시 고객 요청 메모 미실시<br>
+            · 배송 일정 변경 시 사전 동의 없음<br>
+            · 비밀번호 무단 요구 등 과도한 요청
+          </div>
+        </div>
+        <div style="background:#fef6ee; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e67e22; font-weight:700; margin-bottom:6px;">✅ 처리 결과 및 개선방향</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 사과 진행 + 기사 교육 실시<br>
+            · 사은품(가죽 클리너) 증정<br>
+            · 마루 훼손 보상 병행<br>
+            · <b>개선:</b> 해피콜 표준 매뉴얼 수립<br>
+            · <b>개선:</b> 도착 전 사전 연락 의무화
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 20px;">
+        <div style="font-size:11px; color:#888; font-weight:700; margin-bottom:8px;">📝 주요 접수 사례</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>3월 ㅇㅇㅇ(VVVIP)</b> — 이사 당일 진입로 확보 요청 과정에서 불쾌한 응대 → 유관부서 공유·교육, 공식 사과
+          </div>
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 기사가 마루 훼손 과실 부인, 언쟁 발생 → 마루바닥 보상 진행
+          </div>
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 약속 시간보다 1시간 일찍 도착 + 비밀번호 요구 · 무례한 응대 → 교육 + 가죽클리너 사은품
+          </div>
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 클리닝 서비스 방문 시 전용클리너 미사용(물티슈), 성의 없는 응대 → 새제품 교환 검토
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 출고누락 -->
+    <div class="voc-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div class="voc-header" style="background:#f1c40f; color:#fff; padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:15px; font-weight:700;">🟡 출고누락</span>
+        <span style="font-size:13px; background:rgba(255,255,255,.25); border-radius:20px; padding:3px 12px;">총 4건 (10%)</span>
+      </div>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; border-bottom:1px solid #f0f2f5;">
+        <div style="background:#fefdf0; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#b7950b; font-weight:700; margin-bottom:6px;">📌 주요 발생 패턴</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 품질보증서 미전달 (2건)<br>
+            · 배송 당일 출고 준비 누락 (2건)<br>
+            · 출고 누락 사실 파악 후 고객 통보
+          </div>
+        </div>
+        <div style="background:#fefdf0; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#b7950b; font-weight:700; margin-bottom:6px;">🔍 공통 원인</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 출고 전 체크리스트 미운용<br>
+            · 배차 기사의 물건 확인 절차 부재<br>
+            · 담당자 간 인계 미흡
+          </div>
+        </div>
+        <div style="background:#fefdf0; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#b7950b; font-weight:700; margin-bottom:6px;">✅ 처리 결과 및 개선방향</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 품질보증서 택배 즉시 발송<br>
+            · 재배송 일정 고객 우선 조율<br>
+            · <b>개선:</b> 출고 전 보증서 포함 필수 확인<br>
+            · <b>개선:</b> 상차 전 기사 물건 확인 의무화
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 20px;">
+        <div style="font-size:11px; color:#888; font-weight:700; margin-bottom:8px;">📝 주요 접수 사례</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:12px; background:#fffef0; border-left:3px solid #f1c40f; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>1월 ㅇㅇㅇ</b> — 내부물류 출고 준비 미흡으로 배송기사가 빈차로 출발, 고객 당일 배송 불가
+          </div>
+          <div style="font-size:12px; background:#fffef0; border-left:3px solid #f1c40f; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 배송 확정 안내 후 당일 갑자기 배송 불가 통보, 기사가 물건 없음 확인 후 담당자 미문의
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기타 유형 3종 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;">
+
+      <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+        <div style="background:#2ecc71; color:#fff; padding:11px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px; font-weight:700;">🟢 시공불량</span>
+          <span style="font-size:12px; background:rgba(255,255,255,.25); border-radius:20px; padding:2px 10px;">2건</span>
+        </div>
+        <div style="padding:14px 16px; font-size:12px; color:#444; line-height:1.9;">
+          <b>패턴:</b> 시공 후 고객 댁 마루바닥 훼손<br>
+          <b>원인:</b> 기사가 훼손 인지 못하고 철수, 또는 과실 부인<br>
+          <b>처리:</b> 보상 조율, 기사 재방문<br>
+          <b>사례:</b><br>
+          · 1월 ㅇㅇㅇ — 찍힘 미인지 철수 → 기사 사과+보상<br>
+          · 1월 ㅇㅇㅇ — 마루 훼손, 기사 과실 부인 → 보상 조율 중
+        </div>
+      </div>
+
+      <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+        <div style="background:#1abc9c; color:#fff; padding:11px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px; font-weight:700;">🩵 업무누락</span>
+          <span style="font-size:12px; background:rgba(255,255,255,.25); border-radius:20px; padding:2px 10px;">2건</span>
+        </div>
+        <div style="padding:14px 16px; font-size:12px; color:#444; line-height:1.9;">
+          <b>패턴:</b> 고객 접수 내용 본사 미전달, 방문 일정 누락<br>
+          <b>원인:</b> 기사가 현장에서 접수 받고 미보고, 동명이인 착각<br>
+          <b>처리:</b> 사과 + 재방문 일정 조율<br>
+          <b>사례:</b><br>
+          · 3월 ㅇㅇㅇ — 기사 접수 누락으로 지연 대응<br>
+          · 3월 ㅇㅇㅇ — 동명이인 착각으로 방문 미실시
+        </div>
+      </div>
+
+      <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+        <div style="background:#7f8c8d; color:#fff; padding:11px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px; font-weight:700;">⚪ 기타</span>
+          <span style="font-size:12px; background:rgba(255,255,255,.25); border-radius:20px; padding:2px 10px;">3건</span>
+        </div>
+        <div style="padding:14px 16px; font-size:12px; color:#444; line-height:1.9;">
+          <b>배송누락(1건)</b> — 시스템 오류로 당일 배송 불가<br>
+          → 사은품(가죽클리너) 증정으로 마무리<br><br>
+          <b>오안내(1건)</b> — 기사가 본사 협의 없이 정상제품 회수<br>
+          → 제품 재배송 + 기사 교육<br><br>
+          <b>오출고(1건)</b> — AS 기사 교체 시 자재 미전달로 재방문<br>
+          → 재방문 처리 완료
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 종합 개선방향 -->
+    <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#1a3a5c,#2d6a9f); color:#fff; padding:13px 20px;">
+        <span style="font-size:15px; font-weight:700;">💡 종합 개선방향 (1~4월 기준)</span>
+      </div>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div>
+          <div style="font-size:12px; font-weight:700; color:#e74c3c; margin-bottom:8px;">① 취급부주의 감소 (최우선)</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 상하차 시 구두 신호 체계 표준화 ("잡았습니다 / 내립니다")<br>
+            · 출고 전·상차 전 외관검사 의무화 및 사진 기록<br>
+            · 협소 공간 진입 시 사다리차 사용 원칙 수립<br>
+            · 기사 2인 1조 작업 시 사수·보조 역할 명확화
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:#e67e22; margin-bottom:8px;">② 응대불만 감소 (차순위)</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 해피콜 표준 매뉴얼 수립 (고객 요청사항 필수 메모)<br>
+            · 배송 시간 변경 시 사전 동의 및 문자 발송 의무화<br>
+            · 도착 전 사전 연락 의무화<br>
+            · 과실 발생 시 즉시 인정·사과 교육 강화
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:#b7950b; margin-bottom:8px;">③ 출고누락 예방</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 품질보증서 포함 출고 체크리스트 운용<br>
+            · 배차 기사 상차 전 물건 확인 절차 필수화
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:#27ae60; margin-bottom:8px;">④ 공통 관리 강화</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 현장 접수 건은 당일 본사 보고 의무화<br>
+            · AS 기사 교체 시 자재·정보 인수인계 체크리스트 운용<br>
+            · 월 1회 기사 서비스 교육 정례화
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== 고객만족율: 월별 만족도 현황 ==================== -->
+<div id="tab-cs-monthly" class="tab-content">
+
+  <div class="kpi-row" style="grid-template-columns:repeat(5,1fr);">
+    <div class="kpi blue">
+      <div class="kpi-label">총 응답건수 (1월~4월 누계)</div>
+      <div class="kpi-value">1,706건</div>
+      <div class="kpi-sub">25명 기사 · 4개월 집계</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">매우만족+만족률 (평균)</div>
+      <div class="kpi-value">96.7%</div>
+      <div class="kpi-sub">3개 항목 평균 (누계)</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label" style="color:#3498db;">■ 정리상태 만족률</div>
+      <div class="kpi-value">96.9%</div>
+      <div class="kpi-sub">매우만족 + 만족 기준 (누계)</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label" style="color:#27ae60;">■ 응대태도 만족률</div>
+      <div class="kpi-value">97.1%</div>
+      <div class="kpi-sub">매우만족 + 만족 기준 (누계)</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label" style="color:#8e44ad;">■ 용모복장 만족률</div>
+      <div class="kpi-value">96.1%</div>
+      <div class="kpi-sub">매우만족 + 만족 기준 (누계)</div>
+    </div>
+  </div>
+
+  <div class="insight green">
+    ⭐ <strong>전체 현황:</strong>
+    1월~4월월 총 1,706건 응답 기준 3개 항목 평균 매우만족+만족률 <span class="good">96.7%</span>로 높은 만족도를 유지하고 있습니다.
+  </div>
+
+  <!-- 고객만족도 월별 증감 테이블 (좌: 실적 / 우: 전월대비 증감) -->
+  <div class="monthly-compare-grid" style="padding:0 30px 14px; display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+
+    <!-- 좌: 월별 실적 -->
+    <div class="tbl-wrap">
+      <div class="tbl-title">고객 만족도 월별 실적</div>
+      <table><thead><tr><th>구분</th><th>1월<br><span style="font-weight:400;font-size:10px;">(n=444)</span></th><th>2월<br><span style="font-weight:400;font-size:10px;">(n=372)</span></th><th>3월<br><span style="font-weight:400;font-size:10px;">(n=523)</span></th><th>4월<br><span style="font-weight:400;font-size:10px;">(n=367)</span></th><th style="background:#1a5276;">누계<br><span style="font-weight:400;font-size:10px;">(n=1,706)</span></th></tr></thead><tbody><tr><td><strong style="color:#1a3a5c">매우만족</strong></td><td>84.3%</td><td class="rate-high">85.8%</td><td class="rate-high">85.5%</td><td class="rate-high">87.0%</td><td style="background:#eef5ff;font-weight:700;">85.6%</td></tr><tr><td><span style="color:#2980b9">만족</span></td><td>12.4%</td><td>10.8%</td><td>11.3%</td><td>9.7%</td><td style="background:#eef5ff;">11.1%</td></tr><tr><td>보통</td><td>2.5%</td><td>2.7%</td><td>2.2%</td><td>2.5%</td><td style="background:#eef5ff;">2.4%</td></tr><tr><td><span style="color:#e67e22">불만족</span></td><td>0.3%</td><td>0.4%</td><td>0.8%</td><td>0.5%</td><td style="background:#eef5ff;">0.5%</td></tr><tr><td><span style="color:#e74c3c">매우불만족</span></td><td>0.5%</td><td>0.4%</td><td>0.3%</td><td>0.3%</td><td style="background:#eef5ff;">0.4%</td></tr><tr class="total-row"><td><strong>매우만족+만족 합계</strong></td><td><strong class="rate-high">96.7%</strong></td><td><strong class="rate-high">96.5%</strong></td><td><strong class="rate-high">96.8%</strong></td><td><strong class="rate-high">96.7%</strong></td><td style="background:#d6eaf8;"><strong class="rate-high">96.7%</strong></td></tr></tbody></table>
+    </div>
+
+    <!-- 우: 전월대비 증감 -->
+    <div class="tbl-wrap">
+      <div class="tbl-title">전월대비 증감 (단위: %p)</div>
+      <table><thead><tr><th>구분</th><th>1월→2월</th><th>2월→3월</th><th>3월→4월</th></tr></thead><tbody><tr><td><strong style="color:#1a3a5c;">매우만족</strong></td><td style="background:#f0f6ff;"><span style="color:#27ae60;font-weight:700;">▲ 1.5</span></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▼ 0.3</span></td><td style="background:#f0f6ff;"><span style="color:#27ae60;font-weight:700;">▲ 1.5</span></td></tr>
+<tr><td><strong style="color:#2980b9;">만족</strong></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▼ 1.6</span></td><td style="background:#f0f6ff;"><span style="color:#27ae60;font-weight:700;">▲ 0.5</span></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▼ 1.6</span></td></tr>
+<tr><td><strong style="color:#555;">보통</strong></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▲ 0.2</span></td><td style="background:#f0f6ff;"><span style="color:#2980b9;font-weight:700;">▼ 0.5</span></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▲ 0.3</span></td></tr>
+<tr><td><strong style="color:#e67e22;">불만족</strong></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▲ 0.1</span></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▲ 0.4</span></td><td style="background:#f0f6ff;"><span style="color:#27ae60;font-weight:700;">▼ 0.3</span></td></tr>
+<tr><td><strong style="color:#e74c3c;">매우불만족</strong></td><td style="background:#f0f6ff;"><span style="color:#27ae60;font-weight:700;">▼ 0.1</span></td><td style="background:#f0f6ff;"><span style="color:#27ae60;font-weight:700;">▼ 0.1</span></td><td style="background:#f0f6ff;"><span style="color:#888;font-weight:700;">± 0</span></td></tr>
+<tr><td><strong style="color:#27ae60;">매우만족+만족합계</strong></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▼ 0.2</span></td><td style="background:#f0f6ff;"><span style="color:#27ae60;font-weight:700;">▲ 0.3</span></td><td style="background:#f0f6ff;"><span style="color:#e74c3c;font-weight:700;">▼ 0.1</span></td></tr>
+</tbody></table>
+      <div style="padding:8px 12px; font-size:11px; color:#aaa;">
+        ※ 불만족·매우불만족 ▲ 증가는 부정적 변화
+      </div>
+    </div>
+
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card wide">
+      <div class="chart-title">항목별 만족도 현황 (매우만족+만족)</div>
+      <canvas id="csSatCountChart" style="max-height:300px;"></canvas>
+    </div>
+  </div>
+
+  <div class="table-section">
+    <div class="tbl-wrap">
+      <div class="tbl-title">월별 항목별 응답률 상세 (단위: %)</div>
+      <table><thead><tr><th rowspan="2">응답구분</th><th colspan="3">26년 1월 (n=444)</th><th colspan="3">26년 2월 (n=372)</th><th colspan="3">26년 3월 (n=523)</th><th colspan="3">26년 4월 (n=367)</th><th colspan="3" style="background:#1a5276;">1월~4월 누계 (n=1,706)</th></tr><tr><th style="background:#243f5c;font-size:10px;">정리상태</th><th style="background:#243f5c;font-size:10px;">응대태도</th><th style="background:#243f5c;font-size:10px;">용모복장</th><th style="background:#243f5c;font-size:10px;">정리상태</th><th style="background:#243f5c;font-size:10px;">응대태도</th><th style="background:#243f5c;font-size:10px;">용모복장</th><th style="background:#243f5c;font-size:10px;">정리상태</th><th style="background:#243f5c;font-size:10px;">응대태도</th><th style="background:#243f5c;font-size:10px;">용모복장</th><th style="background:#243f5c;font-size:10px;">정리상태</th><th style="background:#243f5c;font-size:10px;">응대태도</th><th style="background:#243f5c;font-size:10px;">용모복장</th><th style="background:#1a5276;font-size:10px;">정리상태</th><th style="background:#1a5276;font-size:10px;">응대태도</th><th style="background:#1a5276;font-size:10px;">용모복장</th></tr></thead><tbody><tr><td><strong style="color:#1a3a5c">매우만족</strong></td><td class="rate-high">85.1%</td><td class="rate-high">84.7%</td><td class="rate-high">83.1%</td><td class="rate-high">88.2%</td><td class="rate-high">86.6%</td><td class="rate-high">82.5%</td><td class="rate-high">86.8%</td><td class="rate-high">87.0%</td><td class="rate-high">82.8%</td><td class="rate-high">89.1%</td><td class="rate-high">88.0%</td><td class="rate-high">83.9%</td><td class="rate-high" style="background:#eef5ff;font-weight:700;">87.2%</td><td class="rate-high" style="background:#eef5ff;font-weight:700;">86.5%</td><td class="rate-high" style="background:#eef5ff;font-weight:700;">83.1%</td></tr><tr><td><span style="color:#2980b9">만족</span></td><td>11.0%</td><td>12.8%</td><td>13.3%</td><td>8.9%</td><td>9.9%</td><td>13.4%</td><td>10.3%</td><td>10.1%</td><td>13.4%</td><td>8.2%</td><td>9.0%</td><td>12.0%</td><td style="background:#eef5ff;">9.7%</td><td style="background:#eef5ff;">10.6%</td><td style="background:#eef5ff;">13.1%</td></tr><tr><td>보통</td><td>2.5%</td><td>1.8%</td><td>3.2%</td><td>1.6%</td><td>2.7%</td><td>3.8%</td><td>1.7%</td><td>1.3%</td><td>3.4%</td><td>1.6%</td><td>2.2%</td><td>3.8%</td><td style="background:#eef5ff;">1.9%</td><td style="background:#eef5ff;">1.9%</td><td style="background:#eef5ff;">3.5%</td></tr><tr><td><span style="color:#e67e22">불만족</span></td><td>0.5%</td><td>0.2%</td><td>0.2%</td><td>0.8%</td><td>0.3%</td><td>0.3%</td><td>0.4%</td><td>1.5%</td><td>0.4%</td><td>0.8%</td><td>0.3%</td><td>0.3%</td><td style="background:#eef5ff;">0.6%</td><td style="background:#eef5ff;">0.6%</td><td style="background:#eef5ff;">0.3%</td></tr><tr><td><span style="color:#e74c3c">매우불만족</span></td><td>0.9%</td><td>0.5%</td><td>0.2%</td><td>0.5%</td><td>0.5%</td><td>0.0%</td><td>0.8%</td><td>0.0%</td><td>0.0%</td><td>0.3%</td><td>0.5%</td><td>0.0%</td><td style="background:#eef5ff;">0.6%</td><td style="background:#eef5ff;">0.4%</td><td style="background:#eef5ff;">0.1%</td></tr><tr class="total-row"><td><strong>매우만족+만족 합계</strong></td><td class="rate-high">96.2%</td><td class="rate-high">97.5%</td><td class="rate-high">96.4%</td><td class="rate-high">97.0%</td><td class="rate-high">96.5%</td><td class="rate-high">96.0%</td><td class="rate-high">97.1%</td><td class="rate-high">97.1%</td><td class="rate-high">96.2%</td><td class="rate-high">97.3%</td><td class="rate-high">97.0%</td><td class="rate-high">95.9%</td><td class="rate-high" style="background:#eef5ff;font-weight:700;">96.9%</td><td class="rate-high" style="background:#eef5ff;font-weight:700;">97.1%</td><td class="rate-high" style="background:#eef5ff;font-weight:700;">96.1%</td></tr></tbody></table>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- ==================== 고객만족율: 기사별 만족도 ==================== -->
+<div id="tab-cs-staff" class="tab-content">
+
+  <div class="kpi-row">
+    <div class="kpi blue">
+      <div class="kpi-label">조사 대상 기사</div>
+      <div class="kpi-value">25명</div>
+      <div class="kpi-sub">총 1,706건 응답 집계</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">최우수 (3항목 모두 100%)</div>
+      <div class="kpi-value" style="font-size:20px">임경택</div>
+      <div class="kpi-sub">누계 정리·응대·용모 모두 100%</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-label">집중 관리 필요</div>
+      <div class="kpi-value" style="font-size:18px">문민수</div>
+      <div class="kpi-sub">누계 합계 92.2% — 전체 최하위</div>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi-label">전체 평균 만족률</div>
+      <div class="kpi-value">96.6%</div>
+      <div class="kpi-sub">3개 항목 평균 (누계 기준)</div>
+    </div>
+  </div>
+
+  <div class="insight blue">
+    👤 <strong>기사별 분석:</strong>
+    누계 합계 기준 <strong>하우저(100.0%)</strong>이 최우수이며 임경택(100.0%)·정용우(100.0%)·강민승(100.0%)·손명익(100.0%) 순으로 <span class="good">99% 이상</span>의 높은 만족률을 기록하고 있습니다. <strong>김재희</strong>는 누계 합계 <strong style="color:#c0392b;">90.5%</strong>로 전체 최하위이며 응대태도(89.3%)·정리상태(91.1%) 개선이 시급합니다. <strong>미반영(91.7%)</strong>도 지속적인 관리가 필요합니다.
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card wide">
+      <div class="chart-title">기사별 고객 만족도 현황 (매우만족+만족, 1~4월 누계)</div>
+      <canvas id="csStaffChart" style="max-height:420px;"></canvas>
+    </div>
+  </div>
+
+  <div class="table-section">
+    <div class="tbl-wrap" style="overflow-x:auto;">
+      <div class="tbl-title">기사별 항목별 만족률 상세 (매우만족 + 만족 %)</div>
+      <table style="min-width:900px;"><thead><tr><th rowspan="2">순위</th><th rowspan="2">기사명</th><th colspan="4" style="background:#1a4a7a;">1월</th><th colspan="4" style="background:#1a4a7a;">2월</th><th colspan="4" style="background:#1a4a7a;">3월</th><th colspan="4" style="background:#1a4a7a;">4월</th><th colspan="4" style="background:#1a3a5c;">누계</th></tr><tr><th style="background:#243f5c;font-size:10px;">정리</th><th style="background:#243f5c;font-size:10px;">응대</th><th style="background:#243f5c;font-size:10px;">용모</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#243f5c;font-size:10px;">정리</th><th style="background:#243f5c;font-size:10px;">응대</th><th style="background:#243f5c;font-size:10px;">용모</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#243f5c;font-size:10px;">정리</th><th style="background:#243f5c;font-size:10px;">응대</th><th style="background:#243f5c;font-size:10px;">용모</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#243f5c;font-size:10px;">정리</th><th style="background:#243f5c;font-size:10px;">응대</th><th style="background:#243f5c;font-size:10px;">용모</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#1e3a5c;font-size:10px;">정리</th><th style="background:#1e3a5c;font-size:10px;">응대</th><th style="background:#1e3a5c;font-size:10px;">용모</th><th style="background:#0e2540;font-size:10px;">합계<br>(접수건)</th></tr></thead><tbody><tr><td><span class="rank rank-1">1</span></td><td><strong>하우저</strong></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(1명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(1명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(1명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(1명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">100.0%<br><span style="color:#555;font-size:9px;">(4명)</span></td></tr>
+<tr><td><span class="rank rank-2">2</span></td><td><strong>임경택</strong></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(4명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(4명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(3명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">100.0%<br><span style="color:#555;font-size:9px;">(11명)</span></td></tr>
+<tr><td><span class="rank rank-2">3</span></td><td><strong>정용우</strong></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(4명)</span></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">100.0%<br><span style="color:#555;font-size:9px;">(4명)</span></td></tr>
+<tr><td><span class="rank rank-n">4</span></td><td><strong>강민승</strong></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(3명)</span></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">100.0%<br><span style="color:#555;font-size:9px;">(3명)</span></td></tr>
+<tr><td><span class="rank rank-n">5</span></td><td><strong>손명익</strong></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(1명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">100.0%<br><span style="color:#555;font-size:9px;">(1명)</span></td></tr>
+<tr><td><span class="rank rank-n">6</span></td><td><strong>고요한</strong></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(39명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">97.1%</td><td class="rate-high" style="font-size:9px;font-weight:700;">99.0%<br><span style="color:#555;font-weight:400;">(34명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(30명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(28명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">99.2%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">99.7%<br><span style="color:#555;font-size:9px;">(131명)</span></td></tr>
+<tr><td><span class="rank rank-n">7</span></td><td><strong>김병우</strong></td><td class="rate-mid" style="font-size:10px;">95.7%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">97.9%</td><td class="rate-high" style="font-size:9px;font-weight:700;">97.9%<br><span style="color:#555;font-weight:400;">(47명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(43명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(36명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(15명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">98.6%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">99.3%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">99.3%<br><span style="color:#555;font-size:9px;">(141명)</span></td></tr>
+<tr><td><span class="rank rank-n">8</span></td><td><strong>김재현</strong></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-low" style="font-size:10px;">92.6%</td><td class="rate-high" style="font-size:9px;font-weight:700;">97.5%<br><span style="color:#555;font-weight:400;">(27명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(29명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(28명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.6%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">99.2%<br><span style="color:#555;font-size:9px;">(84명)</span></td></tr>
+<tr><td><span class="rank rank-n">9</span></td><td><strong>구본혁</strong></td><td class="rate-mid" style="font-size:10px;">96.3%</td><td class="rate-mid" style="font-size:10px;">96.3%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">97.5%<br><span style="color:#555;font-weight:400;">(27명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-mid" style="font-size:10px;">93.8%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">97.9%<br><span style="color:#555;font-weight:400;">(16명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(12명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(28명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">98.8%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.6%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">98.8%<br><span style="color:#555;font-size:9px;">(83명)</span></td></tr>
+<tr><td><span class="rank rank-n">10</span></td><td><strong>이동한</strong></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(20명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(21명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-mid" style="font-size:10px;">96.4%</td><td class="rate-high" style="font-size:9px;font-weight:700;">98.8%<br><span style="color:#555;font-weight:400;">(28명)</span></td><td class="rate-low" style="font-size:10px;">92.3%</td><td class="rate-low" style="font-size:10px;">92.3%</td><td class="rate-low" style="font-size:10px;">92.3%</td><td class="rate-low" style="font-size:9px;font-weight:700;">92.3%<br><span style="color:#555;font-weight:400;">(13명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">98.8%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">98.8%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.6%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">98.4%<br><span style="color:#555;font-size:9px;">(82명)</span></td></tr>
+<tr><td><span class="rank rank-n">11</span></td><td><strong>정다운</strong></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-mid" style="font-size:10px;">96.8%</td><td class="rate-mid" style="font-size:10px;">96.8%</td><td class="rate-mid" style="font-size:10px;">96.8%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">96.8%<br><span style="color:#555;font-weight:400;">(31명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(17명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.9%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.9%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.9%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">97.9%<br><span style="color:#555;font-size:9px;">(48명)</span></td></tr>
+<tr><td><span class="rank rank-n">12</span></td><td><strong>정종철</strong></td><td class="rate-mid" style="font-size:10px;">96.9%</td><td class="rate-mid" style="font-size:10px;">96.9%</td><td class="rate-mid" style="font-size:10px;">96.9%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">96.9%<br><span style="color:#555;font-weight:400;">(32명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(22명)</span></td><td class="rate-high" style="font-size:10px;">97.8%</td><td class="rate-high" style="font-size:10px;">97.8%</td><td class="rate-high" style="font-size:10px;">97.8%</td><td class="rate-high" style="font-size:9px;font-weight:700;">97.8%<br><span style="color:#555;font-weight:400;">(46명)</span></td><td class="rate-mid" style="font-size:10px;">95.8%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-low" style="font-size:10px;">91.7%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.8%<br><span style="color:#555;font-weight:400;">(24명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.6%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">98.4%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.8%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">97.6%<br><span style="color:#555;font-size:9px;">(124명)</span></td></tr>
+<tr><td><span class="rank rank-n">13</span></td><td><strong>김병주</strong></td><td class="rate-low" style="font-size:10px;">92.6%</td><td class="rate-low" style="font-size:10px;">92.6%</td><td class="rate-mid" style="font-size:10px;">96.3%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">93.8%<br><span style="color:#555;font-weight:400;">(27명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(22명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">97.6%</td><td class="rate-high" style="font-size:9px;font-weight:700;">99.2%<br><span style="color:#555;font-weight:400;">(41명)</span></td><td class="rate-mid" style="font-size:10px;">96.8%</td><td class="rate-mid" style="font-size:10px;">96.8%</td><td class="rate-mid" style="font-size:10px;">96.8%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">96.8%<br><span style="color:#555;font-weight:400;">(31명)</span></td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.5%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.5%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.5%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">97.5%<br><span style="color:#555;font-size:9px;">(121명)</span></td></tr>
+<tr><td><span class="rank rank-n">14</span></td><td><strong>모주완</strong></td><td class="rate-mid" style="font-size:10px;">95.8%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">98.6%<br><span style="color:#555;font-weight:400;">(24명)</span></td><td class="rate-mid" style="font-size:10px;">96.0%</td><td class="rate-low" style="font-size:10px;">92.0%</td><td class="rate-mid" style="font-size:10px;">96.0%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">94.7%<br><span style="color:#555;font-weight:400;">(25명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(25명)</span></td><td class="rate-mid" style="font-size:10px;">95.5%</td><td class="rate-mid" style="font-size:10px;">95.5%</td><td class="rate-mid" style="font-size:10px;">95.5%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.5%<br><span style="color:#555;font-weight:400;">(22명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.9%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.9%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.9%</td><td class="rate-high" style="font-size:10px;background:#ddeeff;font-weight:700;">97.2%<br><span style="color:#555;font-size:9px;">(96명)</span></td></tr>
+<tr><td><span class="rank rank-n">15</span></td><td><strong>윤옥성</strong></td><td class="rate-mid" style="font-size:10px;">96.9%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-mid" style="font-size:10px;">96.9%</td><td class="rate-high" style="font-size:9px;font-weight:700;">97.9%<br><span style="color:#555;font-weight:400;">(32명)</span></td><td class="rate-low" style="font-size:10px;">91.7%</td><td class="rate-low" style="font-size:10px;">91.7%</td><td class="rate-low" style="font-size:10px;">91.7%</td><td class="rate-low" style="font-size:9px;font-weight:700;">91.7%<br><span style="color:#555;font-weight:400;">(12명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(21명)</span></td><td class="rate-mid" style="font-size:10px;">95.5%</td><td class="rate-mid" style="font-size:10px;">95.5%</td><td class="rate-mid" style="font-size:10px;">95.5%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.5%<br><span style="color:#555;font-weight:400;">(22명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.6%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">97.7%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.6%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">96.9%<br><span style="color:#555;font-size:9px;">(87명)</span></td></tr>
+<tr><td><span class="rank rank-n">16</span></td><td><strong>변재선</strong></td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-mid" style="font-size:10px;">96.4%</td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">94.0%<br><span style="color:#555;font-weight:400;">(28명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(16명)</span></td><td class="rate-mid" style="font-size:10px;">96.7%</td><td class="rate-mid" style="font-size:10px;">96.7%</td><td class="rate-mid" style="font-size:10px;">96.7%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">96.7%<br><span style="color:#555;font-weight:400;">(30명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-low" style="font-size:10px;">90.0%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.0%<br><span style="color:#555;font-weight:400;">(20명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.8%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.8%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">94.7%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">96.1%<br><span style="color:#555;font-size:9px;">(94명)</span></td></tr>
+<tr><td><span class="rank rank-n">17</span></td><td><strong>임민우</strong></td><td class="rate-mid" style="font-size:10px;">95.5%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">98.5%<br><span style="color:#555;font-weight:400;">(22명)</span></td><td class="rate-low" style="font-size:10px;">89.3%</td><td class="rate-low" style="font-size:10px;">89.3%</td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-low" style="font-size:9px;font-weight:700;">90.5%<br><span style="color:#555;font-weight:400;">(28명)</span></td><td class="rate-mid" style="font-size:10px;">96.9%</td><td class="rate-mid" style="font-size:10px;">96.9%</td><td class="rate-mid" style="font-size:10px;">93.8%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.8%<br><span style="color:#555;font-weight:400;">(32명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(26명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">95.4%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.3%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.3%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">96.0%<br><span style="color:#555;font-size:9px;">(108명)</span></td></tr>
+<tr><td><span class="rank rank-n">18</span></td><td><strong>박용구</strong></td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.0%<br><span style="color:#555;font-weight:400;">(20명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(4명)</span></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">95.8%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">95.8%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">95.8%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">95.8%<br><span style="color:#555;font-size:9px;">(24명)</span></td></tr>
+<tr><td><span class="rank rank-n">19</span></td><td><strong>박상현</strong></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(27명)</span></td><td class="rate-low" style="font-size:10px;">85.0%</td><td class="rate-low" style="font-size:10px;">90.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-low" style="font-size:9px;font-weight:700;">90.0%<br><span style="color:#555;font-weight:400;">(20명)</span></td><td class="rate-mid" style="font-size:10px;">94.3%</td><td class="rate-high" style="font-size:10px;">97.1%</td><td class="rate-mid" style="font-size:10px;">94.3%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.2%<br><span style="color:#555;font-weight:400;">(35명)</span></td><td class="rate-mid" style="font-size:10px;">94.7%</td><td class="rate-mid" style="font-size:10px;">94.7%</td><td class="rate-mid" style="font-size:10px;">94.7%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">94.7%<br><span style="color:#555;font-weight:400;">(19명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">94.1%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.0%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.0%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">95.4%<br><span style="color:#555;font-size:9px;">(101명)</span></td></tr>
+<tr><td><span class="rank rank-n">20</span></td><td><strong>윤경환</strong></td><td class="rate-low" style="font-size:10px;">92.3%</td><td class="rate-mid" style="font-size:10px;">96.2%</td><td class="rate-low" style="font-size:10px;">92.3%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">93.6%<br><span style="color:#555;font-weight:400;">(26명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(6명)</span></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">93.8%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.9%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">93.8%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">94.8%<br><span style="color:#555;font-size:9px;">(32명)</span></td></tr>
+<tr><td><span class="rank rank-n">21</span></td><td><strong>임지훈</strong></td><td class="rate-mid" style="font-size:10px;">96.2%</td><td class="rate-low" style="font-size:10px;">92.3%</td><td class="rate-low" style="font-size:10px;">84.6%</td><td class="rate-low" style="font-size:9px;font-weight:700;">91.0%<br><span style="color:#555;font-weight:400;">(26명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-low" style="font-size:10px;">88.5%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">96.2%<br><span style="color:#555;font-weight:400;">(26명)</span></td><td class="rate-low" style="font-size:10px;">90.0%</td><td class="rate-mid" style="font-size:10px;">93.3%</td><td class="rate-low" style="font-size:10px;">86.7%</td><td class="rate-low" style="font-size:9px;font-weight:700;">90.0%<br><span style="color:#555;font-weight:400;">(30명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-mid" style="font-size:10px;">95.7%</td><td class="rate-high" style="font-size:9px;font-weight:700;">98.6%<br><span style="color:#555;font-weight:400;">(23명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.2%</td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">96.2%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">88.6%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">93.7%<br><span style="color:#555;font-size:9px;">(105명)</span></td></tr>
+<tr><td><span class="rank rank-n">22</span></td><td><strong>장동진</strong></td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.0%<br><span style="color:#555;font-weight:400;">(20명)</span></td><td class="rate-mid" style="font-size:10px;">95.2%</td><td class="rate-mid" style="font-size:10px;">95.2%</td><td class="rate-mid" style="font-size:10px;">95.2%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.2%<br><span style="color:#555;font-weight:400;">(21명)</span></td><td class="rate-mid" style="font-size:10px;">93.5%</td><td class="rate-low" style="font-size:10px;">90.3%</td><td class="rate-mid" style="font-size:10px;">93.5%</td><td class="rate-low" style="font-size:9px;font-weight:700;">92.5%<br><span style="color:#555;font-weight:400;">(31명)</span></td><td class="rate-low" style="font-size:10px;">88.9%</td><td class="rate-low" style="font-size:10px;">88.9%</td><td class="rate-low" style="font-size:10px;">77.8%</td><td class="rate-low" style="font-size:9px;font-weight:700;">85.2%<br><span style="color:#555;font-weight:400;">(9명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">93.8%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">92.6%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">92.6%</td><td class="rate-mid" style="font-size:10px;background:#ddeeff;font-weight:700;">93.0%<br><span style="color:#555;font-size:9px;">(81명)</span></td></tr>
+<tr><td><span class="rank rank-n">23</span></td><td><strong>문민수</strong></td><td class="rate-mid" style="font-size:10px;">96.0%</td><td class="rate-mid" style="font-size:10px;">96.0%</td><td class="rate-low" style="font-size:10px;">92.0%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">94.7%<br><span style="color:#555;font-weight:400;">(25명)</span></td><td class="rate-low" style="font-size:10px;">87.5%</td><td class="rate-low" style="font-size:10px;">75.0%</td><td class="rate-low" style="font-size:10px;">75.0%</td><td class="rate-low" style="font-size:9px;font-weight:700;">79.2%<br><span style="color:#555;font-weight:400;">(8명)</span></td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-low" style="font-size:10px;">89.3%</td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-low" style="font-size:9px;font-weight:700;">91.7%<br><span style="color:#555;font-weight:400;">(28명)</span></td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:10px;">95.0%</td><td class="rate-mid" style="font-size:9px;font-weight:700;">95.0%<br><span style="color:#555;font-weight:400;">(20명)</span></td><td class="rate-mid" style="font-size:10px;background:#eef5ff;font-weight:700;">93.8%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">91.4%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">91.4%</td><td class="rate-low" style="font-size:10px;background:#ddeeff;font-weight:700;">92.2%<br><span style="color:#555;font-size:9px;">(81명)</span></td></tr>
+<tr><td><span class="rank rank-n">24</span></td><td><strong>미반영</strong></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(1명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:9px;font-weight:700;">100.0%<br><span style="color:#555;font-weight:400;">(2명)</span></td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-high" style="font-size:10px;">100.0%</td><td class="rate-low" style="font-size:10px;">0.0%</td><td class="rate-low" style="font-size:9px;font-weight:700;">66.7%<br><span style="color:#555;font-weight:400;">(1명)</span></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-high" style="font-size:10px;background:#eef5ff;font-weight:700;">100.0%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">75.0%</td><td class="rate-low" style="font-size:10px;background:#ddeeff;font-weight:700;">91.7%<br><span style="color:#555;font-size:9px;">(4명)</span></td></tr>
+<tr><td><span class="rank rank-n">25</span></td><td><strong>김재희</strong></td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td style="color:#bbb;font-size:10px;">-</td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-low" style="font-size:10px;">92.9%</td><td class="rate-low" style="font-size:9px;font-weight:700;">92.9%<br><span style="color:#555;font-weight:400;">(14명)</span></td><td class="rate-low" style="font-size:10px;">92.0%</td><td class="rate-low" style="font-size:10px;">92.0%</td><td class="rate-low" style="font-size:10px;">92.0%</td><td class="rate-low" style="font-size:9px;font-weight:700;">92.0%<br><span style="color:#555;font-weight:400;">(25명)</span></td><td class="rate-low" style="font-size:10px;">88.2%</td><td class="rate-low" style="font-size:10px;">82.4%</td><td class="rate-low" style="font-size:10px;">88.2%</td><td class="rate-low" style="font-size:9px;font-weight:700;">86.3%<br><span style="color:#555;font-weight:400;">(17명)</span></td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">91.1%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">89.3%</td><td class="rate-low" style="font-size:10px;background:#eef5ff;font-weight:700;">91.1%</td><td class="rate-low" style="font-size:10px;background:#ddeeff;font-weight:700;">90.5%<br><span style="color:#555;font-size:9px;">(56명)</span></td></tr>
+</tbody></table>
+    </div>
+    <div style="margin-top:10px; font-size:11px; color:#aaa; padding:0 4px;">
+      ※ 색상 기준: <span class="rate-high">■ 97% 이상 (우수)</span> &nbsp; <span class="rate-mid">■ 93~96% (보통)</span> &nbsp; <span class="rate-low">■ 93% 미만 (개선 필요)</span> &nbsp;|&nbsp; - : 해당월 응답 없음
+    </div>
+  </div>
+
+  <!-- 기사별 4월 상세 (3가지 항목 합계) -->
+  <div class="table-section" style="padding-top:14px;">
+    <div class="tbl-wrap">
+      <div class="tbl-title">4월 기사별 응답상세 내역</div>
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2">기사명</th>
+            <th colspan="3">매우만족</th>
+            <th colspan="3">만족</th>
+            <th colspan="2">보통</th>
+            <th colspan="2">불만족</th>
+            <th colspan="2">매우불만족</th>
+            <th rowspan="2">합계</th>
+            <th rowspan="2">만족률<br><span style="font-weight:400;font-size:10px;">(매우만족+만족)</span></th>
+          </tr>
+          <tr>
+            <th style="background:#243f5c;font-size:10px;">건수</th>
+            <th style="background:#243f5c;font-size:10px;">전체%</th>
+            <th style="background:#243f5c;font-size:10px;">기사%</th>
+            <th style="background:#243f5c;font-size:10px;">건수</th>
+            <th style="background:#243f5c;font-size:10px;">전체%</th>
+            <th style="background:#243f5c;font-size:10px;">기사%</th>
+            <th style="background:#243f5c;font-size:10px;">건수</th>
+            <th style="background:#243f5c;font-size:10px;">기사%</th>
+            <th style="background:#243f5c;font-size:10px;">건수</th>
+            <th style="background:#243f5c;font-size:10px;">기사%</th>
+            <th style="background:#243f5c;font-size:10px;">건수</th>
+            <th style="background:#243f5c;font-size:10px;">기사%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>고요한</strong></td><td>51</td><td>6.9%</td><td class="rate-high">100.0%</td><td>0</td><td>0.0%</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>51</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>구본혁</strong></td><td>42</td><td>5.7%</td><td class="rate-high">93.3%</td><td>3</td><td>0.4%</td><td>6.7%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>45</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>김병우</strong></td><td>31</td><td>4.2%</td><td class="rate-high">93.9%</td><td>2</td><td>0.3%</td><td>6.1%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>33</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>김재현</strong></td><td>50</td><td>6.8%</td><td class="rate-high">92.6%</td><td>4</td><td>0.5%</td><td>7.4%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>54</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>박상현</strong></td><td>39</td><td>5.3%</td><td class="rate-high">92.9%</td><td>3</td><td>0.4%</td><td>7.1%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>42</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>이동한</strong></td><td>25</td><td>3.4%</td><td class="rate-high">92.6%</td><td>2</td><td>0.3%</td><td>7.4%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>27</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>임경택</strong></td><td>9</td><td>1.2%</td><td class="rate-high">100.0%</td><td>0</td><td>0.0%</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>9</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>임민우</strong></td><td>47</td><td>6.4%</td><td class="rate-high">87.0%</td><td>7</td><td>0.9%</td><td>13.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>54</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>정다운</strong></td><td>39</td><td>5.3%</td><td class="rate-high">92.9%</td><td>3</td><td>0.4%</td><td>7.1%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>42</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>손명익</strong></td><td>3</td><td>0.4%</td><td class="rate-high">100.0%</td><td>0</td><td>0.0%</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>3</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>하우저</strong></td><td>3</td><td>0.4%</td><td class="rate-high">100.0%</td><td>0</td><td>0.0%</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>3</td><td class="rate-high">100.0%</td></tr>
+          <tr><td><strong>변재선</strong></td><td>42</td><td>5.7%</td><td class="rate-high">82.4%</td><td>8</td><td>1.1%</td><td>15.7%</td><td>1</td><td>2.0%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>51</td><td class="rate-high">98.0%</td></tr>
+          <tr><td><strong>임지훈</strong></td><td>40</td><td>5.4%</td><td class="rate-high">88.9%</td><td>4</td><td>0.5%</td><td>8.9%</td><td>1</td><td>2.2%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>45</td><td class="rate-high">97.8%</td></tr>
+          <tr><td><strong style="color:#e67e22;">윤옥성</strong></td><td>47</td><td>6.4%</td><td class="rate-high">87.0%</td><td>4</td><td>0.5%</td><td>7.4%</td><td>0</td><td>0.0%</td><td>3</td><td style="color:#e67e22;">5.6%</td><td>0</td><td>0.0%</td><td>54</td><td class="rate-mid">94.4%</td></tr>
+          <tr><td><strong>김병주</strong></td><td>45</td><td>6.1%</td><td class="rate-high">83.3%</td><td>6</td><td>0.8%</td><td>11.1%</td><td>1</td><td>1.9%</td><td>0</td><td>0.0%</td><td>2</td><td style="color:#e74c3c;">3.7%</td><td>54</td><td class="rate-mid">94.4%</td></tr>
+          <tr><td><strong>정종철</strong></td><td>39</td><td>5.3%</td><td class="rate-high">86.7%</td><td>3</td><td>0.4%</td><td>6.7%</td><td>3</td><td>6.7%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>45</td><td class="rate-mid">93.3%</td></tr>
+          <tr><td><strong>모주완</strong></td><td>36</td><td>4.9%</td><td class="rate-high">80.0%</td><td>6</td><td>0.8%</td><td>13.3%</td><td>3</td><td>6.7%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>45</td><td class="rate-mid">93.3%</td></tr>
+          <tr><td><strong>문민수</strong></td><td>23</td><td>3.1%</td><td class="rate-mid">63.9%</td><td>10</td><td>1.4%</td><td>27.8%</td><td>3</td><td>8.3%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>36</td><td class="rate-mid">91.7%</td></tr>
+          <tr><td><strong style="color:#e74c3c;">김재희</strong></td><td>19</td><td>2.6%</td><td class="rate-low">70.4%</td><td>2</td><td>0.3%</td><td>7.4%</td><td>4</td><td>14.8%</td><td>1</td><td style="color:#e67e22;">3.7%</td><td>1</td><td style="color:#e74c3c;">3.7%</td><td>27</td><td class="rate-low">77.8%</td></tr>
+          <tr><td><strong style="color:#e74c3c;">장동진</strong></td><td>12</td><td>1.6%</td><td class="rate-low">66.7%</td><td>2</td><td>0.3%</td><td>11.1%</td><td>4</td><td>22.2%</td><td>0</td><td>0.0%</td><td>0</td><td>0.0%</td><td>18</td><td class="rate-low">77.8%</td></tr>
+          <tr class="total-row">
+            <td><strong>합 계</strong></td>
+            <td><strong>642</strong></td><td><strong>87.0%</strong></td><td></td>
+            <td><strong>69</strong></td><td><strong>9.3%</strong></td><td></td>
+            <td><strong>20</strong></td><td><strong>2.7%</strong></td>
+            <td><strong>4</strong></td><td><strong>0.5%</strong></td>
+            <td><strong>3</strong></td><td><strong>0.4%</strong></td>
+            <td><strong>738</strong></td><td><strong class="rate-high">96.3%</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:8px; font-size:11px; color:#aaa; padding: 0 4px;">
+      ※ 색상 기준: <span class="rate-high">■ 97% 이상 (우수)</span> &nbsp; <span class="rate-mid">■ 93~96% (보통)</span> &nbsp; <span class="rate-low">■ 93% 미만 (관리필요)</span> &nbsp;|&nbsp; 기사비율 = 해당 기사 응답 중 해당 구분 비율
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 고객만족율: 불만접수 현황 ==================== -->
+<div id="tab-cs-complaint" class="tab-content">
+
+  <div class="kpi-row">
+    <div class="kpi red">
+      <div class="kpi-label">총 불만/매우불만 건수 (1월~4월)</div>
+      <div class="kpi-value">44건</div>
+      <div class="kpi-sub">전체 항목 응답 5,118건 중 0.86%</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kpi-label">불만족 최다 월</div>
+      <div class="kpi-value" style="font-size:20px;">3월 (16건)</div>
+      <div class="kpi-sub">1월 11건 · 2월 9건 · 4월 8건</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">최다 불만 항목</div>
+      <div class="kpi-value" style="font-size:18px;">정리상태</div>
+      <div class="kpi-sub">누계 21건 (1.2%) — 항목 중 최다</div>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi-label">응대태도 불만족</div>
+      <div class="kpi-value" style="font-size:18px;">17건 (1.0%)</div>
+      <div class="kpi-sub">3월 집중 발생 (8건, 1.5%)</div>
+    </div>
+  </div>
+
+  <div class="insight yellow">
+    ⚠️ <strong>불만접수 분석:</strong>
+    정리상태 불만이 누계 <strong>21건(1.2%)</strong>으로 가장 많고, 응대태도는 <strong>17건(1.0%)</strong>으로 2순위입니다. 특히 <strong>3월 응대태도 불만족이 8건(1.5%)</strong>으로 집중되었으며, 용모복장은 <strong>6건(0.4%)</strong>으로 상대적으로 낮은 수준입니다. 매우불만족은 정리상태에 집중(11건)되어 집중 관리가 필요합니다.
+  </div>
+
+  <!-- 월별 항목별 불만/매우불만 현황 -->
+  <div class="table-section" style="padding-top:10px;">
+    <div class="tbl-wrap">
+      <div class="tbl-title">월별 항목별 불만접수 현황 (불만족 + 매우불만족)</div>
+      <table><thead><tr><th rowspan="2">항목</th><th rowspan="2">구분</th><th colspan="2" style="background:#1a4a7a;">1월 (n=444)</th><th colspan="2" style="background:#1a4a7a;">2월 (n=372)</th><th colspan="2" style="background:#1a4a7a;">3월 (n=523)</th><th colspan="2" style="background:#1a4a7a;">4월 (n=367)</th><th colspan="2" style="background:#1a3a5c;">누계 (n=1,706)</th></tr><tr><th style="background:#243f5c;font-size:10px;">건수</th><th style="background:#243f5c;font-size:10px;">접수율</th><th style="background:#243f5c;font-size:10px;">건수</th><th style="background:#243f5c;font-size:10px;">접수율</th><th style="background:#243f5c;font-size:10px;">건수</th><th style="background:#243f5c;font-size:10px;">접수율</th><th style="background:#243f5c;font-size:10px;">건수</th><th style="background:#243f5c;font-size:10px;">접수율</th><th style="background:#1a3a5c;font-size:10px;">건수</th><th style="background:#1a3a5c;font-size:10px;">접수율</th></tr></thead><tbody><tr><td rowspan="3"><strong>정리상태</strong></td><td><span style="color:#e67e22">불만족</span></td><td style="color:#e74c3c;font-weight:700;">2</td><td style="color:#e74c3c;font-weight:700;">0.45%</td><td style="color:#e74c3c;font-weight:700;">3</td><td style="color:#e74c3c;font-weight:700;">0.81%</td><td style="color:#e74c3c;font-weight:700;">2</td><td style="color:#e74c3c;font-weight:700;">0.38%</td><td style="color:#e74c3c;font-weight:700;">3</td><td style="color:#e74c3c;font-weight:700;">0.82%</td><td style="background:#fdecea;">10</td><td style="background:#fdecea;">0.59%</td></tr><tr><td><span style="color:#e74c3c">매우불만족</span></td><td style="color:#e74c3c;font-weight:700;">4</td><td style="color:#e74c3c;font-weight:700;">0.9%</td><td style="color:#e74c3c;font-weight:700;">2</td><td style="color:#e74c3c;font-weight:700;">0.54%</td><td style="color:#e74c3c;font-weight:700;">4</td><td style="color:#e74c3c;font-weight:700;">0.76%</td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.27%</td><td style="background:#fdecea;">11</td><td style="background:#fdecea;">0.64%</td></tr><tr style="background:#f8f9fa;"><td><strong>소계</strong></td><td><strong>6</strong></td><td><strong>1.35%</strong></td><td><strong>5</strong></td><td><strong>1.34%</strong></td><td><strong>6</strong></td><td><strong>1.15%</strong></td><td><strong>4</strong></td><td><strong>1.09%</strong></td><td style="background:#fdecea;"><strong>21</strong></td><td style="background:#fdecea;"><strong>1.23%</strong></td></tr><tr><td rowspan="3"><strong>응대태도</strong></td><td><span style="color:#e67e22">불만족</span></td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.23%</td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.27%</td><td style="color:#e74c3c;font-weight:700;">8</td><td style="color:#e74c3c;font-weight:700;">1.53%</td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.27%</td><td style="background:#fdecea;">11</td><td style="background:#fdecea;">0.64%</td></tr><tr><td><span style="color:#e74c3c">매우불만족</span></td><td style="color:#e74c3c;font-weight:700;">2</td><td style="color:#e74c3c;font-weight:700;">0.45%</td><td style="color:#e74c3c;font-weight:700;">2</td><td style="color:#e74c3c;font-weight:700;">0.54%</td><td style="">0</td><td style="">0.0%</td><td style="color:#e74c3c;font-weight:700;">2</td><td style="color:#e74c3c;font-weight:700;">0.54%</td><td style="background:#fdecea;">6</td><td style="background:#fdecea;">0.35%</td></tr><tr style="background:#f8f9fa;"><td><strong>소계</strong></td><td><strong>3</strong></td><td><strong>0.68%</strong></td><td><strong>3</strong></td><td><strong>0.81%</strong></td><td><strong>8</strong></td><td><strong>1.53%</strong></td><td><strong>3</strong></td><td><strong>0.82%</strong></td><td style="background:#fdecea;"><strong>17</strong></td><td style="background:#fdecea;"><strong>1.0%</strong></td></tr><tr><td rowspan="3"><strong>용모복장</strong></td><td><span style="color:#e67e22">불만족</span></td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.23%</td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.27%</td><td style="color:#e74c3c;font-weight:700;">2</td><td style="color:#e74c3c;font-weight:700;">0.38%</td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.27%</td><td style="background:#fdecea;">5</td><td style="background:#fdecea;">0.29%</td></tr><tr><td><span style="color:#e74c3c">매우불만족</span></td><td style="color:#e74c3c;font-weight:700;">1</td><td style="color:#e74c3c;font-weight:700;">0.23%</td><td style="">0</td><td style="">0.0%</td><td style="">0</td><td style="">0.0%</td><td style="">0</td><td style="">0.0%</td><td style="background:#fdecea;">1</td><td style="background:#fdecea;">0.06%</td></tr><tr style="background:#f8f9fa;"><td><strong>소계</strong></td><td><strong>2</strong></td><td><strong>0.45%</strong></td><td><strong>1</strong></td><td><strong>0.27%</strong></td><td><strong>2</strong></td><td><strong>0.38%</strong></td><td><strong>1</strong></td><td><strong>0.27%</strong></td><td style="background:#fdecea;"><strong>6</strong></td><td style="background:#fdecea;"><strong>0.35%</strong></td></tr><tr class="total-row"><td colspan="2"><strong>합계 (불만족+매우불만족)</strong></td><td><strong>11</strong></td><td><strong>2.48%</strong></td><td><strong>9</strong></td><td><strong>2.42%</strong></td><td><strong>16</strong></td><td><strong>3.06%</strong></td><td><strong>8</strong></td><td><strong>2.18%</strong></td><td style="background:#fdecea;"><strong>44</strong></td><td style="background:#fdecea;"><strong>2.58%</strong></td></tr></tbody></table>
+    </div>
+    <div style="margin-top:6px;font-size:11px;color:#aaa;padding:0 4px;">
+      ※ 접수율 = 해당 항목 불만건 ÷ 해당 월 응답자수(n) | 합계 접수율 = 전체 불만건 ÷ 전체 항목 응답건(n×3)
+    </div>
+  </div>
+
+  <!-- 기사별 월별 불만/매우불만 현황 -->
+  <div class="table-section" style="padding-top:14px;">
+    <div class="tbl-wrap">
+      <div class="tbl-title">기사별 월별 불만족·매우불만족 접수 현황</div>
+      <table><thead><tr><th rowspan="2">기사명</th><th colspan="3" style="background:#1a4a7a;">1월 (n=444)</th><th colspan="3" style="background:#1a4a7a;">2월 (n=372)</th><th colspan="3" style="background:#1a4a7a;">3월 (n=523)</th><th colspan="3" style="background:#1a4a7a;">4월 (n=367)</th><th colspan="3" style="background:#1a3a5c;">누계</th></tr><tr><th style="background:#243f5c;font-size:10px;">불만족</th><th style="background:#243f5c;font-size:10px;">매우불만족</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#243f5c;font-size:10px;">불만족</th><th style="background:#243f5c;font-size:10px;">매우불만족</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#243f5c;font-size:10px;">불만족</th><th style="background:#243f5c;font-size:10px;">매우불만족</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#243f5c;font-size:10px;">불만족</th><th style="background:#243f5c;font-size:10px;">매우불만족</th><th style="background:#243f5c;font-size:10px;">합계</th><th style="background:#1a3a5c;font-size:10px;">불만족</th><th style="background:#1a3a5c;font-size:10px;">매우불만족</th><th style="background:#0e2540;font-size:10px;">합계</th></tr></thead><tbody><tr><td><strong>김재희</strong></td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>1</td><td style="">1</td><td>2</td><td>2</td><td style="color:#e74c3c;font-weight:700;">4</td><td>1</td><td>1</td><td style="">2</td><td style="background:#eef5ff;">3</td><td style="background:#eef5ff;">4</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">7</td></tr><tr><td><strong>임민우</strong></td><td>0</td><td>0</td><td style="">0</td><td>2</td><td>2</td><td style="color:#e74c3c;font-weight:700;">4</td><td>1</td><td>0</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">3</td><td style="background:#eef5ff;">2</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">5</td></tr><tr><td><strong>변재선</strong></td><td>4</td><td>0</td><td style="color:#e74c3c;font-weight:700;">4</td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>0</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">5</td><td style="background:#eef5ff;">0</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">5</td></tr><tr><td><strong>박상현</strong></td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>1</td><td style="">2</td><td>1</td><td>1</td><td style="">2</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">2</td><td style="background:#eef5ff;">2</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">4</td></tr><tr><td><strong>윤옥성</strong></td><td>0</td><td>1</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>3</td><td>0</td><td style="color:#e74c3c;font-weight:700;">3</td><td style="background:#eef5ff;">3</td><td style="background:#eef5ff;">1</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">4</td></tr><tr><td><strong>임지훈</strong></td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>3</td><td>0</td><td style="color:#e74c3c;font-weight:700;">3</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">3</td><td style="background:#eef5ff;">0</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">3</td></tr><tr><td><strong>윤경환</strong></td><td>0</td><td>3</td><td style="color:#e74c3c;font-weight:700;">3</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">0</td><td style="background:#eef5ff;">3</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">3</td></tr><tr><td><strong>정종철</strong></td><td>0</td><td>2</td><td style="">2</td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>0</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">1</td><td style="background:#eef5ff;">2</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">3</td></tr><tr><td><strong>문민수</strong></td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>1</td><td style="">2</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">1</td><td style="background:#eef5ff;">1</td><td style="background:#eef5ff;font-weight:700;">2</td></tr><tr><td><strong>김병주</strong></td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>2</td><td style="">2</td><td style="background:#eef5ff;">0</td><td style="background:#eef5ff;">2</td><td style="background:#eef5ff;font-weight:700;">2</td></tr><tr><td><strong>장동진</strong></td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>0</td><td style="">1</td><td>1</td><td>0</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">2</td><td style="background:#eef5ff;">0</td><td style="background:#eef5ff;font-weight:700;">2</td></tr><tr><td><strong>이동한</strong></td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>0</td><td style="">1</td><td style="background:#eef5ff;">1</td><td style="background:#eef5ff;">0</td><td style="background:#eef5ff;font-weight:700;">1</td></tr><tr><td><strong>김병우</strong></td><td>0</td><td>1</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">0</td><td style="background:#eef5ff;">1</td><td style="background:#eef5ff;font-weight:700;">1</td></tr><tr><td><strong>모주완</strong></td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>0</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">1</td><td style="background:#eef5ff;">0</td><td style="background:#eef5ff;font-weight:700;">1</td></tr><tr><td><strong>정다운</strong></td><td>0</td><td>0</td><td style="">0</td><td>0</td><td>0</td><td style="">0</td><td>1</td><td>0</td><td style="">1</td><td>0</td><td>0</td><td style="">0</td><td style="background:#eef5ff;">1</td><td style="background:#eef5ff;">0</td><td style="background:#eef5ff;font-weight:700;">1</td></tr><tr class="total-row"><td><strong>합계</strong></td><td><strong>4</strong></td><td><strong>7</strong></td><td><strong>11</strong></td><td><strong>5</strong></td><td><strong>4</strong></td><td><strong>9</strong></td><td><strong>12</strong></td><td><strong>4</strong></td><td><strong>16</strong></td><td><strong>5</strong></td><td><strong>3</strong></td><td><strong>8</strong></td><td style="background:#d6eaf8;"><strong>26</strong></td><td style="background:#d6eaf8;"><strong>18</strong></td><td style="background:#c5dff5;"><strong>44</strong></td></tr></tbody></table>
+    </div>
+    <div style="margin-top:6px;font-size:11px;color:#aaa;padding:0 4px;">
+      ※ 누계 순으로 정렬 | 3개 항목(정리상태·응대태도·용모복장) 합산 기준 | 붉은색: 월 3건 이상
+    </div>
+  </div>
+
+  <!-- 기사별 접수율 및 증감 -->
+  <div class="table-section" style="padding-top:14px;">
+    <div class="tbl-wrap">
+      <div class="tbl-title">기사별 월별 불만접수 합계·접수율·전월대비 증감</div>
+      <table><thead><tr><th rowspan="2">기사명</th><th rowspan="2" style="background:#1a4a7a;">1월<br><span style="font-weight:400;font-size:10px;">(n=444)</span></th><th colspan="2" style="background:#1a4a7a;">2월<br><span style="font-weight:400;font-size:10px;">(n=372)</span></th><th colspan="2" style="background:#1a4a7a;">3월<br><span style="font-weight:400;font-size:10px;">(n=523)</span></th><th colspan="2" style="background:#1a4a7a;">4월<br><span style="font-weight:400;font-size:10px;">(n=367)</span></th><th colspan="2" style="background:#1a3a5c;">누계</th></tr><tr><th style="background:#243f5c;font-size:10px;">건수·접수율</th><th style="background:#243f5c;font-size:10px;">증감</th><th style="background:#243f5c;font-size:10px;">건수·접수율</th><th style="background:#243f5c;font-size:10px;">증감</th><th style="background:#243f5c;font-size:10px;">건수·접수율</th><th style="background:#243f5c;font-size:10px;">증감</th><th style="background:#1a3a5c;font-size:10px;">건수</th><th style="background:#1a3a5c;font-size:10px;">접수율</th></tr></thead><tbody><tr><td><strong>김재희</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#e67e22;font-weight:700;">1건<br>(7.1%)</td><td style="color:#e74c3c;font-size:11px;">▲1건</td><td style="color:#e74c3c;font-weight:700;">4건<br>(16.0%)</td><td style="color:#e74c3c;font-size:11px;">▲3건</td><td style="color:#e74c3c;font-weight:700;">2건<br>(11.8%)</td><td style="color:#2980b9;font-size:11px;">▼2건</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">7건</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">12.5%</td></tr><tr><td><strong>임민우</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#e74c3c;font-weight:700;">4건<br>(14.3%)</td><td style="color:#e74c3c;font-size:11px;">▲4건</td><td style="color:#2980b9;font-size:11px;">1건<br>(3.1%)</td><td style="color:#2980b9;font-size:11px;">▼3건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">5건</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">4.6%</td></tr><tr><td><strong>변재선</strong></td><td style="color:#e74c3c;font-weight:700;">4건<br>(14.3%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼4건</td><td style="color:#2980b9;font-size:11px;">1건<br>(3.3%)</td><td style="color:#e74c3c;font-size:11px;">▲1건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">5건</td><td style="background:#fde8e8;font-weight:700;color:#c0392b;">5.3%</td></tr><tr><td><strong>박상현</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#e74c3c;font-weight:700;">2건<br>(10.0%)</td><td style="color:#e74c3c;font-size:11px;">▲2건</td><td style="color:#e67e22;font-weight:700;">2건<br>(5.7%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼2건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">4건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">4.0%</td></tr><tr><td><strong>윤옥성</strong></td><td style="color:#2980b9;font-size:11px;">1건<br>(3.1%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#e74c3c;font-weight:700;">3건<br>(13.6%)</td><td style="color:#e74c3c;font-size:11px;">▲3건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">4건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">4.6%</td></tr><tr><td><strong>임지훈</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#e74c3c;font-weight:700;">3건<br>(10.0%)</td><td style="color:#e74c3c;font-size:11px;">▲3건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼3건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">3건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">2.9%</td></tr><tr><td><strong>윤경환</strong></td><td style="color:#e74c3c;font-weight:700;">3건<br>(11.5%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼3건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">3건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">9.4%</td></tr><tr><td><strong>정종철</strong></td><td style="color:#e67e22;font-weight:700;">2건<br>(6.2%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼2건</td><td style="color:#2980b9;font-size:11px;">1건<br>(2.2%)</td><td style="color:#e74c3c;font-size:11px;">▲1건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">3건</td><td style="background:#fff3e0;font-weight:700;color:#e67e22;">2.4%</td></tr><tr><td><strong>문민수</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#e67e22;font-weight:700;">2건<br>(7.1%)</td><td style="color:#e74c3c;font-size:11px;">▲2건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼2건</td><td style="background:#eef5ff;font-weight:700;">2건</td><td style="background:#eef5ff;font-weight:700;">2.5%</td></tr><tr><td><strong>김병주</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#e67e22;font-weight:700;">2건<br>(6.5%)</td><td style="color:#e74c3c;font-size:11px;">▲2건</td><td style="background:#eef5ff;font-weight:700;">2건</td><td style="background:#eef5ff;font-weight:700;">1.7%</td></tr><tr><td><strong>장동진</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">1건<br>(4.8%)</td><td style="color:#e74c3c;font-size:11px;">▲1건</td><td style="color:#2980b9;font-size:11px;">1건<br>(3.2%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="background:#eef5ff;font-weight:700;">2건</td><td style="background:#eef5ff;font-weight:700;">2.5%</td></tr><tr><td><strong>이동한</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#e67e22;font-weight:700;">1건<br>(7.7%)</td><td style="color:#e74c3c;font-size:11px;">▲1건</td><td style="background:#eef5ff;font-weight:700;">1건</td><td style="background:#eef5ff;font-weight:700;">1.2%</td></tr><tr><td><strong>김병우</strong></td><td style="color:#2980b9;font-size:11px;">1건<br>(2.1%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="background:#eef5ff;font-weight:700;">1건</td><td style="background:#eef5ff;font-weight:700;">0.7%</td></tr><tr><td><strong>모주완</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">1건<br>(4.0%)</td><td style="color:#e74c3c;font-size:11px;">▲1건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="background:#eef5ff;font-weight:700;">1건</td><td style="background:#eef5ff;font-weight:700;">1.0%</td></tr><tr><td><strong>정다운</strong></td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#888;font-size:11px;">±0건</td><td style="color:#2980b9;font-size:11px;">1건<br>(3.2%)</td><td style="color:#e74c3c;font-size:11px;">▲1건</td><td style="color:#888;font-size:11px;">0건<br>(0.0%)</td><td style="color:#2980b9;font-size:11px;">▼1건</td><td style="background:#eef5ff;font-weight:700;">1건</td><td style="background:#eef5ff;font-weight:700;">2.1%</td></tr><tr class="total-row"><td><strong>합 계</strong></td><td style="color:#e74c3c;font-weight:700;"><strong>11건<br>(2.48%)</strong></td><td style="color:#e74c3c;font-weight:700;"><strong>9건<br>(2.42%)</strong></td><td style="color:#2980b9;font-size:11px;">▼2건</td><td style="color:#e74c3c;font-weight:700;"><strong>16건<br>(3.06%)</strong></td><td style="color:#e74c3c;font-size:11px;">▲7건</td><td style="color:#e74c3c;font-weight:700;"><strong>8건<br>(2.18%)</strong></td><td style="color:#2980b9;font-size:11px;">▼8건</td><td style="background:#d6eaf8;"><strong>44건</strong></td><td style="background:#d6eaf8;"><strong>2.58%</strong></td></tr></tbody></table>
+    </div>
+    <div style="margin-top:6px;font-size:11px;color:#aaa;padding:0 4px;">
+      ※ 접수율 = 불만족+매우불만족 합계 ÷ 응답자수(n) | 증감 = 전월대비 건수 변화 | 색상: <span style="color:#e74c3c;">■10%↑(빨강)</span> <span style="color:#e67e22;">■5~10%(주황)</span> <span style="color:#2980b9;">■0~5%(파랑)</span>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ==================== 고객 불만족 접수내역 ==================== -->
+<div id="tab-cs-detail" class="tab-content">
+
+  <div class="kpi-row">
+    <div class="kpi red"><div class="kpi-label">총 불만+매우불만 (누계)</div><div class="kpi-value">44건</div><div class="kpi-sub">3개 항목 응답 기준 합산 (불만 26 + 매우불만 18)</div></div>
+    <div class="kpi orange"><div class="kpi-label">최다 월</div><div class="kpi-value" style="font-size:20px;">3월 (16건)</div>
+      <div class="kpi-sub">1월 11건 · 2월 9건 · 4월 8건</div></div>
+    <div class="kpi red"><div class="kpi-label">주요 유형</div><div class="kpi-value" style="font-size:16px;">응대태도 · 정리상태</div><div class="kpi-sub">불친절·바닥손상·시간약속 위반</div></div>
+    <div class="kpi purple"><div class="kpi-label">집중 관리 기사</div><div class="kpi-value" style="font-size:18px;">김재희 (7건)</div><div class="kpi-sub">2·3·4월 연속 불만 발생</div></div>
+  </div>
+
+  <div style="padding: 4px 30px 28px; display:flex; flex-direction:column; gap:16px;">
+
+    <!-- 1월 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
+      <div style="background:#1a3a5c;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;font-weight:700;">📅 26년 1월 불만족 접수내역</span>
+        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">11건 (불만 4 + 매우불만 7)</span>
+      </div>
+      <div style="padding:4px 0;">
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#243f5c;padding:7px 16px;">
+          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">김병우</span>
+          <span style="color:#e74c3c;">정리상태(매우불만)</span>
+          <span style="color:#444;">마루 훼손 미인지 철수 — 고객이 발견 후 접수. 친절한 응대였으나 정리 미흡.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">윤옥성</span>
+          <span style="color:#e74c3c;">정리상태(매우불만)</span>
+          <span style="color:#444;">"바닥 장판 두 군데 손상 후 아무 말 없이 철수" — 과실 은폐 의심으로 기분 불쾌.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">정종철</span>
+          <span style="color:#e74c3c;">정리상태·응대태도<br>(매우불만)</span>
+          <span style="color:#444;">"전화 받는 태도 아주 불친절" — 고객 응대 교육 요구.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">변재선</span>
+          <span style="color:#e67e22;">정리상태(불만)</span>
+          <span style="color:#444;">"시간에 쫓겨 제품 사용 설명 부족, 담배 냄새·찌든 냄새로 불쾌." — 용모 관리 필요.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">변재선</span>
+          <span style="color:#e67e22;">정리상태(불만)</span>
+          <span style="color:#444;">고객의견 미기재.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">윤경환</span>
+          <span style="color:#e74c3c;">정리·응대·용모<br>(매우불만)</span>
+          <span style="color:#444;">"바닥 다 찍어놓고 자기 잘못 아니라 함" — 과실 부인, 3개 항목 최저평가.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2월 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
+      <div style="background:#1a3a5c;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;font-weight:700;">📅 26년 2월 불만족 접수내역</span>
+        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">9건 (불만 5 + 매우불만 4)</span>
+      </div>
+      <div style="padding:4px 0;">
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#243f5c;padding:7px 16px;">
+          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">모주완</span>
+          <span style="color:#e67e22;">정리상태(불만)</span>
+          <span style="color:#444;">고객의견 미기재.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">박상현</span>
+          <span style="color:#e74c3c;">정리상태(불만)<br>응대태도(매우불만)</span>
+          <span style="color:#444;">"말할 때마다 책임 회피, 설명 불친절" — 소통 방식 개선 필요.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
+          <span style="color:#e74c3c;">정리상태(매우불만)</span>
+          <span style="color:#444;">"설치 중 카펫 오염 — 세탁 비용 발생" — 작업 중 주변 보호 미흡.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
+          <span style="color:#e67e22;">정리상태(불만)</span>
+          <span style="color:#444;">"소파만 내리고 박스 미처리" — 박스 숯가루 우려로 박스 내리지 않은 채 철수.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
+          <span style="color:#e74c3c;">응대태도(매우불만)<br>용모복장(불만)</span>
+          <span style="color:#444;">"테니스공 부탁에 '그게 무슨 의미냐'며 고객 무안" — 고객 요청 무시.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">장동진</span>
+          <span style="color:#e67e22;">응대태도(불만)</span>
+          <span style="color:#444;">"9시 배송 약속 후 연락 없이 지연, 재촉하자 그제서야 연락" — 배송시간 약속 불이행.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
+          <span style="color:#e74c3c;">정리상태(매우불만)</span>
+          <span style="color:#444;">고객의견 미기재.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3월 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
+      <div style="background:#c0392b;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;font-weight:700;">📅 26년 3월 불만족 접수내역</span>
+        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">16건 (최다 · 불만 12 + 매우불만 4)</span>
+      </div>
+      <div style="padding:4px 0;">
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#922b21;padding:7px 16px;">
+          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
+          <span style="color:#e67e22;">응대태도(불만)</span>
+          <span style="color:#444;">"저녁 6시 이후 도착으로 저녁 준비와 겹쳐 불편" — 배송 시간 조율 미흡.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">장동진</span>
+          <span style="color:#e67e22;">응대태도(불만)</span>
+          <span style="color:#444;">"시공 시간 조율 불가, 바닥 스크래치 방지 스티커 무단 부착" — 고객 동의 없는 현장 처리.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">박상현</span>
+          <span style="color:#e74c3c;">정리상태(매우불만)<br>응대태도(불만)</span>
+          <span style="color:#444;">"이전 소파 수거 약속 위반, 사다리차·재방문 비용 고객 부담 요구" — 책임 전가.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
+          <span style="color:#e74c3c;">정리상태(매우불만)</span>
+          <span style="color:#444;">"소파 넣느라 옮긴 물건을 제자리에 두지 않고 철수" — 정리 미흡.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">임지훈</span>
+          <span style="color:#e67e22;">정리·응대·용모(불만)</span>
+          <span style="color:#444;">"복층 안방 설치에 추가비 1만원 요구" — 부당한 추가 요금 요구.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">문민수</span>
+          <span style="color:#e74c3c;">정리상태(매우불만)<br>응대태도(불만)</span>
+          <span style="color:#444;">"약속 시간 위반 후 문자 무응답, 연락하니 이미 도착" — 사전 연락 의무 미준수.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
+          <span style="color:#e74c3c;">정리·응대·용모(매우불만·불만)</span>
+          <span style="color:#444;">고객의견 미기재.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">정종철</span>
+          <span style="color:#e67e22;">응대태도(불만)</span>
+          <span style="color:#444;">"응대 목소리와 태도가 불친절해 기분 불쾌" — 전화 응대 개선 필요.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">정다운</span>
+          <span style="color:#e67e22;">응대태도(불만)</span>
+          <span style="color:#444;">"배송 시간 조율 없이 일방 통보" — 사전 협의 프로세스 미흡.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">변재선</span>
+          <span style="color:#e67e22;">정리상태(불만)</span>
+          <span style="color:#444;">고객의견 미기재.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4월 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
+      <div style="background:#1a3a5c;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:14px;font-weight:700;">📅 26년 4월 불만족 접수내역</span>
+        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">7건 (불만 4 + 매우불만 3)</span>
+      </div>
+      <div style="padding:4px 0;">
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#243f5c;padding:7px 16px;">
+          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">윤옥성</span>
+          <span style="color:#e67e22;">정리·응대·용모(불만)</span>
+          <span style="color:#444;">"하루 전 배송 일정 통보 — 최소 일주일 전 조율 필요" — 배송 일정 협의 체계 미흡.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
+          <span style="color:#e74c3c;">정리상태(불만)<br>응대태도(매우불만)</span>
+          <span style="color:#444;">"기사 말투가 불친절하게 느껴져 기분 나빴음" — 고객 응대 태도 개선 필요.</span>
+        </div>
+        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
+          <span style="font-weight:700;color:#1a3a5c;">김병주</span>
+          <span style="color:#e74c3c;">정리·응대(매우불만)</span>
+          <span style="color:#444;">"현관 진입 가능 소파에 사다리차 운운하며 저질 응대" — 부당 비용 유도·불친절.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 종합 -->
+    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#1a3a5c,#2d6a9f);color:#fff;padding:13px 20px;">
+        <span style="font-size:15px;font-weight:700;">💡 불만족 유형별 주요 원인 요약</span>
+      </div>
+      <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#e74c3c;margin-bottom:8px;">① 정리상태 불만 (20건, 1.3%)</div>
+          <div style="font-size:12px;color:#444;line-height:1.9;">· 바닥·카펫 손상 후 과실 부인 또는 무언급<br>· 작업 후 주변 정리 미흡 (물건 제자리 미복구)<br>· 용모 불량 (담배냄새, 위생 문제)</div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#e67e22;margin-bottom:8px;">② 응대태도 불만 (17건, 1.1%)</div>
+          <div style="font-size:12px;color:#444;line-height:1.9;">· 배송시간 약속 미준수 및 사전 연락 누락<br>· 고객 요청 무시·책임 회피 발언<br>· 부당한 추가비용 요구 (사다리차 등)</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>※ 26년 물류 voc 고객만족도 현황(raw).xlsx 기준 | 업데이트: 2026-04-22</footer>
+
+</div><!-- /main-content -->
+</div><!-- /layout -->
+
+<script>
+Chart.register(ChartDataLabels);
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+const months = ['1월', '2월', '3월', '4월'];
+const counts = [9, 4, 15, 13];
+const counts25 = [22, 39, 40, 29];
+const monthLabels = months.map((m, i) => m + ' (' + counts[i] + '건)');
+
+new Chart(document.getElementById('typeChart').getContext('2d'), {
+  type:'doughnut',
+  data:{
+    labels:['취급부주의', '응대불만', '출고누락', '시공불량', '업무누락', '배송누락', '오안내', '오출고'],
+    datasets:[{
+      data:[18, 12, 4, 2, 2, 1, 1, 1],
+      backgroundColor:['#e74c3c','#e67e22','#f1c40f','#2ecc71','#1abc9c','#3498db','#9b59b6','#95a5a6'],
+      borderWidth:2, borderColor:'#fff'
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'right', labels:{ font:{size:14}, padding:18, boxWidth:18 } },
+      tooltip:{ callbacks:{ label:c=>` ${c.label}: ${c.raw}건 (${Math.round(c.raw/41*100)}%)` } },
+      datalabels:{
+        formatter:(v,ctx)=>{ const p=Math.round(v/41*100); return p>=5?v+'건\n('+p+'%)':''; },
+        color:'#fff', font:{weight:'700',size:13}, textAlign:'center'
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('stackedChart').getContext('2d'), {
+  type:'bar',
+  data:{
+    labels:months,
+    datasets:[
+      {label:'취급부주의', data:[3, 3, 5, 7], backgroundColor:'#e74c3c'},
+      {label:'응대불만', data:[0, 1, 6, 5], backgroundColor:'#e67e22'},
+      {label:'출고누락', data:[2, 0, 1, 1], backgroundColor:'#f1c40f'},
+      {label:'시공불량', data:[2, 0, 0, 0], backgroundColor:'#2ecc71'},
+      {label:'업무누락', data:[0, 0, 2, 0], backgroundColor:'#1abc9c'},
+      {label:'배송누락', data:[1, 0, 0, 0], backgroundColor:'#3498db'}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'right', labels:{font:{size:13},padding:16,boxWidth:16} },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.raw}건` } },
+      datalabels:{ formatter:v=>v>0?v+'건':'', color:'#fff', font:{weight:'700',size:13}, anchor:'center', align:'center' }
+    },
+    scales:{
+      x:{ stacked:true, ticks:{font:{size:13},color:'#333'} },
+      y:{ stacked:true, beginAtZero:true, max:20, ticks:{stepSize:5,font:{size:12}}, title:{display:true,text:'건수',font:{size:12}} }
+    }
+  }
+});
+
+const staffNames = ['정종철', '문민수', '김병우', '박상현', '내부물류', '변재선', '윤옥성', '임민우', '김재희'];
+const staffCounts = [7, 6, 4, 4, 2, 2, 2, 2, 2];
+
+new Chart(document.getElementById('staffBarChart').getContext('2d'), {
+  type:'bar',
+  data:{
+    labels:staffNames,
+    datasets:[{
+      label:'VOC 건수', data:staffCounts,
+      backgroundColor:['#e74c3c','#e74c3c','#e67e22','#e67e22','#95a5a6','#95a5a6','#95a5a6','#95a5a6','#bdc3c7'],
+      borderRadius:5, borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}건`}},
+      datalabels:{ anchor:'end', align:'end', formatter:v=>v+'건', color:'#1a3a5c', font:{weight:'700',size:13} }
+    },
+    scales:{
+      x:{ ticks:{font:{size:12}} },
+      y:{ beginAtZero:true, max:14, ticks:{stepSize:2,font:{size:12}}, title:{display:true,text:'건수'} }
+    }
+  }
+});
+
+const staffTypeChart = new Chart(document.getElementById('staffTypeChart').getContext('2d'), {
+  type:'bar',
+  data:{
+    labels:staffNames,
+    datasets:[
+      {label:'취급부주의', data:[3, 2, 1, 2, 0, 1, 1, 1, 1], backgroundColor:'rgba(231,76,60,.8)', borderRadius:3},
+      {label:'응대불만',   data:[4, 3, 1, 1, 0, 0, 0, 0, 1], backgroundColor:'rgba(230,126,34,.8)', borderRadius:3},
+      {label:'기타',       data:[0, 1, 2, 1, 2, 1, 1, 1, 0], backgroundColor:'rgba(149,165,166,.8)', borderRadius:3}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top', labels:{font:{size:13},padding:16}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}건`}},
+      datalabels:{ formatter:v=>v>0?v+'건':'', color:'#fff', font:{weight:'700',size:11}, anchor:'center', align:'center' }
+    },
+    scales:{
+      x:{ stacked:true, ticks:{font:{size:12}} },
+      y:{ stacked:true, beginAtZero:true, max:10, ticks:{stepSize:2,font:{size:12}}, title:{display:true,text:'건수'} }
+    }
+  }
+});
+
+function updateStaffTypeChart(period, btn) {
+  document.querySelectorAll('.month-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const d={
+    all:{취급:[3, 2, 1, 2, 0, 1, 1, 1, 1],응대:[4, 3, 1, 1, 0, 0, 0, 0, 1],기타:[0, 1, 2, 1, 2, 1, 1, 1, 0]},
+    jan:{취급:[1, 1, 0, 0, 0, 1, 0, 0, 0],응대:[0, 0, 0, 0, 0, 0, 0, 0, 0],기타:[0, 0, 1, 0, 2, 1, 1, 0, 0]},
+    feb:{취급:[1, 0, 0, 1, 0, 0, 0, 0, 0],응대:[1, 0, 0, 0, 0, 0, 0, 0, 0],기타:[0, 0, 0, 0, 0, 0, 0, 0, 0]},
+    mar:{취급:[0, 0, 1, 1, 0, 0, 0, 1, 1],응대:[1, 1, 1, 1, 0, 0, 0, 0, 0],기타:[0, 1, 1, 1, 0, 0, 0, 1, 0]},
+    apr:{취급:[1, 1, 0, 0, 0, 0, 1, 0, 0],응대:[2, 2, 0, 0, 0, 0, 0, 0, 1],기타:[0, 0, 0, 0, 0, 0, 0, 0, 0]}
+  };
+  staffTypeChart.data.datasets[0].data=d[period].취급;
+  staffTypeChart.data.datasets[1].data=d[period].응대;
+  staffTypeChart.data.datasets[2].data=d[period].기타;
+  staffTypeChart.options.scales.y.max=period==='all'?10:6;
+  staffTypeChart.update();
+}
+
+const satCounts={'정리상태':[427, 361, 508, 357, 1653],'응대태도':[433, 359, 508, 356, 1656],'용모복장':[428, 357, 503, 352, 1640]};
+const csMonths=['1월 (n=444)', '2월 (n=372)', '3월 (n=523)', '4월 (n=367)', '1월~4월월 누계'];
+const satRates={'정리상태':[96.2, 97.0, 97.1, 97.3, 96.9],'응대태도':[97.5, 96.5, 97.1, 97.0, 97.1],'용모복장':[96.4, 96.0, 96.2, 95.9, 96.1]};
+
+new Chart(document.getElementById('csSatCountChart').getContext('2d'), {
+  type:'bar',
+  data:{
+    labels:csMonths,
+    datasets:[
+      {label:'정리상태', data:[96.2, 97.0, 97.1, 97.3, 96.9], backgroundColor:'rgba(41,128,185,.8)', borderRadius:5,
+       datalabels:{anchor:'end',align:'end',color:'#1a3a5c',font:{weight:'700',size:11},
+         formatter:(v,ctx)=>v+'%\n('+satCounts['정리상태'][ctx.dataIndex]+'건)'}},
+      {label:'응대태도', data:[97.5, 96.5, 97.1, 97.0, 97.1], backgroundColor:'rgba(39,174,96,.8)', borderRadius:5,
+       datalabels:{anchor:'end',align:'end',color:'#1a3a5c',font:{weight:'700',size:11},
+         formatter:(v,ctx)=>v+'%\n('+satCounts['응대태도'][ctx.dataIndex]+'건)'}},
+      {label:'용모복장', data:[96.4, 96.0, 96.2, 95.9, 96.1], backgroundColor:'rgba(142,68,173,.8)', borderRadius:5,
+       datalabels:{anchor:'end',align:'end',color:'#1a3a5c',font:{weight:'700',size:11},
+         formatter:(v,ctx)=>v+'%\n('+satCounts['용모복장'][ctx.dataIndex]+'건)'}}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    layout:{padding:{top:36}},
+    plugins:{
+      legend:{position:'top',labels:{font:{size:13},padding:16}},
+      tooltip:{callbacks:{label:c=>{const r=Object.values(satRates)[c.datasetIndex];return ` ${c.dataset.label}: ${c.raw}% (${satCounts[c.dataset.label][c.dataIndex]}건)`;}}}
+    },
+    scales:{
+      x:{ticks:{font:{size:12}}},
+      y:{min:90,max:100,ticks:{font:{size:12},callback:v=>v+'%'},title:{display:true,text:'만족율 (%)'}}
+    }
+  }
+});
+
+const csStaffClean = {'임지훈':96.2,'임민우':95.4,'이동한':98.8,'구본혁':98.8,'김병우':98.6,'윤경환':93.8,'문민수':93.8,'박용구':95.8,'고요한':100.0,'박상현':94.1,'윤옥성':96.6,'모주완':96.9,'김병주':97.5,'장동진':93.8,'변재선':96.8,'정종철':97.6,'미반영':100.0,'하우저':100.0,'김재현':100.0,'김재희':91.1,'임경택':100.0,'정용우':100.0,'강민승':100.0,'정다운':97.9,'손명익':100.0};
+const csStaffAttitude = {'임지훈':96.2,'임민우':96.3,'이동한':98.8,'구본혁':97.6,'김병우':100.0,'윤경환':96.9,'문민수':91.4,'박용구':95.8,'고요한':100.0,'박상현':96.0,'윤옥성':97.7,'모주완':96.9,'김병주':97.5,'장동진':92.6,'변재선':96.8,'정종철':98.4,'미반영':100.0,'하우저':100.0,'김재현':100.0,'김재희':89.3,'임경택':100.0,'정용우':100.0,'강민승':100.0,'정다운':97.9,'손명익':100.0};
+const csStaffAppear = {'임지훈':88.6,'임민우':96.3,'이동한':97.6,'구본혁':100.0,'김병우':99.3,'윤경환':93.8,'문민수':91.4,'박용구':95.8,'고요한':99.2,'박상현':96.0,'윤옥성':96.6,'모주완':97.9,'김병주':97.5,'장동진':92.6,'변재선':94.7,'정종철':96.8,'미반영':75.0,'하우저':100.0,'김재현':97.6,'김재희':91.1,'임경택':100.0,'정용우':100.0,'강민승':100.0,'정다운':97.9,'손명익':100.0};
+
+const staffRaw=[{'name': '하우저', 'avg': 100.0, 'cnt': 4}, {'name': '임경택', 'avg': 100.0, 'cnt': 11}, {'name': '정용우', 'avg': 100.0, 'cnt': 4}, {'name': '강민승', 'avg': 100.0, 'cnt': 3}, {'name': '손명익', 'avg': 100.0, 'cnt': 1}, {'name': '고요한', 'avg': 99.7, 'cnt': 131}, {'name': '김병우', 'avg': 99.3, 'cnt': 141}, {'name': '김재현', 'avg': 99.2, 'cnt': 84}, {'name': '구본혁', 'avg': 98.8, 'cnt': 83}, {'name': '이동한', 'avg': 98.4, 'cnt': 82}, {'name': '정다운', 'avg': 97.9, 'cnt': 48}, {'name': '정종철', 'avg': 97.6, 'cnt': 124}, {'name': '김병주', 'avg': 97.5, 'cnt': 121}, {'name': '모주완', 'avg': 97.2, 'cnt': 96}, {'name': '윤옥성', 'avg': 96.9, 'cnt': 87}, {'name': '변재선', 'avg': 96.1, 'cnt': 94}, {'name': '임민우', 'avg': 96.0, 'cnt': 108}, {'name': '박용구', 'avg': 95.8, 'cnt': 24}, {'name': '박상현', 'avg': 95.4, 'cnt': 101}, {'name': '윤경환', 'avg': 94.8, 'cnt': 32}, {'name': '임지훈', 'avg': 93.7, 'cnt': 105}, {'name': '장동진', 'avg': 93.0, 'cnt': 81}, {'name': '문민수', 'avg': 92.2, 'cnt': 81}, {'name': '미반영', 'avg': 91.7, 'cnt': 4}, {'name': '김재희', 'avg': 90.5, 'cnt': 56}];
+const csStaffNames=['하우저', '임경택', '정용우', '강민승', '손명익', '고요한', '김병우', '김재현', '구본혁', '이동한', '정다운', '정종철', '김병주', '모주완', '윤옥성', '변재선', '임민우', '박용구', '박상현', '윤경환', '임지훈', '장동진', '문민수', '미반영', '김재희'];
+const csStaffAvg=[100.0, 100.0, 100.0, 100.0, 100.0, 99.7, 99.3, 99.2, 98.8, 98.4, 97.9, 97.6, 97.5, 97.2, 96.9, 96.1, 96.0, 95.8, 95.4, 94.8, 93.7, 93.0, 92.2, 91.7, 90.5];
+
+new Chart(document.getElementById('csStaffChart').getContext('2d'), {
+  type:'bar',
+  data:{
+    labels:csStaffNames,
+    datasets:[{
+      label:'매우만족+만족 (3항목 평균)', data:csStaffAvg,
+      backgroundColor:csStaffAvg.map(v=>v>=97?'rgba(39,174,96,.85)':v>=93?'rgba(41,128,185,.8)':'rgba(231,76,60,.85)'),
+      borderRadius:5,
+      datalabels:{anchor:'end',align:'end',formatter:v=>v+'%',color:'#1a3a5c',font:{weight:'700',size:11}}
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    layout:{padding:{top:28}},
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:c=>{const n=csStaffNames[c.dataIndex];return[` 평균: ${c.raw}%`,` 정리상태: ${csStaffClean[n]}%`,` 응대태도: ${csStaffAttitude[n]}%`,` 용모복장: ${csStaffAppear[n]}%`];}}},
+      datalabels:{}
+    },
+    scales:{
+      x:{ticks:{font:{size:12},callback:function(val,idx){const sc={'임지훈':105,'임민우':108,'이동한':82,'구본혁':83,'김병우':141,'윤경환':32,'문민수':81,'박용구':24,'고요한':131,'박상현':101,'윤옥성':87,'모주완':96,'김병주':121,'장동진':81,'변재선':94,'정종철':124,'미반영':4,'하우저':4,'김재현':84,'김재희':56,'임경택':11,'정용우':4,'강민승':3,'정다운':48,'손명익':1};return[csStaffNames[idx],'('+(sc[csStaffNames[idx]]||'')+'건)'];}}},
+      y:{min:85,max:101,ticks:{stepSize:5,font:{size:12},callback:v=>v>100?'':v+'%'},title:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>
