@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-06 14:54:32</span>
+  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-06 15:14</span>
 </header>
 
 <div class="layout">
@@ -183,10 +183,10 @@
   <div class="sidebar-divider"></div>
   <div class="sidebar-section">
     <div class="sidebar-label">🏗️ 시공기사 평가현황</div>
-    <button class="menu-item" onclick="switchTab('eng-quarterly', this)">
+    <button class="menu-item" onclick="switchTab('tab-eng-quarterly', this)">
       <span class="menu-icon">📊</span> 분기별 평가현황
     </button>
-    <button class="menu-item" onclick="switchTab('eng-detail', this)">
+    <button class="menu-item" onclick="switchTab('tab-eng-detail', this)">
       <span class="menu-icon">📋</span> 당월 평가 세부현황
     </button>
   </div>
@@ -289,10 +289,10 @@
 
   <div class="insight yellow">
     👷 <strong>기사별 분석:</strong>
-    <strong>정종철(7건)</strong>은 응대불만 4건·취급부주의 3건으로 복합적인 개선이 필요합니다.
-    <strong>문민수(6건)</strong>은 응대불만 3건·취급부주의 2건으로 복합적인 개선이 필요합니다.
-    <strong>김병우(4건)</strong>·<strong>박상현(4건)</strong>도 주의 관찰 대상입니다.
-    4월에는 변재선, 윤옥성, 김재희, 모주완, 손명익 등의 VOC가 발생했습니다.
+    <strong>정종철(6건)</strong>은 응대불만이 4건으로 고객 응대 방식 개선이 필요하며,
+    <strong>문민수(6건)</strong>는 응대불만 3건·취급부주의 2건으로 복합적인 개선이 필요합니다.
+    <strong>김병우(4건)·박상현(4건)</strong>도 주의 관찰 대상입니다.
+    4월에는 모주완·손명익·정다운·김재현·장동진 등 신규 기사의 VOC가 다수 발생했습니다.
   </div>
 
   <div class="charts-grid">
@@ -708,7 +708,8 @@
 
   <div class="insight blue">
     👤 <strong>기사별 분석:</strong>
-    누계 합계 기준 <strong>하우저(100.0%)</strong>이 최우수이며 임경택(100.0%)·정용우(100.0%)·강민승(100.0%)·손명익(100.0%) 순으로 <span class="good">99% 이상</span>의 높은 만족률을 기록하고 있습니다. <strong>김재희</strong>는 누계 합계 <strong style="color:#c0392b;">91.0%</strong>로 전체 최하위이며 응대태도(89.8%)·정리상태(91.5%) 개선이 시급합니다. <strong>미반영(91.7%)</strong>도 지속적인 관리가 필요합니다.
+    누계 합계 기준 <strong>하우저(100.0%)</strong>이 최우수이며 높은 만족률을 기록하고 있습니다.
+    <strong>김재희</strong>는 누계 합계 <strong style="color:#c0392b;">91.0%</strong>로 전체 최하위이며 응대태도(89.8%)·정리상태(91.5%) 개선이 시급합니다.
   </div>
 
   <div class="charts-grid">
@@ -852,7 +853,9 @@
 
   <div class="insight yellow">
     ⚠️ <strong>불만접수 분석:</strong>
-    정리상태 불만이 누계 <strong>22건(1.2%)</strong>으로 가장 많고, 응대태도는 <strong>19건(1.1%)</strong>으로 2순위입니다. 특히 <strong>3월 응대태도 불만족이 8건(1.5%)</strong>으로 집중되었으며, 용모복장은 <strong>6건(0.3%)</strong>으로 상대적으로 낮은 수준입니다. 매우불만족은 정리상태에 집중(11건)되어 집중 관리가 필요합니다.
+    정리상태 불만이 누계 <strong>20건(1.3%)</strong>으로 가장 많고, 응대태도는 <strong>17건(1.1%)</strong>으로 2순위입니다.
+    특히 <strong>3월 응대태도 불만족이 8건(1.5%)</strong>으로 급증하였으며, 용모복장은 <strong>6건(0.4%)</strong>으로 상대적으로 낮은 수준입니다.
+    매우불만족은 정리상태에 집중(11건)되어 있어 시공 품질 관리가 최우선 과제입니다.
   </div>
 
   <!-- 월별 항목별 불만/매우불만 현황 -->
@@ -1108,6 +1111,129 @@
 
 <footer>※ 26년 물류 voc 고객만족도 현황(raw).xlsx 기준 | 업데이트: 2026-04-22</footer>
 
+
+<!-- ==================== 탭: 시공기사 분기별 평가현황 ==================== -->
+<div id="tab-eng-quarterly" class="tab-content">
+  <div class="section-card" style="padding:10px 14px;margin-bottom:0;">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px;">
+      <h2 class="section-title" style="margin:0;font-size:13px;font-weight:700;">🏗️ 시공기사 분기별 평가현황 (2026년)</h2>
+      <div style="display:flex;gap:4px;">
+        <button onclick="showQuarter('q1',this)" id="qbtn-q1" style="padding:2px 10px;border-radius:10px;border:none;background:#1a3a5c;color:#fff;font-weight:700;cursor:pointer;font-size:10px;">1분기</button>
+        <button onclick="showQuarter('q2',this)" id="qbtn-q2" style="padding:2px 10px;border-radius:10px;border:1px solid #ddd;background:#f8f9fa;color:#999;cursor:pointer;font-size:10px;">2분기</button>
+        <button onclick="showQuarter('q3',this)" id="qbtn-q3" style="padding:2px 10px;border-radius:10px;border:1px solid #ddd;background:#f8f9fa;color:#999;cursor:pointer;font-size:10px;">3분기</button>
+        <button onclick="showQuarter('q4',this)" id="qbtn-q4" style="padding:2px 10px;border-radius:10px;border:1px solid #ddd;background:#f8f9fa;color:#999;cursor:pointer;font-size:10px;">4분기</button>
+      </div>
+      <span style="color:#aaa;font-size:9.5px;margin-left:auto;">VOC 60+만족도 40 | 칭찬글+5 / 도급사선정+5</span>
+    </div>
+    <div id="eng-q1">
+      <div style="display:flex;gap:3px;margin-bottom:5px;flex-wrap:wrap;align-items:center;">
+        <span style="background:#f0faf4;border:1px solid #a9dfbf;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#1e8449;">S</strong> 0명</span>
+        <span style="background:#f0faf4;border:1px solid #a9dfbf;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#27ae60;">A</strong> 4명(구본혁·이동한·김병주·모주완)</span>
+        <span style="background:#eaf4fb;border:1px solid #aed6f1;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#2980b9;">B</strong> 4명</span>
+        <span style="background:#fef9e7;border:1px solid #f9e79f;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#e67e22;">C</strong> 2명</span>
+        <span style="background:#fdedec;border:1px solid #f5b7b1;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#e74c3c;">D</strong> 3명</span>
+        <span style="background:#fdfefe;border:1px solid #ddd;border-radius:3px;padding:1px 6px;font-size:10px;color:#555;">🏆 <strong style="color:#1a3a5c;">구본혁 300만원</strong>(시나리오C)</span>
+      </div>
+      <table style="width:auto;border-collapse:collapse;font-size:11px;line-height:1;">
+        <thead><tr style="background:#1a3a5c;color:#fff;text-align:center;">
+          <th style="padding:4px 10px;">순위</th><th style="padding:4px 20px;">기사명</th><th style="padding:4px 10px;">등급</th>
+          <th style="padding:4px 14px;">합계</th><th style="padding:4px 14px;">VOC점수(60점)</th><th style="padding:4px 14px;">만족도점수(40점)</th><th style="padding:4px 12px;">추가점수</th>
+        </tr></thead>
+        <tbody>
+          <tr style="background:#fff9e6;"><td style="padding:2px 3px;text-align:center;font-weight:700;">1</td><td style="padding:2px 8px;text-align:center;font-weight:700;">구본혁 🏆</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#1a3a5c;">94</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">34</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#f4fff8;"><td style="padding:2px 3px;text-align:center;">2</td><td style="padding:2px 8px;text-align:center;font-weight:700;">이동한</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#f4fff8;"><td style="padding:2px 3px;text-align:center;">2</td><td style="padding:2px 8px;text-align:center;font-weight:700;">김병주</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#f4fff8;"><td style="padding:2px 3px;text-align:center;">2</td><td style="padding:2px 8px;text-align:center;font-weight:700;">모주완</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">5</td><td style="padding:2px 8px;text-align:center;font-weight:700;">윤옥성</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">87</td><td style="padding:2px;text-align:center;">55</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">6</td><td style="padding:2px 8px;text-align:center;font-weight:700;">임지훈</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">86</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">26</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">7</td><td style="padding:2px 8px;text-align:center;font-weight:700;">임민우</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">82</td><td style="padding:2px;text-align:center;">50</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">8</td><td style="padding:2px 8px;text-align:center;font-weight:700;">장동진</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">80</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">20</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#fff8f0;"><td style="padding:2px 3px;text-align:center;">9</td><td style="padding:2px 8px;text-align:center;font-weight:700;">변재선</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">79</td><td style="padding:2px;text-align:center;">50</td><td style="padding:2px;text-align:center;">29</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#fff8f0;"><td style="padding:2px 3px;text-align:center;">10</td><td style="padding:2px 8px;text-align:center;font-weight:700;">김병우</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">73</td><td style="padding:2px;text-align:center;">35</td><td style="padding:2px;text-align:center;">38</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#fff0f0;"><td style="padding:2px 3px;text-align:center;">11</td><td style="padding:2px 8px;text-align:center;font-weight:700;">박상현</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">64</td><td style="padding:2px;text-align:center;">35</td><td style="padding:2px;text-align:center;">29</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#fff0f0;"><td style="padding:2px 3px;text-align:center;">12</td><td style="padding:2px 8px;text-align:center;font-weight:700;">정종철</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">62</td><td style="padding:2px;text-align:center;">30</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+          <tr style="background:#fff0f0;"><td style="padding:2px 3px;text-align:center;">13</td><td style="padding:2px 8px;text-align:center;font-weight:700;">문민수</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">52</td><td style="padding:2px;text-align:center;">40</td><td style="padding:2px;text-align:center;">12</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:9px;color:#ccc;margin:3px 0 0;">※ 평가제외: 하우저·임경택·고요한·박용구·윤경환 | 미반영: 김재현·정다운·김재희·정용우·강민승·손명익</p>
+    </div>
+    <div id="eng-q2" style="display:none;"><div style="text-align:center;padding:30px 20px;color:#ccc;font-size:14px;font-weight:700;">📅 2분기(4~6월) 집계 예정</div></div>
+    <div id="eng-q3" style="display:none;"><div style="text-align:center;padding:30px 20px;color:#ccc;font-size:14px;font-weight:700;">📅 3분기(7~9월) 집계 예정</div></div>
+    <div id="eng-q4" style="display:none;"><div style="text-align:center;padding:30px 20px;color:#ccc;font-size:14px;font-weight:700;">📅 4분기(10~12월) 집계 예정</div></div>
+  </div>
+</div>
+
+<!-- ==================== 탭: 시공기사 당월 평가 세부현황 ==================== -->
+<div id="tab-eng-detail" class="tab-content">
+  <div class="section-card" style="padding:10px 14px;margin-bottom:0;">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px;">
+      <h2 class="section-title" style="margin:0;font-size:13px;font-weight:700;">📋 시공기사 당월 평가 세부현황</h2>
+      <span style="color:#aaa;font-size:9.5px;">2026년 1분기(1~3월) | 전체 19명 | 평가참여 13명</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:5px;">
+      <div style="background:linear-gradient(135deg,#1a3a5c,#2c5f8a);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">평가 참여</div><div style="font-size:18px;font-weight:700;line-height:1.1;">13명</div><div style="font-size:9px;opacity:.7;">전체 19명 중</div></div>
+      <div style="background:linear-gradient(135deg,#1e6a3a,#27ae60);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">A등급 이상</div><div style="font-size:18px;font-weight:700;line-height:1.1;">4명</div><div style="font-size:9px;opacity:.7;">포상 대상</div></div>
+      <div style="background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">D등급</div><div style="font-size:18px;font-weight:700;line-height:1.1;">3명</div><div style="font-size:9px;opacity:.7;">계약해지 검토</div></div>
+      <div style="background:linear-gradient(135deg,#7d3c98,#9b59b6);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">포상 지급</div><div style="font-size:18px;font-weight:700;line-height:1.1;">300만</div><div style="font-size:9px;opacity:.7;">구본혁(시나리오C)</div></div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table style="width:auto;border-collapse:collapse;font-size:10.5px;line-height:1;">
+        <thead>
+          <tr style="background:#1a3a5c;color:#fff;text-align:center;">
+            <th rowspan="2" style="padding:4px 12px;">기사명</th><th rowspan="2" style="padding:4px 8px;">등급</th><th rowspan="2" style="padding:4px 8px;">합계</th>
+            <th colspan="3" style="padding:3px 6px;border-bottom:1px solid rgba(255,255,255,.2);">VOC 건수</th>
+            <th rowspan="2" style="padding:4px 8px;">VOC<br>점수</th>
+            <th colspan="3" style="padding:3px 6px;border-bottom:1px solid rgba(255,255,255,.2);">만족도 (%)</th>
+            <th rowspan="2" style="padding:4px 8px;">만족도<br>점수</th><th rowspan="2" style="padding:4px 8px;">추가<br>점수</th>
+          </tr>
+          <tr style="background:#243f5c;color:#fff;text-align:center;">
+            <th style="padding:2px 8px;font-weight:500;">응대불만</th><th style="padding:2px 8px;font-weight:500;">취급부주의</th><th style="padding:2px 8px;font-weight:500;">누락·기타</th>
+            <th style="padding:2px 8px;font-weight:500;">정리상태</th><th style="padding:2px 8px;font-weight:500;">응대태도</th><th style="padding:2px 8px;font-weight:500;">용모복장</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fff9e6;"><td style="padding:2px 5px;text-align:center;font-weight:700;">구본혁 🏆</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">94</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">98.8%</td><td style="padding:2px;text-align:center;">97.6%</td><td style="padding:2px;text-align:center;">100.0%</td><td style="padding:2px;text-align:center;font-weight:700;">34</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#f4fff8;"><td style="padding:2px 5px;text-align:center;font-weight:700;">이동한</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">98.8%</td><td style="padding:2px;text-align:center;">98.8%</td><td style="padding:2px;text-align:center;">97.6%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#f4fff8;"><td style="padding:2px 5px;text-align:center;font-weight:700;">김병주</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">97.5%</td><td style="padding:2px;text-align:center;">97.5%</td><td style="padding:2px;text-align:center;">97.5%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#f4fff8;"><td style="padding:2px 5px;text-align:center;font-weight:700;">모주완</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">96.9%</td><td style="padding:2px;text-align:center;">96.9%</td><td style="padding:2px;text-align:center;">97.9%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">윤옥성</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">87</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">55</td><td style="padding:2px;text-align:center;">96.6%</td><td style="padding:2px;text-align:center;">97.7%</td><td style="padding:2px;text-align:center;">96.6%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">임지훈</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">86</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;">60</td><td style="padding:2px;text-align:center;">96.2%</td><td style="padding:2px;text-align:center;">96.2%</td><td style="padding:2px;text-align:center;color:#e74c3c;">88.6%</td><td style="padding:2px;text-align:center;font-weight:700;">26</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">임민우</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">82</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">50</td><td style="padding:2px;text-align:center;">95.4%</td><td style="padding:2px;text-align:center;">96.3%</td><td style="padding:2px;text-align:center;">96.3%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">장동진</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">80</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;">60</td><td style="padding:2px;text-align:center;color:#e67e22;">93.8%</td><td style="padding:2px;text-align:center;color:#e74c3c;">92.6%</td><td style="padding:2px;text-align:center;color:#e74c3c;">92.6%</td><td style="padding:2px;text-align:center;font-weight:700;">20</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#fff8f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">변재선</td><td style="padding:2px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">79</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">50</td><td style="padding:2px;text-align:center;">96.8%</td><td style="padding:2px;text-align:center;">96.8%</td><td style="padding:2px;text-align:center;">94.7%</td><td style="padding:2px;text-align:center;font-weight:700;">29</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#fff8f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">김병우</td><td style="padding:2px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">73</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;font-weight:700;">35</td><td style="padding:2px;text-align:center;">98.6%</td><td style="padding:2px;text-align:center;">100.0%</td><td style="padding:2px;text-align:center;">99.3%</td><td style="padding:2px;text-align:center;font-weight:700;">38</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#fff0f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">박상현</td><td style="padding:2px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">64</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">35</td><td style="padding:2px;text-align:center;color:#e67e22;">94.1%</td><td style="padding:2px;text-align:center;">96.0%</td><td style="padding:2px;text-align:center;">96.0%</td><td style="padding:2px;text-align:center;font-weight:700;">29</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#fff0f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">정종철</td><td style="padding:2px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">62</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;">30</td><td style="padding:2px;text-align:center;">97.6%</td><td style="padding:2px;text-align:center;">98.4%</td><td style="padding:2px;text-align:center;">96.8%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+          <tr style="background:#fff0f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">문민수</td><td style="padding:2px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">52</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">40</td><td style="padding:2px;text-align:center;color:#e67e22;">93.8%</td><td style="padding:2px;text-align:center;color:#e74c3c;">91.4%</td><td style="padding:2px;text-align:center;color:#e74c3c;">91.4%</td><td style="padding:2px;text-align:center;font-weight:700;">12</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
+      <span style="font-size:9.5px;color:#666;font-weight:700;">등급:</span>
+      <span style="background:#f9e79f;border:1px solid #f0c040;padding:0 6px;border-radius:7px;font-size:9.5px;font-weight:700;">S≥95</span>
+      <span style="background:#a9dfbf;border:1px solid #27ae60;padding:0 6px;border-radius:7px;font-size:9.5px;font-weight:700;">A 90~94</span>
+      <span style="background:#aed6f1;border:1px solid #2980b9;padding:0 6px;border-radius:7px;font-size:9.5px;font-weight:700;">B 80~89</span>
+      <span style="background:#fad7a0;border:1px solid #e67e22;padding:0 6px;border-radius:7px;font-size:9.5px;font-weight:700;">C 70~79</span>
+      <span style="background:#f5b7b1;border:1px solid #e74c3c;padding:0 6px;border-radius:7px;font-size:9.5px;font-weight:700;">D≤69</span>
+      <span style="font-size:8.5px;color:#ccc;margin-left:4px;">※ 평가제외: 하우저·임경택·고요한·박용구·윤경환 | 미반영: 김재현·정다운·김재희·정용우·강민승·손명익</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function showQuarter(q, btn) {
+  ['q1','q2','q3','q4'].forEach(function(id) {
+    var el = document.getElementById('eng-' + id);
+    var b = document.getElementById('qbtn-' + id);
+    if (el) el.style.display = (id === q) ? 'block' : 'none';
+    if (b) {
+      if (id === q) { b.style.background='#1a3a5c'; b.style.color='#fff'; b.style.border='none'; }
+      else { b.style.background='#f8f9fa'; b.style.color='#999'; b.style.border='1px solid #ddd'; }
+    }
+  });
+}
+</script>
+
 </div><!-- /main-content -->
 </div><!-- /layout -->
 
@@ -1312,128 +1438,5 @@ new Chart(document.getElementById('csStaffChart').getContext('2d'), {
   }
 });
 </script>
-
-<!-- ==================== 탭: 시공기사 분기별 평가현황 ==================== -->
-<div id="tab-eng-quarterly" class="tab-content">
-  <div class="section-card" style="padding:10px 14px;margin-bottom:0;">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px;">
-      <h2 class="section-title" style="margin:0;font-size:13px;font-weight:700;">🏗️ 시공기사 분기별 평가현황 (2026년)</h2>
-      <div style="display:flex;gap:4px;">
-        <button onclick="showQuarter('q1',this)" id="qbtn-q1" style="padding:2px 10px;border-radius:10px;border:none;background:#1a3a5c;color:#fff;font-weight:700;cursor:pointer;font-size:10px;">1분기</button>
-        <button onclick="showQuarter('q2',this)" id="qbtn-q2" style="padding:2px 10px;border-radius:10px;border:1px solid #ddd;background:#f8f9fa;color:#999;cursor:pointer;font-size:10px;">2분기</button>
-        <button onclick="showQuarter('q3',this)" id="qbtn-q3" style="padding:2px 10px;border-radius:10px;border:1px solid #ddd;background:#f8f9fa;color:#999;cursor:pointer;font-size:10px;">3분기</button>
-        <button onclick="showQuarter('q4',this)" id="qbtn-q4" style="padding:2px 10px;border-radius:10px;border:1px solid #ddd;background:#f8f9fa;color:#999;cursor:pointer;font-size:10px;">4분기</button>
-      </div>
-      <span style="color:#aaa;font-size:9.5px;margin-left:auto;">VOC 60+만족도 40 | 칭찬글+5 / 도급사선정+5</span>
-    </div>
-    <div id="eng-q1">
-      <div style="display:flex;gap:3px;margin-bottom:5px;flex-wrap:wrap;align-items:center;">
-        <span style="background:#f0faf4;border:1px solid #a9dfbf;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#1e8449;">S</strong> 0명</span>
-        <span style="background:#f0faf4;border:1px solid #a9dfbf;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#27ae60;">A</strong> 4명(구본혁·이동한·김병주·모주완)</span>
-        <span style="background:#eaf4fb;border:1px solid #aed6f1;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#2980b9;">B</strong> 4명</span>
-        <span style="background:#fef9e7;border:1px solid #f9e79f;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#e67e22;">C</strong> 2명</span>
-        <span style="background:#fdedec;border:1px solid #f5b7b1;border-radius:3px;padding:1px 6px;font-size:10px;"><strong style="color:#e74c3c;">D</strong> 3명</span>
-        <span style="background:#fdfefe;border:1px solid #ddd;border-radius:3px;padding:1px 6px;font-size:10px;color:#555;">🏆 <strong style="color:#1a3a5c;">구본혁 300만원</strong>(시나리오C)</span>
-      </div>
-      <table style="width:auto;border-collapse:collapse;font-size:11px;line-height:1;">
-        <thead><tr style="background:#1a3a5c;color:#fff;text-align:center;">
-          <th style="padding:4px 10px;">순위</th><th style="padding:4px 20px;">기사명</th><th style="padding:4px 10px;">등급</th>
-          <th style="padding:4px 14px;">합계</th><th style="padding:4px 14px;">VOC점수(60점)</th><th style="padding:4px 14px;">만족도점수(40점)</th><th style="padding:4px 12px;">추가점수</th>
-        </tr></thead>
-        <tbody style="font-size:11px;">
-          <tr style="background:#fff9e6;"><td style="padding:2px 3px;text-align:center;font-weight:700;">1</td><td style="padding:2px 8px;text-align:center;font-weight:700;">구본혁 🏆</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#1a3a5c;">94</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">34</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#f4fff8;"><td style="padding:2px 3px;text-align:center;">2</td><td style="padding:2px 8px;text-align:center;font-weight:700;">이동한</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#f4fff8;"><td style="padding:2px 3px;text-align:center;">2</td><td style="padding:2px 8px;text-align:center;font-weight:700;">김병주</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#f4fff8;"><td style="padding:2px 3px;text-align:center;">2</td><td style="padding:2px 8px;text-align:center;font-weight:700;">모주완</td><td style="padding:2px 3px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">5</td><td style="padding:2px 8px;text-align:center;font-weight:700;">윤옥성</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">87</td><td style="padding:2px;text-align:center;">55</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">6</td><td style="padding:2px 8px;text-align:center;font-weight:700;">임지훈</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">86</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">26</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">7</td><td style="padding:2px 8px;text-align:center;font-weight:700;">임민우</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">82</td><td style="padding:2px;text-align:center;">50</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 3px;text-align:center;">8</td><td style="padding:2px 8px;text-align:center;font-weight:700;">장동진</td><td style="padding:2px 3px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">80</td><td style="padding:2px;text-align:center;">60</td><td style="padding:2px;text-align:center;">20</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#fff8f0;"><td style="padding:2px 3px;text-align:center;">9</td><td style="padding:2px 8px;text-align:center;font-weight:700;">변재선</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">79</td><td style="padding:2px;text-align:center;">50</td><td style="padding:2px;text-align:center;">29</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#fff8f0;"><td style="padding:2px 3px;text-align:center;">10</td><td style="padding:2px 8px;text-align:center;font-weight:700;">김병우</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">73</td><td style="padding:2px;text-align:center;">35</td><td style="padding:2px;text-align:center;">38</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#fff0f0;"><td style="padding:2px 3px;text-align:center;">11</td><td style="padding:2px 8px;text-align:center;font-weight:700;">박상현</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">64</td><td style="padding:2px;text-align:center;">35</td><td style="padding:2px;text-align:center;">29</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#fff0f0;"><td style="padding:2px 3px;text-align:center;">12</td><td style="padding:2px 8px;text-align:center;font-weight:700;">정종철</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">62</td><td style="padding:2px;text-align:center;">30</td><td style="padding:2px;text-align:center;">32</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-          <tr style="background:#fff0f0;"><td style="padding:2px 3px;text-align:center;">13</td><td style="padding:2px 8px;text-align:center;font-weight:700;">문민수</td><td style="padding:2px 3px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:7px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">52</td><td style="padding:2px;text-align:center;">40</td><td style="padding:2px;text-align:center;">12</td><td style="padding:2px;text-align:center;color:#bbb;">-</td></tr>
-        </tbody>
-      </table>
-      <p style="font-size:9px;color:#ccc;margin:3px 0 0;">※ 평가제외: 하우저·임경택·고요한·박용구·윤경환 | 미반영: 김재현·정다운·김재희·정용우·강민승·손명익</p>
-    </div>
-    <div id="eng-q2" style="display:none;"><div style="text-align:center;padding:30px 20px;color:#ccc;font-size:14px;font-weight:700;">📅 2분기(4~6월) 집계 예정</div></div>
-    <div id="eng-q3" style="display:none;"><div style="text-align:center;padding:30px 20px;color:#ccc;font-size:14px;font-weight:700;">📅 3분기(7~9월) 집계 예정</div></div>
-    <div id="eng-q4" style="display:none;"><div style="text-align:center;padding:30px 20px;color:#ccc;font-size:14px;font-weight:700;">📅 4분기(10~12월) 집계 예정</div></div>
-  </div>
-</div>
-
-<!-- ==================== 탭: 시공기사 당월 평가 세부현황 ==================== -->
-<div id="tab-eng-detail" class="tab-content">
-  <div class="section-card" style="padding:10px 14px;margin-bottom:0;">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px;">
-      <h2 class="section-title" style="margin:0;font-size:13px;font-weight:700;">📋 시공기사 당월 평가 세부현황</h2>
-      <span style="color:#aaa;font-size:9.5px;">2026년 1분기(1~3월) | 전체 19명 | 평가참여 13명</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:5px;">
-      <div style="background:linear-gradient(135deg,#1a3a5c,#2c5f8a);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">평가 참여</div><div style="font-size:18px;font-weight:700;line-height:1.1;">13명</div><div style="font-size:9px;opacity:.7;">전체 19명 중</div></div>
-      <div style="background:linear-gradient(135deg,#1e6a3a,#27ae60);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">A등급 이상</div><div style="font-size:18px;font-weight:700;line-height:1.1;">4명</div><div style="font-size:9px;opacity:.7;">포상 대상</div></div>
-      <div style="background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">D등급</div><div style="font-size:18px;font-weight:700;line-height:1.1;">3명</div><div style="font-size:9px;opacity:.7;">계약해지 검토</div></div>
-      <div style="background:linear-gradient(135deg,#7d3c98,#9b59b6);color:#fff;border-radius:6px;padding:5px 4px;text-align:center;"><div style="font-size:9px;opacity:.8;">포상 지급</div><div style="font-size:18px;font-weight:700;line-height:1.1;">300만</div><div style="font-size:9px;opacity:.7;">구본혁(시나리오C)</div></div>
-    </div>
-    <div style="overflow-x:auto;">
-      <table style="width:auto;border-collapse:collapse;font-size:10.5px;line-height:1;">
-        <thead>
-          <tr style="background:#1a3a5c;color:#fff;text-align:center;">
-            <th rowspan="2" style="padding:4px 12px;">기사명</th><th rowspan="2" style="padding:4px 8px;">등급</th><th rowspan="2" style="padding:4px 8px;">합계</th>
-            <th colspan="3" style="padding:3px 6px;border-bottom:1px solid rgba(255,255,255,.2);">VOC 건수</th>
-            <th rowspan="2" style="padding:4px 8px;">VOC<br>점수</th>
-            <th colspan="3" style="padding:3px 6px;border-bottom:1px solid rgba(255,255,255,.2);">만족도 (%)</th>
-            <th rowspan="2" style="padding:4px 8px;">만족도<br>점수</th><th rowspan="2" style="padding:4px 8px;">추가<br>점수</th>
-          </tr>
-          <tr style="background:#243f5c;color:#fff;text-align:center;">
-            <th style="padding:2px 8px;font-weight:500;">응대불만</th><th style="padding:2px 8px;font-weight:500;">취급부주의</th><th style="padding:2px 8px;font-weight:500;">누락·기타</th>
-            <th style="padding:2px 8px;font-weight:500;">정리상태</th><th style="padding:2px 8px;font-weight:500;">응대태도</th><th style="padding:2px 8px;font-weight:500;">용모복장</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="background:#fff9e6;"><td style="padding:2px 5px;text-align:center;font-weight:700;">구본혁 🏆</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">94</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">98.8%</td><td style="padding:2px;text-align:center;">97.6%</td><td style="padding:2px;text-align:center;">100.0%</td><td style="padding:2px;text-align:center;font-weight:700;">34</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#f4fff8;"><td style="padding:2px 5px;text-align:center;font-weight:700;">이동한</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">98.8%</td><td style="padding:2px;text-align:center;">98.8%</td><td style="padding:2px;text-align:center;">97.6%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#f4fff8;"><td style="padding:2px 5px;text-align:center;font-weight:700;">김병주</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">97.5%</td><td style="padding:2px;text-align:center;">97.5%</td><td style="padding:2px;text-align:center;">97.5%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#f4fff8;"><td style="padding:2px 5px;text-align:center;font-weight:700;">모주완</td><td style="padding:2px;text-align:center;"><span style="background:#27ae60;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">A</span></td><td style="padding:2px;text-align:center;font-weight:700;">92</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;color:#1e8449;">60</td><td style="padding:2px;text-align:center;">96.9%</td><td style="padding:2px;text-align:center;">96.9%</td><td style="padding:2px;text-align:center;">97.9%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">윤옥성</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">87</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">55</td><td style="padding:2px;text-align:center;">96.6%</td><td style="padding:2px;text-align:center;">97.7%</td><td style="padding:2px;text-align:center;">96.6%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">임지훈</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">86</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;">60</td><td style="padding:2px;text-align:center;">96.2%</td><td style="padding:2px;text-align:center;">96.2%</td><td style="padding:2px;text-align:center;color:#e74c3c;">88.6%</td><td style="padding:2px;text-align:center;font-weight:700;">26</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">임민우</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">82</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">50</td><td style="padding:2px;text-align:center;">95.4%</td><td style="padding:2px;text-align:center;">96.3%</td><td style="padding:2px;text-align:center;">96.3%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#f0f4ff;"><td style="padding:2px 5px;text-align:center;font-weight:700;">장동진</td><td style="padding:2px;text-align:center;"><span style="background:#2980b9;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">B</span></td><td style="padding:2px;text-align:center;font-weight:700;">80</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;">60</td><td style="padding:2px;text-align:center;color:#e67e22;">93.8%</td><td style="padding:2px;text-align:center;color:#e74c3c;">92.6%</td><td style="padding:2px;text-align:center;color:#e74c3c;">92.6%</td><td style="padding:2px;text-align:center;font-weight:700;">20</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#fff8f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">변재선</td><td style="padding:2px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">79</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e67e22;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">50</td><td style="padding:2px;text-align:center;">96.8%</td><td style="padding:2px;text-align:center;">96.8%</td><td style="padding:2px;text-align:center;">94.7%</td><td style="padding:2px;text-align:center;font-weight:700;">29</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#fff8f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">김병우</td><td style="padding:2px;text-align:center;"><span style="background:#e67e22;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">C</span></td><td style="padding:2px;text-align:center;font-weight:700;">73</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;font-weight:700;">35</td><td style="padding:2px;text-align:center;">98.6%</td><td style="padding:2px;text-align:center;">100.0%</td><td style="padding:2px;text-align:center;">99.3%</td><td style="padding:2px;text-align:center;font-weight:700;">38</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#fff0f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">박상현</td><td style="padding:2px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">64</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">35</td><td style="padding:2px;text-align:center;color:#e67e22;">94.1%</td><td style="padding:2px;text-align:center;">96.0%</td><td style="padding:2px;text-align:center;">96.0%</td><td style="padding:2px;text-align:center;font-weight:700;">29</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#fff0f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">정종철</td><td style="padding:2px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">62</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">2</td><td style="padding:2px;text-align:center;">0</td><td style="padding:2px;text-align:center;font-weight:700;">30</td><td style="padding:2px;text-align:center;">97.6%</td><td style="padding:2px;text-align:center;">98.4%</td><td style="padding:2px;text-align:center;">96.8%</td><td style="padding:2px;text-align:center;font-weight:700;">32</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-          <tr style="background:#fff0f0;"><td style="padding:2px 5px;text-align:center;font-weight:700;">문민수</td><td style="padding:2px;text-align:center;"><span style="background:#e74c3c;color:#fff;padding:0 5px;border-radius:6px;font-weight:700;">D</span></td><td style="padding:2px;text-align:center;font-weight:700;color:#e74c3c;">52</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;color:#e74c3c;font-weight:700;">1</td><td style="padding:2px;text-align:center;font-weight:700;">40</td><td style="padding:2px;text-align:center;color:#e67e22;">93.8%</td><td style="padding:2px;text-align:center;color:#e74c3c;">91.4%</td><td style="padding:2px;text-align:center;color:#e74c3c;">91.4%</td><td style="padding:2px;text-align:center;font-weight:700;">12</td><td style="padding:2px;text-align:center;color:#ccc;">-</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
-      <span style="font-size:9.5px;color:#666;font-weight:700;">등급:</span>
-      <span style="background:#f9e79f;border:1px solid #f0c040;padding:0px 6px;border-radius:7px;font-size:9.5px;font-weight:700;">S≥95</span>
-      <span style="background:#a9dfbf;border:1px solid #27ae60;padding:0px 6px;border-radius:7px;font-size:9.5px;font-weight:700;">A 90~94</span>
-      <span style="background:#aed6f1;border:1px solid #2980b9;padding:0px 6px;border-radius:7px;font-size:9.5px;font-weight:700;">B 80~89</span>
-      <span style="background:#fad7a0;border:1px solid #e67e22;padding:0px 6px;border-radius:7px;font-size:9.5px;font-weight:700;">C 70~79</span>
-      <span style="background:#f5b7b1;border:1px solid #e74c3c;padding:0px 6px;border-radius:7px;font-size:9.5px;font-weight:700;">D≤69</span>
-      <span style="font-size:8.5px;color:#ccc;margin-left:4px;">※ 평가제외: 하우저·임경택·고요한·박용구·윤경환 | 미반영: 김재현·정다운·김재희·정용우·강민승·손명익</span>
-    </div>
-  </div>
-</div>
-
-<script>
-function showQuarter(q, btn) {
-  ['q1','q2','q3','q4'].forEach(function(id) {
-    var el = document.getElementById('eng-' + id);
-    var b = document.getElementById('qbtn-' + id);
-    if (el) el.style.display = (id === q) ? 'block' : 'none';
-    if (b) {
-      if (id === q) { b.style.background='#1a3a5c'; b.style.color='#fff'; b.style.border='none'; }
-      else { b.style.background='#f8f9fa'; b.style.color='#999'; b.style.border='1px solid #ddd'; }
-    }
-  });
-}
-</script>
-
 </body>
 </html>
