@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-07 17:57</span>
+  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-07 17:50</span>
 </header>
 
 <div class="layout">
@@ -1455,6 +1455,8 @@ function switchTab(name, btn) {
   document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   btn.classList.add('active');
+  var mc = document.querySelector('.main-content');
+  if (mc) mc.scrollTop = 0;
 }
 
 const months = ['1월', '2월', '3월', '4월'];
