@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-07 15:25</span>
+  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-07 15:49</span>
 </header>
 
 <div class="layout">
@@ -351,206 +351,257 @@
     </div>
   </div>
 
-  <div style="padding: 4px 30px 28px; display:flex; flex-direction:column; gap:16px;">
+  <div style="padding: 4px 30px 20px; display:flex; flex-direction:column; gap:16px;">
 
-    <!-- 1월 -->
-    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
-      <div style="background:#1a3a5c;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:14px;font-weight:700;">📅 26년 1월 불만족 접수내역</span>
-        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">11건 (불만 4 + 매우불만 7)</span>
+    <!-- 취급부주의 -->
+    <div class="voc-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div class="voc-header" style="background:#e74c3c; color:#fff; padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:15px; font-weight:700;">🔴 취급부주의</span>
+        <span style="font-size:13px; background:rgba(255,255,255,.25); border-radius:20px; padding:3px 12px;">총 16건 (41%)</span>
       </div>
-      <div style="padding:4px 0;">
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#243f5c;padding:7px 16px;">
-          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; border-bottom:1px solid #f0f2f5;">
+        <div style="background:#fef9f9; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e74c3c; font-weight:700; margin-bottom:6px;">📌 주요 발생 패턴</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 배송·하역 중 제품 낙하 및 파손<br>
+            · 가죽 스크래치 (상하차 시 쓸림)<br>
+            · 시공 중 고객 댁 마루바닥 훼손<br>
+            · 포장재 이상 없어도 개봉 후 파손
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">김병우</span>
-          <span style="color:#e74c3c;">정리상태(매우불만)</span>
-          <span style="color:#444;">마루 훼손 미인지 철수 — 고객이 발견 후 접수. 친절한 응대였으나 정리 미흡.</span>
+        <div style="background:#fef9f9; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e74c3c; font-weight:700; margin-bottom:6px;">🔍 공통 원인</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 기사 간 작업 호흡 불일치<br>
+            · 상하차 전 외관 검사 미실시<br>
+            · 협소 공간 무리한 진입<br>
+            · 사수·보조 역할 미명확
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">윤옥성</span>
-          <span style="color:#e74c3c;">정리상태(매우불만)</span>
-          <span style="color:#444;">"바닥 장판 두 군데 손상 후 아무 말 없이 철수" — 과실 은폐 의심으로 기분 불쾌.</span>
+        <div style="background:#fef9f9; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e74c3c; font-weight:700; margin-bottom:6px;">✅ 처리 결과 및 개선방향</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 대부분 새제품 맞교환 처리<br>
+            · 마루 훼손 건 금전 보상 진행<br>
+            · <b>개선:</b> 구두 신호 체계 도입<br>
+            · <b>개선:</b> 출고 전 외관검사 의무화
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">정종철</span>
-          <span style="color:#e74c3c;">정리상태·응대태도<br>(매우불만)</span>
-          <span style="color:#444;">"전화 받는 태도 아주 불친절" — 고객 응대 교육 요구.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">변재선</span>
-          <span style="color:#e67e22;">정리상태(불만)</span>
-          <span style="color:#444;">"시간에 쫓겨 제품 사용 설명 부족, 담배 냄새·찌든 냄새로 불쾌." — 용모 관리 필요.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">변재선</span>
-          <span style="color:#e67e22;">정리상태(불만)</span>
-          <span style="color:#444;">고객의견 미기재.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">윤경환</span>
-          <span style="color:#e74c3c;">정리·응대·용모<br>(매우불만)</span>
-          <span style="color:#444;">"바닥 다 찍어놓고 자기 잘못 아니라 함" — 과실 부인, 3개 항목 최저평가.</span>
+      </div>
+      <div style="padding:12px 20px;">
+        <div style="font-size:11px; color:#888; font-weight:700; margin-bottom:8px;">📝 주요 접수 사례</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>1월 ㅇㅇㅇ</b> — 배송 중 차량에서 소파 낙하 파손 → 새제품 재배송
+          </div>
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>2월 ㅇㅇㅇ</b> — 기사가 소파를 끄는 방식으로 이동, 마루바닥 훼손 → 실리콘 교체 + 마루 보상
+          </div>
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 차량 내 하차 작업 중 사수·보조 간 호흡 미흡으로 스크래치 → 새제품 재제작
+          </div>
+          <div style="font-size:12px; background:#fff8f8; border-left:3px solid #e74c3c; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 맞교환 중 현관문 벽지 훼손 → 인테리어 공사비 30만원 보상
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- 2월 -->
-    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
-      <div style="background:#1a3a5c;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:14px;font-weight:700;">📅 26년 2월 불만족 접수내역</span>
-        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">9건 (불만 5 + 매우불만 4)</span>
+    <!-- 응대불만 -->
+    <div class="voc-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div class="voc-header" style="background:#e67e22; color:#fff; padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:15px; font-weight:700;">🟠 응대불만</span>
+        <span style="font-size:13px; background:rgba(255,255,255,.25); border-radius:20px; padding:3px 12px;">총 12건 (31%)</span>
       </div>
-      <div style="padding:4px 0;">
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#243f5c;padding:7px 16px;">
-          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; border-bottom:1px solid #f0f2f5;">
+        <div style="background:#fef6ee; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e67e22; font-weight:700; margin-bottom:6px;">📌 주요 발생 패턴</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 기사의 무례하거나 불친절한 현장 응대<br>
+            · 배송 시간 일방 변경 후 통보<br>
+            · 고객 요청사항(사전 연락 등) 미반영<br>
+            · 과실 인정 거부·언쟁 발생<br>
+            · 설치 후 제품 안내 없이 이탈
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">모주완</span>
-          <span style="color:#e67e22;">정리상태(불만)</span>
-          <span style="color:#444;">고객의견 미기재.</span>
+        <div style="background:#fef6ee; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e67e22; font-weight:700; margin-bottom:6px;">🔍 공통 원인</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 고객 응대 서비스 교육 부족<br>
+            · 해피콜 시 고객 요청 메모 미실시<br>
+            · 배송 일정 변경 시 사전 동의 없음<br>
+            · 비밀번호 무단 요구 등 과도한 요청
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">박상현</span>
-          <span style="color:#e74c3c;">정리상태(불만)<br>응대태도(매우불만)</span>
-          <span style="color:#444;">"말할 때마다 책임 회피, 설명 불친절" — 소통 방식 개선 필요.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
-          <span style="color:#e74c3c;">정리상태(매우불만)</span>
-          <span style="color:#444;">"설치 중 카펫 오염 — 세탁 비용 발생" — 작업 중 주변 보호 미흡.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
-          <span style="color:#e67e22;">정리상태(불만)</span>
-          <span style="color:#444;">"소파만 내리고 박스 미처리" — 박스 숯가루 우려로 박스 내리지 않은 채 철수.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
-          <span style="color:#e74c3c;">응대태도(매우불만)<br>용모복장(불만)</span>
-          <span style="color:#444;">"테니스공 부탁에 '그게 무슨 의미냐'며 고객 무안" — 고객 요청 무시.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">장동진</span>
-          <span style="color:#e67e22;">응대태도(불만)</span>
-          <span style="color:#444;">"9시 배송 약속 후 연락 없이 지연, 재촉하자 그제서야 연락" — 배송시간 약속 불이행.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
-          <span style="color:#e74c3c;">정리상태(매우불만)</span>
-          <span style="color:#444;">고객의견 미기재.</span>
+        <div style="background:#fef6ee; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#e67e22; font-weight:700; margin-bottom:6px;">✅ 처리 결과 및 개선방향</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 사과 진행 + 기사 교육 실시<br>
+            · 사은품(가죽 클리너) 증정<br>
+            · 마루 훼손 보상 병행<br>
+            · <b>개선:</b> 해피콜 표준 매뉴얼 수립<br>
+            · <b>개선:</b> 도착 전 사전 연락 의무화
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- 3월 -->
-    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
-      <div style="background:#c0392b;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:14px;font-weight:700;">📅 26년 3월 불만족 접수내역</span>
-        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">16건 (최다 · 불만 12 + 매우불만 4)</span>
-      </div>
-      <div style="padding:4px 0;">
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#922b21;padding:7px 16px;">
-          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">임민우</span>
-          <span style="color:#e67e22;">응대태도(불만)</span>
-          <span style="color:#444;">"저녁 6시 이후 도착으로 저녁 준비와 겹쳐 불편" — 배송 시간 조율 미흡.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">장동진</span>
-          <span style="color:#e67e22;">응대태도(불만)</span>
-          <span style="color:#444;">"시공 시간 조율 불가, 바닥 스크래치 방지 스티커 무단 부착" — 고객 동의 없는 현장 처리.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">박상현</span>
-          <span style="color:#e74c3c;">정리상태(매우불만)<br>응대태도(불만)</span>
-          <span style="color:#444;">"이전 소파 수거 약속 위반, 사다리차·재방문 비용 고객 부담 요구" — 책임 전가.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
-          <span style="color:#e74c3c;">정리상태(매우불만)</span>
-          <span style="color:#444;">"소파 넣느라 옮긴 물건을 제자리에 두지 않고 철수" — 정리 미흡.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">임지훈</span>
-          <span style="color:#e67e22;">정리·응대·용모(불만)</span>
-          <span style="color:#444;">"복층 안방 설치에 추가비 1만원 요구" — 부당한 추가 요금 요구.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">문민수</span>
-          <span style="color:#e74c3c;">정리상태(매우불만)<br>응대태도(불만)</span>
-          <span style="color:#444;">"약속 시간 위반 후 문자 무응답, 연락하니 이미 도착" — 사전 연락 의무 미준수.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
-          <span style="color:#e74c3c;">정리·응대·용모(매우불만·불만)</span>
-          <span style="color:#444;">고객의견 미기재.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">정종철</span>
-          <span style="color:#e67e22;">응대태도(불만)</span>
-          <span style="color:#444;">"응대 목소리와 태도가 불친절해 기분 불쾌" — 전화 응대 개선 필요.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">정다운</span>
-          <span style="color:#e67e22;">응대태도(불만)</span>
-          <span style="color:#444;">"배송 시간 조율 없이 일방 통보" — 사전 협의 프로세스 미흡.</span>
-        </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">변재선</span>
-          <span style="color:#e67e22;">정리상태(불만)</span>
-          <span style="color:#444;">고객의견 미기재.</span>
+      <div style="padding:12px 20px;">
+        <div style="font-size:11px; color:#888; font-weight:700; margin-bottom:8px;">📝 주요 접수 사례</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>3월 ㅇㅇㅇ(VVVIP)</b> — 이사 당일 진입로 확보 요청 과정에서 불쾌한 응대 → 유관부서 공유·교육, 공식 사과
+          </div>
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 기사가 마루 훼손 과실 부인, 언쟁 발생 → 마루바닥 보상 진행
+          </div>
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 약속 시간보다 1시간 일찍 도착 + 비밀번호 요구 · 무례한 응대 → 교육 + 가죽클리너 사은품
+          </div>
+          <div style="font-size:12px; background:#fffaf5; border-left:3px solid #e67e22; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 클리닝 서비스 방문 시 전용클리너 미사용(물티슈), 성의 없는 응대 → 새제품 교환 검토
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- 4월 -->
-    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
-      <div style="background:#1a3a5c;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:14px;font-weight:700;">📅 26년 4월 불만족 접수내역</span>
-        <span style="background:rgba(255,255,255,.2);border-radius:20px;padding:3px 14px;font-size:12px;">7건 (불만 4 + 매우불만 3)</span>
+    <!-- 출고누락 -->
+    <div class="voc-card" style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div class="voc-header" style="background:#f1c40f; color:#fff; padding:13px 20px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:15px; font-weight:700;">🟡 출고누락</span>
+        <span style="font-size:13px; background:rgba(255,255,255,.25); border-radius:20px; padding:3px 12px;">총 4건 (10%)</span>
       </div>
-      <div style="padding:4px 0;">
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:11px;font-weight:700;color:#fff;background:#243f5c;padding:7px 16px;">
-          <span>기사명</span><span>불만 항목</span><span>고객의견 요약</span>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; border-bottom:1px solid #f0f2f5;">
+        <div style="background:#fefdf0; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#b7950b; font-weight:700; margin-bottom:6px;">📌 주요 발생 패턴</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 품질보증서 미전달 (2건)<br>
+            · 배송 당일 출고 준비 누락 (2건)<br>
+            · 출고 누락 사실 파악 후 고객 통보
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">윤옥성</span>
-          <span style="color:#e67e22;">정리·응대·용모(불만)</span>
-          <span style="color:#444;">"하루 전 배송 일정 통보 — 최소 일주일 전 조율 필요" — 배송 일정 협의 체계 미흡.</span>
+        <div style="background:#fefdf0; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#b7950b; font-weight:700; margin-bottom:6px;">🔍 공통 원인</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 출고 전 체크리스트 미운용<br>
+            · 배차 기사의 물건 확인 절차 부재<br>
+            · 담당자 간 인계 미흡
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;border-bottom:1px solid #f0f2f5;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">김재희</span>
-          <span style="color:#e74c3c;">정리상태(불만)<br>응대태도(매우불만)</span>
-          <span style="color:#444;">"기사 말투가 불친절하게 느껴져 기분 나빴음" — 고객 응대 태도 개선 필요.</span>
+        <div style="background:#fefdf0; border-radius:8px; padding:12px;">
+          <div style="font-size:11px; color:#b7950b; font-weight:700; margin-bottom:6px;">✅ 처리 결과 및 개선방향</div>
+          <div style="font-size:12px; line-height:1.8; color:#444;">
+            · 품질보증서 택배 즉시 발송<br>
+            · 재배송 일정 고객 우선 조율<br>
+            · <b>개선:</b> 출고 전 보증서 포함 필수 확인<br>
+            · <b>개선:</b> 상차 전 기사 물건 확인 의무화
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:80px 120px 1fr;gap:0;font-size:12px;padding:10px 16px;align-items:start;">
-          <span style="font-weight:700;color:#1a3a5c;">김병주</span>
-          <span style="color:#e74c3c;">정리·응대(매우불만)</span>
-          <span style="color:#444;">"현관 진입 가능 소파에 사다리차 운운하며 저질 응대" — 부당 비용 유도·불친절.</span>
+      </div>
+      <div style="padding:12px 20px;">
+        <div style="font-size:11px; color:#888; font-weight:700; margin-bottom:8px;">📝 주요 접수 사례</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:12px; background:#fffef0; border-left:3px solid #f1c40f; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>1월 ㅇㅇㅇ</b> — 내부물류 출고 준비 미흡으로 배송기사가 빈차로 출발, 고객 당일 배송 불가
+          </div>
+          <div style="font-size:12px; background:#fffef0; border-left:3px solid #f1c40f; padding:8px 12px; border-radius:0 6px 6px 0; color:#444;">
+            <b>4월 ㅇㅇㅇ</b> — 배송 확정 안내 후 당일 갑자기 배송 불가 통보, 기사가 물건 없음 확인 후 담당자 미문의
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- 종합 -->
-    <div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;">
-      <div style="background:linear-gradient(135deg,#1a3a5c,#2d6a9f);color:#fff;padding:13px 20px;">
-        <span style="font-size:15px;font-weight:700;">💡 불만족 유형별 주요 원인 요약</span>
+    <!-- 기타 유형 3종 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;">
+
+      <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+        <div style="background:#2ecc71; color:#fff; padding:11px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px; font-weight:700;">🟢 시공불량</span>
+          <span style="font-size:12px; background:rgba(255,255,255,.25); border-radius:20px; padding:2px 10px;">2건</span>
+        </div>
+        <div style="padding:14px 16px; font-size:12px; color:#444; line-height:1.9;">
+          <b>패턴:</b> 시공 후 고객 댁 마루바닥 훼손<br>
+          <b>원인:</b> 기사가 훼손 인지 못하고 철수, 또는 과실 부인<br>
+          <b>처리:</b> 보상 조율, 기사 재방문<br>
+          <b>사례:</b><br>
+          · 1월 ㅇㅇㅇ — 찍힘 미인지 철수 → 기사 사과+보상<br>
+          · 1월 ㅇㅇㅇ — 마루 훼손, 기사 과실 부인 → 보상 조율 중
+        </div>
       </div>
-      <div style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+      <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+        <div style="background:#1abc9c; color:#fff; padding:11px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px; font-weight:700;">🩵 업무누락</span>
+          <span style="font-size:12px; background:rgba(255,255,255,.25); border-radius:20px; padding:2px 10px;">2건</span>
+        </div>
+        <div style="padding:14px 16px; font-size:12px; color:#444; line-height:1.9;">
+          <b>패턴:</b> 고객 접수 내용 본사 미전달, 방문 일정 누락<br>
+          <b>원인:</b> 기사가 현장에서 접수 받고 미보고, 동명이인 착각<br>
+          <b>처리:</b> 사과 + 재방문 일정 조율<br>
+          <b>사례:</b><br>
+          · 3월 ㅇㅇㅇ — 기사 접수 누락으로 지연 대응<br>
+          · 3월 ㅇㅇㅇ — 동명이인 착각으로 방문 미실시
+        </div>
+      </div>
+
+      <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+        <div style="background:#7f8c8d; color:#fff; padding:11px 16px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px; font-weight:700;">⚪ 기타</span>
+          <span style="font-size:12px; background:rgba(255,255,255,.25); border-radius:20px; padding:2px 10px;">3건</span>
+        </div>
+        <div style="padding:14px 16px; font-size:12px; color:#444; line-height:1.9;">
+          <b>배송누락(1건)</b> — 시스템 오류로 당일 배송 불가<br>
+          → 사은품(가죽클리너) 증정으로 마무리<br><br>
+          <b>오안내(1건)</b> — 기사가 본사 협의 없이 정상제품 회수<br>
+          → 제품 재배송 + 기사 교육<br><br>
+          <b>오출고(1건)</b> — AS 기사 교체 시 자재 미전달로 재방문<br>
+          → 재방문 처리 완료
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 종합 개선방향 -->
+    <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#1a3a5c,#2d6a9f); color:#fff; padding:13px 20px;">
+        <span style="font-size:15px; font-weight:700;">💡 종합 개선방향 (1~4월 기준)</span>
+      </div>
+      <div style="padding:16px 20px; display:grid; grid-template-columns:1fr 1fr; gap:16px;">
         <div>
-          <div style="font-size:12px;font-weight:700;color:#e74c3c;margin-bottom:8px;">① 정리상태 불만 (20건, 1.3%)</div>
-          <div style="font-size:12px;color:#444;line-height:1.9;">· 바닥·카펫 손상 후 과실 부인 또는 무언급<br>· 작업 후 주변 정리 미흡 (물건 제자리 미복구)<br>· 용모 불량 (담배냄새, 위생 문제)</div>
+          <div style="font-size:12px; font-weight:700; color:#e74c3c; margin-bottom:8px;">① 취급부주의 감소 (최우선)</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 상하차 시 구두 신호 체계 표준화 ("잡았습니다 / 내립니다")<br>
+            · 출고 전·상차 전 외관검사 의무화 및 사진 기록<br>
+            · 협소 공간 진입 시 사다리차 사용 원칙 수립<br>
+            · 기사 2인 1조 작업 시 사수·보조 역할 명확화
+          </div>
         </div>
         <div>
-          <div style="font-size:12px;font-weight:700;color:#e67e22;margin-bottom:8px;">② 응대태도 불만 (17건, 1.1%)</div>
-          <div style="font-size:12px;color:#444;line-height:1.9;">· 배송시간 약속 미준수 및 사전 연락 누락<br>· 고객 요청 무시·책임 회피 발언<br>· 부당한 추가비용 요구 (사다리차 등)</div>
+          <div style="font-size:12px; font-weight:700; color:#e67e22; margin-bottom:8px;">② 응대불만 감소 (차순위)</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 해피콜 표준 매뉴얼 수립 (고객 요청사항 필수 메모)<br>
+            · 배송 시간 변경 시 사전 동의 및 문자 발송 의무화<br>
+            · 도착 전 사전 연락 의무화<br>
+            · 과실 발생 시 즉시 인정·사과 교육 강화
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:#b7950b; margin-bottom:8px;">③ 출고누락 예방</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 품질보증서 포함 출고 체크리스트 운용<br>
+            · 배차 기사 상차 전 물건 확인 절차 필수화
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:700; color:#27ae60; margin-bottom:8px;">④ 공통 관리 강화</div>
+          <div style="font-size:12px; color:#444; line-height:1.9;">
+            · 현장 접수 건은 당일 본사 보고 의무화<br>
+            · AS 기사 교체 시 자재·정보 인수인계 체크리스트 운용<br>
+            · 월 1회 기사 서비스 교육 정례화
+          </div>
         </div>
       </div>
     </div>
+
+  </div>
 </div>
 
 <!-- ==================== 고객만족율: 월별 만족도 현황 ==================== -->
