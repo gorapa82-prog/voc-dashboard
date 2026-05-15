@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-15 11:03</span>
+  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-15 11:30</span>
 </header>
 
 <div class="layout">
@@ -1919,10 +1919,10 @@ new Chart(document.getElementById('csStaffChart').getContext('2d'), {
   }
 });
 </script>
+<script>(function(){var _o=window.switchTab;if(!_o)return;window.switchTab=function(name,btn){_o.call(this,name,btn);if(name==="cs-monthly"){setTimeout(function(){if(window._initSm1Chart)_initSm1Chart(0);if(window._initSm2Chart)_initSm2Chart(0);},200);}};})();</script>
 </body>
 </html>
 
 <script>
-function showGenTab(dp,bp,n){document.querySelectorAll("[id^='"+dp+"']").forEach(function(d){d.style.display='none';});var t=document.getElementById(dp+n);if(t)t.style.display='block';document.querySelectorAll("[id^='"+bp+"']").forEach(function(b){b.style.background='#f8f9fa';b.style.color='#555';b.style.border='1px solid #ddd';});var a=document.getElementById(bp+n);if(a){a.style.background='#1a3a5c';a.style.color='#fff';a.style.border='none';}}
+function showGenTab(dp,bp,n){document.querySelectorAll("[id^='"+ dp +"']" ).forEach(function(d){d.style.display='none';});var t=document.getElementById(dp+n);if(t)t.style.display='block';document.querySelectorAll("[id^='"+ bp +"']" ).forEach(function(b){b.style.background='#f8f9fa';b.style.color='#555';b.style.border='1px solid #ddd';});var a=document.getElementById(bp+n);if(a){a.style.background='#1a3a5c';a.style.color='#fff';a.style.border='none';}}
 </script>
-<script>(function(){var _t=document.getElementById("tab-cs-monthly");if(!_t)return;var _obs=new MutationObserver(function(ms){ms.forEach(function(m){if(m.attributeName==="class"&&_t.classList.contains("active")){setTimeout(function(){if(window._initSm1Chart)_initSm1Chart();if(window._initSm2Chart)_initSm2Chart();},50);}});});_obs.observe(_t,{attributes:true});})();</script>
