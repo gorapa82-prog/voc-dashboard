@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-18 09:40</span>
+  <span>2026년 1월 ~ 4월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-05-18 10:11</span>
 </header>
 
 <div class="layout">
@@ -2053,5 +2053,5 @@ new Chart(document.getElementById('csStaffChart').getContext('2d'), {
 </html>
 
 <script>
-function showGenTab(dp,bp,n){document.querySelectorAll("[id^='"+ dp +"']" ).forEach(function(d){d.style.display='none';});var t=document.getElementById(dp+n);if(t)t.style.display='block';document.querySelectorAll("[id^='"+ bp +"']" ).forEach(function(b){b.style.background='#f8f9fa';b.style.color='#555';b.style.border='1px solid #ddd';});var a=document.getElementById(bp+n);if(a){a.style.background='#1a3a5c';a.style.color='#fff';a.style.border='none';}}
+function showGenTab(dp,bp,n){document.querySelectorAll("[id^='"+ dp +"']" ).forEach(function(d){d.style.display='none';});var t=document.getElementById(dp+n);if(t){t.style.display='block';setTimeout(function(){if(window._initSm1Chart)_initSm1Chart(0);if(window._initSm2Chart)_initSm2Chart(0);var mf1=window['_sm1MInit'+n];var mf2=window['_sm2MInit'+n];if(mf1)mf1(0);if(mf2)mf2(0);},200);}document.querySelectorAll("[id^='"+ bp +"']" ).forEach(function(b){b.style.background='#f8f9fa';b.style.color='#555';b.style.border='1px solid #ddd';});var a=document.getElementById(bp+n);if(a){a.style.background='#1a3a5c';a.style.color='#fff';a.style.border='none';}}
 </script>
