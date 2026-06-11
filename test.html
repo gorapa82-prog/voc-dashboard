@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-11 11:10</span>
+  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-11 11:18</span>
 </header>
 
 <div class="layout">
@@ -2282,6 +2282,9 @@ function showCsStaffTab(idx){
   csStaffChartInstance.options.plugins.tooltip.callbacks.label = function(c){const n=d.names[c.dataIndex]; return [" 평균: "+c.raw+"%", " 정리상태: "+d.cleans[n]+"%", " 응대태도: "+d.atds[n]+"%", " 용모복장: "+d.apps[n]+"%"];};
   // 제목 갱신
   const ttl = document.getElementById("csStaffChartTitle"); if(ttl) ttl.textContent = d.title;
+  // y축 min 동적 조정 (최솟값 - 5%, 단 최대 70까지)
+  const _minVal = Math.min.apply(null, d.avgs.filter(v=>v>0));
+  csStaffChartInstance.options.scales.y.min = Math.min(Math.floor((_minVal-5)/5)*5, 70);
   csStaffChartInstance.update();
 }
 csStaffChartInstance = new Chart(document.getElementById('csStaffChart').getContext('2d'), {
@@ -2306,7 +2309,7 @@ csStaffChartInstance = new Chart(document.getElementById('csStaffChart').getCont
     },
     scales:{
       x:{ticks:{font:{size:12},callback:function(val,idx){const sc={'임지훈':139,'임민우':146,'이동한':104,'구본혁':102,'김병우':184,'윤경환':32,'문민수':110,'박용구':24,'고요한':170,'박상현':137,'윤옥성':119,'모주완':126,'김병주':168,'장동진':99,'변재선':116,'정종철':160,'미반영':5,'하우저':4,'김재현':127,'김재희':75,'임경택':16,'정용우':4,'강민승':3,'정다운':75,'손명익':4};return[csStaffNames[idx],'('+(sc[csStaffNames[idx]]||'')+'건)'];}}},
-      y:{min:85,max:101,ticks:{stepSize:5,font:{size:12},callback:v=>v>100?'':v+'%'},title:{display:false}}
+      y:{min:70,max:101,ticks:{stepSize:5,font:{size:12},callback:v=>v>100?'':v+'%'},title:{display:false}}
     }
   }
 });
