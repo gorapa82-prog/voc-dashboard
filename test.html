@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-11 11:18</span>
+  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-11 11:28</span>
 </header>
 
 <div class="layout">
@@ -282,7 +282,8 @@
 
   <div class="charts-grid">
     <div class="chart-card wide">
-      <div class="chart-title">기사별 누계 VOC 건수 (상위)</div>
+      <div class="chart-title" id="staffBarChartTitle">기사별 누계 VOC 건수 (상위, 1월~5월)</div>
+      <div style="padding:6px 0 4px;display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><span style="font-size:11px;color:#666;font-weight:600;margin-right:4px;">기간:</span><button id="sbtb0" onclick="showStaffBarTab(0)" style="padding:3px 10px;border-radius:10px;background:#1a3a5c;color:#fff;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">누계</button><button id="sbtb1" onclick="showStaffBarTab(1)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">1월</button><button id="sbtb2" onclick="showStaffBarTab(2)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">2월</button><button id="sbtb3" onclick="showStaffBarTab(3)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">3월</button><button id="sbtb4" onclick="showStaffBarTab(4)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">4월</button><button id="sbtb5" onclick="showStaffBarTab(5)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">5월</button></div>
       <canvas id="staffBarChart" style="max-height:380px;"></canvas>
     </div>
     <div class="chart-card wide">
@@ -2152,7 +2153,28 @@ new Chart(document.getElementById('stackedChart').getContext('2d'), {
 const staffNames = ['정종철', '문민수', '김병우', '박상현', '내부물류', '변재선', '윤옥성', '임민우', '김재희', '정다운', '외부물류', '김병주', '구본혁', '임지훈', '모주완', '손명익', '김재현', '장동진'];
 const staffCounts = [7, 6, 4, 4, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1];
 
-new Chart(document.getElementById('staffBarChart').getContext('2d'), {
+const staffBarTabData = {"0": {"lbl": "누계", "title": "기사별 누계 VOC 건수 (상위, 1월~5월)", "names": ["정종철", "문민수", "김병우", "박상현", "내부물류", "변재선", "윤옥성", "임민우", "김재희", "정다운", "외부물류", "김병주", "구본혁", "임지훈", "모주완", "손명익", "김재현", "장동진"], "counts": [7, 6, 4, 4, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]}, "1": {"lbl": "1월", "title": "기사별 1월 VOC 건수", "names": ["내부물류", "변재선", "정종철", "문민수", "김병우", "윤옥성"], "counts": [2, 2, 1, 1, 1, 1]}, "2": {"lbl": "2월", "title": "기사별 2월 VOC 건수", "names": ["정종철", "박상현", "외부물류"], "counts": [2, 1, 1]}, "3": {"lbl": "3월", "title": "기사별 3월 VOC 건수", "names": ["김병우", "박상현", "문민수", "임민우", "정종철", "김재희", "김병주", "구본혁", "임지훈"], "counts": [3, 3, 2, 2, 1, 1, 1, 1, 1]}, "4": {"lbl": "4월", "title": "기사별 4월 VOC 건수", "names": ["정종철", "문민수", "변재선", "윤옥성", "김재희", "정다운", "모주완", "손명익", "김재현", "장동진"], "counts": [3, 3, 1, 1, 1, 1, 1, 1, 1, 1]}, "5": {"lbl": "5월", "title": "기사별 5월 VOC 건수", "names": ["내부물류", "정다운"], "counts": [1, 1]}};
+let staffBarChartInstance = null;
+function _sbColorForIdx(i){if(i<=1)return "#e74c3c";if(i<=3)return "#e67e22";return "#95a5a6";}
+function showStaffBarTab(idx){
+  for(let i=0;i<=5;i++){
+    const btn=document.getElementById("sbtb"+i); if(!btn) continue;
+    if(i===idx){ btn.style.background="#1a3a5c"; btn.style.color="#fff"; btn.style.border="none"; }
+    else { btn.style.background="#f8f9fa"; btn.style.color="#555"; btn.style.border="1px solid #ddd"; }
+  }
+  if(!staffBarChartInstance) return;
+  const d = staffBarTabData[idx]; if(!d) return;
+  staffBarChartInstance.data.labels = d.names;
+  staffBarChartInstance.data.datasets[0].data = d.counts;
+  staffBarChartInstance.data.datasets[0].backgroundColor = d.names.map(function(n,i){return _sbColorForIdx(i);});
+  // y축 max 동적 (최대값 + 1 이상)
+  const _mx = d.counts.length ? Math.max.apply(null, d.counts) : 0;
+  staffBarChartInstance.options.scales.y.max = Math.max(_mx + 2, 5);
+  // 제목 갱신
+  const ttl = document.getElementById("staffBarChartTitle"); if(ttl) ttl.textContent = d.title;
+  staffBarChartInstance.update();
+}
+staffBarChartInstance = new Chart(document.getElementById('staffBarChart').getContext('2d'), {
   type:'bar',
   data:{
     labels:staffNames,
