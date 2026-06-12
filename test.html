@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-12 14:59</span>
+  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-12 15:03</span>
 </header>
 
 <div class="layout">
@@ -200,26 +200,25 @@
 
 <!-- ==================== 탭1: 월별 실적 ==================== -->
 <div id="tab-monthly" class="tab-content active">
-  <div style="padding:6px 30px 0;display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><span style="font-size:11px;color:#666;font-weight:600;margin-right:4px;">월 선택:</span><button id="mktb0" onclick="showMonthlyKpi(0)" style="padding:3px 10px;border-radius:10px;background:#1a3a5c;color:#fff;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">누계</button><button id="mktb1" onclick="showMonthlyKpi(1)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">1월</button><button id="mktb2" onclick="showMonthlyKpi(2)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">2월</button><button id="mktb3" onclick="showMonthlyKpi(3)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">3월</button><button id="mktb4" onclick="showMonthlyKpi(4)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">4월</button><button id="mktb5" onclick="showMonthlyKpi(5)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">5월</button></div>
-  
+
   <div class="kpi-row" style="grid-template-columns:repeat(5,1fr);">
-    <div id="mkpi1" class="kpi blue">
+    <div class="kpi blue">
       <div class="kpi-label">총 접수건수 (누계)</div>
       <div class="kpi-value">44건</div>
       <div class="kpi-sub">2026년 1월 ~ 5월</div>
     </div>
-    <div id="mkpi2" class="kpi orange">
+    <div class="kpi orange">
       <div class="kpi-label">최근월 5월</div>
       <div class="kpi-value">2건</div>
       <div class="kpi-sub">전월(14건) 대비 <span style="color:#27ae60">▼ 86%</span></div>
     </div>
-    <div id="mkpi3" class="kpi red">
+    <div class="kpi red">
       <div class="kpi-label">최다 불만유형</div>
       <div class="kpi-value" style="font-size:18px">취급부주의</div>
       <div class="kpi-sub">19건 (43%) — 최다 불만유형</div>
     </div>
-    <div id="mkpi4" class="kpi green"><div class="kpi-label">전년동기 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼113건 / ▼72%</span></div><div class="kpi-sub">25년 157건 → 26년 44건</div></div>
-    <div id="mkpi5" class="kpi orange"><div class="kpi-label">전월 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼12건 / ▼86%</span></div><div class="kpi-sub">전월(14건) → 5월(2건)</div></div>
+    <div class="kpi green"><div class="kpi-label">전년동기 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼113건 / ▼72%</span></div><div class="kpi-sub">25년 157건 → 26년 44건</div></div>
+    <div class="kpi orange"><div class="kpi-label">전월 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼12건 / ▼86%</span></div><div class="kpi-sub">전월(14건) → 5월(2건)</div></div>
   </div>
 
   <div class="insight blue">
@@ -252,26 +251,25 @@
 
 <!-- ==================== 탭2: 기사별 실적 ==================== -->
 <div id="tab-staff" class="tab-content">
-  <div style="padding:6px 30px 0;display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><span style="font-size:11px;color:#666;font-weight:600;margin-right:4px;">월 선택:</span><button id="sktb0" onclick="showStaffKpi(0)" style="padding:3px 10px;border-radius:10px;background:#1a3a5c;color:#fff;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">누계</button><button id="sktb1" onclick="showStaffKpi(1)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">1월</button><button id="sktb2" onclick="showStaffKpi(2)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">2월</button><button id="sktb3" onclick="showStaffKpi(3)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">3월</button><button id="sktb4" onclick="showStaffKpi(4)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">4월</button><button id="sktb5" onclick="showStaffKpi(5)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">5월</button></div>
-  
+
   <div class="kpi-row" style="grid-template-columns:repeat(5,1fr);">
-    <div id="skpi1" class="kpi purple">
+    <div class="kpi purple">
       <div class="kpi-label">담당 기사 수</div>
       <div class="kpi-value">18명</div>
       <div class="kpi-sub">내·외부 포함</div>
     </div>
-    <div id="skpi2" class="kpi red">
+    <div class="kpi red">
       <div class="kpi-label">최다 VOC 기사</div>
       <div class="kpi-value" style="font-size:18px">정종철</div>
       <div class="kpi-sub">7건 (1위)</div>
     </div>
-    <div id="skpi3" class="kpi orange">
+    <div class="kpi orange">
       <div class="kpi-label">주요 유형 (기사별)</div>
       <div class="kpi-value" style="font-size:18px">취급부주의</div>
       <div class="kpi-sub">응대불만과 함께 집중 발생</div>
     </div>
-    <div id="skpi4" class="kpi green"><div class="kpi-label">전년동기 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼113건 / ▼72%</span></div><div class="kpi-sub">25년 157건 → 26년 44건</div></div>
-    <div id="skpi5" class="kpi orange"><div class="kpi-label">전월 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼12건 / ▼86%</span></div><div class="kpi-sub">전월(14건) → 5월(2건)</div></div>
+    <div class="kpi green"><div class="kpi-label">전년동기 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼113건 / ▼72%</span></div><div class="kpi-sub">25년 157건 → 26년 44건</div></div>
+    <div class="kpi orange"><div class="kpi-label">전월 대비</div><div class="kpi-value" style="font-size:15px;"><span style="color:#27ae60;font-weight:700;">▼12건 / ▼86%</span></div><div class="kpi-sub">전월(14건) → 5월(2건)</div></div>
   </div>
 
   <div class="insight yellow">
@@ -1598,7 +1596,7 @@ new Chart(el2,{
 <div id="tab-eng-monthly" class="tab-content">
   <div class="section-card" style="padding:8px 14px;margin-bottom:0;box-sizing:border-box;width:100%;height:calc(100vh - 80px);overflow-y:auto;">
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
-      <h2 class="section-title" style="margin:0;font-size:13px;font-weight:700;">📅 시공기사 월별 평가현황 (2026년) <span style="background:#e74c3c;color:#fff;padding:2px 8px;border-radius:4px;font-size:10px;margin-left:6px;">TEST 버전 (최소 응답수 기준 적용)</span></h2>
+      <h2 class="section-title" style="margin:0;font-size:13px;font-weight:700;">📅 시공기사 월별 평가현황 (2026년)</h2>
     </div>
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:6px 0;"><div style="flex:1;min-width:160px;background:#fffbea;border-radius:8px;padding:14px 18px;border-left:5px solid #d4a017;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;justify-content:space-between;"><div style="text-align:right;margin-bottom:6px;"><span style="font-size:13px;color:#d4a017;background:rgba(0,0,0,.06);padding:3px 9px;border-radius:10px;font-weight:700;white-space:nowrap;">5월 마감 기준 (≥95점)</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:16px;font-weight:800;color:#333;">S등급 기사 (1명 선정) :</span><span style="font-size:16px;font-weight:900;color:#d4a017;">김병우</span><span style="font-size:24px;line-height:1;">🏆</span></div><div style="font-size:11px;color:#555;border-top:1px solid rgba(0,0,0,.08);padding-top:5px;line-height:1.6;">후보 7명 중 1명 · 차순위: 임민우, 박상현, 임지훈, 모주완, 김재현, 정다운<br><span style="font-size:9px;color:#888;font-style:italic;">선정기준: 점수 → 응답수 → 누계율</span></div></div><div style="flex:1;min-width:160px;background:#fff5f5;border-radius:8px;padding:14px 18px;border-left:5px solid #c0392b;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;justify-content:space-between;"><div style="text-align:right;margin-bottom:6px;"><span style="font-size:13px;color:#c0392b;background:rgba(0,0,0,.06);padding:3px 9px;border-radius:10px;font-weight:700;white-space:nowrap;">5월 마감 기준 (≤69점)</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:16px;font-weight:800;color:#333;">D등급 기사 :</span><span style="font-size:16px;font-weight:900;color:#c0392b;">1명</span><span style="font-size:24px;line-height:1;">⚠️</span></div><div style="font-size:11px;color:#555;border-top:1px solid rgba(0,0,0,.08);padding-top:5px;line-height:1.6;">장동진</div></div><div style="flex:1;min-width:160px;background:#f0fff4;border-radius:8px;padding:14px 18px;border-left:5px solid #27ae60;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;justify-content:space-between;"><div style="text-align:right;margin-bottom:6px;"><span style="font-size:13px;color:#27ae60;background:rgba(0,0,0,.06);padding:3px 9px;border-radius:10px;font-weight:700;white-space:nowrap;">4월→5월 마감 대비</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:16px;font-weight:800;color:#333;">등급 상승 :</span><span style="font-size:16px;font-weight:900;color:#27ae60;">7명</span><span style="font-size:24px;line-height:1;">📈</span></div><div style="font-size:11px;color:#555;border-top:1px solid rgba(0,0,0,.08);padding-top:5px;line-height:1.6;">모주완, 박상현, 정종철, 임지훈, 문민수, 김재희, 정다운</div></div><div style="flex:1;min-width:160px;background:#fff5f5;border-radius:8px;padding:14px 18px;border-left:5px solid #e74c3c;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;flex-direction:column;justify-content:space-between;"><div style="text-align:right;margin-bottom:6px;"><span style="font-size:13px;color:#e74c3c;background:rgba(0,0,0,.06);padding:3px 9px;border-radius:10px;font-weight:700;white-space:nowrap;">4월→5월 마감 대비</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="font-size:16px;font-weight:800;color:#333;">등급 하락 :</span><span style="font-size:16px;font-weight:900;color:#e74c3c;">1명</span><span style="font-size:24px;line-height:1;">📉</span></div><div style="font-size:11px;color:#555;border-top:1px solid rgba(0,0,0,.08);padding-top:5px;line-height:1.6;">구본혁</div></div></div>    <div style="overflow-x:auto;width:100%;margin-top:5px;">
       <table style="width:100%;border-collapse:collapse;font-size:10px;">
@@ -2337,39 +2335,6 @@ csStaffChartInstance = new Chart(document.getElementById('csStaffChart').getCont
     }
   }
 });
-</script>
-<script>
-const skpiTabData = {"0": {"c1_lbl": "담당 기사 수", "c1_val": "18명", "c1_sub": "내·외부 포함", "c2_lbl": "최다 VOC 기사", "c2_val": "정종철", "c2_sub": "7건 (1위)", "c3_lbl": "주요 유형 (기사별)", "c3_val": "취급부주의", "c3_sub": "응대불만과 함께 집중 발생", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼113건 / ▼72%</span>", "c4_sub": "25년 157건 → 26년 44건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼12건 / ▼86%</span>", "c5_sub": "전월(14건) → 5월(2건)"}, "1": {"c1_lbl": "1월 VOC 발생 기사", "c1_val": "6명", "c1_sub": "1월 VOC 발생 기사", "c2_lbl": "최다 VOC 기사", "c2_val": "내부물류 · 변재선", "c2_sub": "각 2건 (공동)", "c3_lbl": "주요 유형 (기사별)", "c3_val": "취급부주의", "c3_sub": "1월 3건 (33%)", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼13건 / ▼59%</span>", "c4_sub": "25년 1월 22건 → 26년 1월 9건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#888;font-weight:600;\">기준 (첫 월)</span>", "c5_sub": "전월 없음"}, "2": {"c1_lbl": "2월 VOC 발생 기사", "c1_val": "3명", "c1_sub": "2월 VOC 발생 기사", "c2_lbl": "최다 VOC 기사", "c2_val": "정종철", "c2_sub": "2건 (1위)", "c3_lbl": "주요 유형 (기사별)", "c3_val": "취급부주의", "c3_sub": "2월 3건 (75%)", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼35건 / ▼90%</span>", "c4_sub": "25년 2월 39건 → 26년 2월 4건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼5건 / ▼56%</span>", "c5_sub": "전월(9건) → 2월(4건)"}, "3": {"c1_lbl": "3월 VOC 발생 기사", "c1_val": "9명", "c1_sub": "3월 VOC 발생 기사", "c2_lbl": "최다 VOC 기사", "c2_val": "김병우 · 박상현", "c2_sub": "각 3건 (공동)", "c3_lbl": "주요 유형 (기사별)", "c3_val": "응대불만", "c3_sub": "3월 6건 (40%)", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼25건 / ▼62%</span>", "c4_sub": "25년 3월 40건 → 26년 3월 15건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#e74c3c;font-weight:700;\">▲11건 / ▲275%</span>", "c5_sub": "전월(4건) → 3월(15건)"}, "4": {"c1_lbl": "4월 VOC 발생 기사", "c1_val": "10명", "c1_sub": "4월 VOC 발생 기사", "c2_lbl": "최다 VOC 기사", "c2_val": "정종철 · 문민수", "c2_sub": "각 3건 (공동)", "c3_lbl": "주요 유형 (기사별)", "c3_val": "취급부주의", "c3_sub": "4월 7건 (50%)", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼15건 / ▼52%</span>", "c4_sub": "25년 4월 29건 → 26년 4월 14건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼1건 / ▼7%</span>", "c5_sub": "전월(15건) → 4월(14건)"}, "5": {"c1_lbl": "5월 VOC 발생 기사", "c1_val": "2명", "c1_sub": "5월 VOC 발생 기사", "c2_lbl": "최다 VOC 기사", "c2_val": "내부물류 · 정다운", "c2_sub": "각 1건 (공동)", "c3_lbl": "주요 유형 (기사별)", "c3_val": "취급부주의", "c3_sub": "5월 1건 (50%)", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼25건 / ▼93%</span>", "c4_sub": "25년 5월 27건 → 26년 5월 2건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼12건 / ▼86%</span>", "c5_sub": "전월(14건) → 5월(2건)"}};
-function showStaffKpi(idx){
-  for(let i=0;i<=5;i++){
-    const btn=document.getElementById("sktb"+i); if(!btn) continue;
-    if(i===idx){ btn.style.background="#1a3a5c"; btn.style.color="#fff"; btn.style.border="none"; }
-    else { btn.style.background="#f8f9fa"; btn.style.color="#555"; btn.style.border="1px solid #ddd"; }
-  }
-  const d = skpiTabData[idx]; if(!d) return;
-  for(let k=1;k<=5;k++){
-    const el = document.getElementById("skpi"+k); if(!el) continue;
-    const lbl = d["c"+k+"_lbl"], val = d["c"+k+"_val"], sub = d["c"+k+"_sub"];
-    let vs = (k===4||k===5) ? 'style="font-size:15px;"' : ((k===2||k===3) ? 'style="font-size:18px"' : '');
-    el.innerHTML = '<div class="kpi-label">'+lbl+'</div><div class="kpi-value" '+vs+'>'+val+'</div><div class="kpi-sub">'+sub+'</div>';
-  }
-}
-
-const mkpiTabData = {"0": {"c1_lbl": "총 접수건수 (누계)", "c1_val": "44건", "c1_sub": "2026년 1월 ~ 5월", "c2_lbl": "최근월 5월", "c2_val": "2건", "c2_sub": "전월(14건) 대비 <span style=\"color:#27ae60\">▼ 86%</span>", "c3_lbl": "최다 불만유형", "c3_val": "취급부주의", "c3_sub": "19건 (43%) — 최다 불만유형", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼113건 / ▼72%</span>", "c4_sub": "25년 157건 → 26년 44건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼12건 / ▼86%</span>", "c5_sub": "전월(14건) → 5월(2건)"}, "1": {"c1_lbl": "1월 접수건수", "c1_val": "9건", "c1_sub": "2026년 1월", "c2_lbl": "1월", "c2_val": "9건", "c2_sub": "기준 (첫 월)", "c3_lbl": "최다 불만유형", "c3_val": "취급부주의", "c3_sub": "3건 (33%) — 1월 최다", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼13건 / ▼59%</span>", "c4_sub": "25년 1월 22건 → 26년 1월 9건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#888;font-weight:600;\">기준 (첫 월)</span>", "c5_sub": "전월 없음"}, "2": {"c1_lbl": "2월 접수건수", "c1_val": "4건", "c1_sub": "2026년 2월", "c2_lbl": "2월", "c2_val": "4건", "c2_sub": "전월(9건) 대비 <span style=\"color:#27ae60\">▼ 56%</span>", "c3_lbl": "최다 불만유형", "c3_val": "취급부주의", "c3_sub": "3건 (75%) — 2월 최다", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼35건 / ▼90%</span>", "c4_sub": "25년 2월 39건 → 26년 2월 4건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼5건 / ▼56%</span>", "c5_sub": "전월(9건) → 2월(4건)"}, "3": {"c1_lbl": "3월 접수건수", "c1_val": "15건", "c1_sub": "2026년 3월", "c2_lbl": "3월", "c2_val": "15건", "c2_sub": "전월(4건) 대비 <span style=\"color:#e74c3c\">▲ 275%</span>", "c3_lbl": "최다 불만유형", "c3_val": "응대불만", "c3_sub": "6건 (40%) — 3월 최다", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼25건 / ▼62%</span>", "c4_sub": "25년 3월 40건 → 26년 3월 15건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#e74c3c;font-weight:700;\">▲11건 / ▲275%</span>", "c5_sub": "전월(4건) → 3월(15건)"}, "4": {"c1_lbl": "4월 접수건수", "c1_val": "14건", "c1_sub": "2026년 4월", "c2_lbl": "4월", "c2_val": "14건", "c2_sub": "전월(15건) 대비 <span style=\"color:#27ae60\">▼ 7%</span>", "c3_lbl": "최다 불만유형", "c3_val": "취급부주의", "c3_sub": "7건 (50%) — 4월 최다", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼15건 / ▼52%</span>", "c4_sub": "25년 4월 29건 → 26년 4월 14건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼1건 / ▼7%</span>", "c5_sub": "전월(15건) → 4월(14건)"}, "5": {"c1_lbl": "5월 접수건수", "c1_val": "2건", "c1_sub": "2026년 5월", "c2_lbl": "5월", "c2_val": "2건", "c2_sub": "전월(14건) 대비 <span style=\"color:#27ae60\">▼ 86%</span>", "c3_lbl": "최다 불만유형", "c3_val": "취급부주의", "c3_sub": "1건 (50%) — 5월 최다", "c4_lbl": "전년동기 대비", "c4_val": "<span style=\"color:#27ae60;font-weight:700;\">▼25건 / ▼93%</span>", "c4_sub": "25년 5월 27건 → 26년 5월 2건", "c5_lbl": "전월 대비", "c5_val": "<span style=\"color:#27ae60;font-weight:700;\">▼12건 / ▼86%</span>", "c5_sub": "전월(14건) → 5월(2건)"}};
-function showMonthlyKpi(idx){
-  for(let i=0;i<=5;i++){
-    const btn=document.getElementById("mktb"+i); if(!btn) continue;
-    if(i===idx){ btn.style.background="#1a3a5c"; btn.style.color="#fff"; btn.style.border="none"; }
-    else { btn.style.background="#f8f9fa"; btn.style.color="#555"; btn.style.border="1px solid #ddd"; }
-  }
-  const d = mkpiTabData[idx]; if(!d) return;
-  for(let k=1;k<=5;k++){
-    const el = document.getElementById("mkpi"+k); if(!el) continue;
-    const lbl = d["c"+k+"_lbl"], val = d["c"+k+"_val"], sub = d["c"+k+"_sub"];
-    let vs = (k===4||k===5) ? 'style="font-size:15px;"' : (k===3 ? 'style="font-size:18px"' : '');
-    el.innerHTML = '<div class="kpi-label">'+lbl+'</div><div class="kpi-value" '+vs+'>'+val+'</div><div class="kpi-sub">'+sub+'</div>';
-  }
-}
 </script>
 <script>(function(){var _o=window.switchTab;if(!_o)return;window.switchTab=function(name,btn){_o.call(this,name,btn);if(name==="cs-monthly"){setTimeout(function(){if(window._initSm1Chart)_initSm1Chart(0);if(window._initSm2Chart)_initSm2Chart(0);for(var i=1;i<=12;i++){var d1=document.getElementById("sm1d"+i);var d2=document.getElementById("sm2d"+i);if(d1&&d1.style.display!=="none"){var mf1=window["_sm1MInit"+i];if(mf1)mf1(0);}if(d2&&d2.style.display!=="none"){var mf2=window["_sm2MInit"+i];if(mf2)mf2(0);}}},200);}};})();</script>
 </body>
