@@ -145,7 +145,7 @@
 
 <header>
   <h1>📦 물류 VOC 및 고객만족율 실적 대시보드</h1>
-  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-12 14:10</span>
+  <span>2026년 1월 ~ 5월 기준 &nbsp;|&nbsp; 최종 업데이트: 2026-06-12 14:18</span>
 </header>
 
 <div class="layout">
@@ -602,26 +602,30 @@
 
 <!-- ==================== 고객만족율: 월별 만족도 현황 ==================== -->
 <div id="tab-cs-monthly" class="tab-content">
-  <div style="padding:6px 30px 0;display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><span style="font-size:11px;color:#666;font-weight:600;margin-right:4px;">월 선택:</span><button id="cmktb0" onclick="showCsMonthlyKpi(0)" style="padding:3px 10px;border-radius:10px;background:#1a3a5c;color:#fff;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">누계</button><button id="cmktb1" onclick="showCsMonthlyKpi(1)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">1월</button><button id="cmktb2" onclick="showCsMonthlyKpi(2)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">2월</button><button id="cmktb3" onclick="showCsMonthlyKpi(3)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">3월</button><button id="cmktb4" onclick="showCsMonthlyKpi(4)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">4월</button><button id="cmktb5" onclick="showCsMonthlyKpi(5)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">5월</button><button id="cmktb6" onclick="showCsMonthlyKpi(6)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">6월</button></div>
-  
+
   <div class="kpi-row" style="grid-template-columns:repeat(5,1fr);">
-    <div id="cmkpi1" class="kpi blue"><div class="kpi-label">총 응답건수 (1월~6월 누계)</div>
+    <div class="kpi blue">
+      <div class="kpi-label">총 응답건수 (1월~6월 누계)</div>
       <div class="kpi-value">2,249건</div>
       <div class="kpi-sub">24명 기사 · 6개월 집계</div>
     </div>
-    <div id="cmkpi2" class="kpi green"><div class="kpi-label">매우만족+만족률 (평균)</div>
+    <div class="kpi green">
+      <div class="kpi-label">매우만족+만족률 (평균)</div>
       <div class="kpi-value">96.6%</div>
       <div class="kpi-sub">3개 항목 평균 (누계)</div>
     </div>
-    <div id="cmkpi3" class="kpi green"><div class="kpi-label" style="color:#999;">■ 정리상태 만족률</div>
+    <div class="kpi green">
+      <div class="kpi-label" style="color:#3498db;">■ 정리상태 만족률</div>
       <div class="kpi-value">96.9%</div>
       <div class="kpi-sub">매우만족 + 만족 기준 (누계)</div>
     </div>
-    <div id="cmkpi4" class="kpi green"><div class="kpi-label" style="color:#999;">■ 응대태도 만족률</div>
+    <div class="kpi green">
+      <div class="kpi-label" style="color:#27ae60;">■ 응대태도 만족률</div>
       <div class="kpi-value">96.8%</div>
       <div class="kpi-sub">매우만족 + 만족 기준 (누계)</div>
     </div>
-    <div id="cmkpi5" class="kpi green"><div class="kpi-label" style="color:#999;">■ 용모복장 만족률</div>
+    <div class="kpi green">
+      <div class="kpi-label" style="color:#8e44ad;">■ 용모복장 만족률</div>
       <div class="kpi-value">96.2%</div>
       <div class="kpi-sub">매우만족 + 만족 기준 (누계)</div>
     </div>
@@ -713,10 +717,10 @@ new Chart(el2,{
 
 <!-- ==================== 고객만족율: 기사별 만족도 ==================== -->
 <div id="tab-cs-staff" class="tab-content">
-  <div style="padding:6px 30px 0;display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><span style="font-size:11px;color:#666;font-weight:600;margin-right:4px;">월 선택:</span><button id="cstktb0" onclick="showCsStaffKpi(0)" style="padding:3px 10px;border-radius:10px;background:#1a3a5c;color:#fff;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">누계</button><button id="cstktb1" onclick="showCsStaffKpi(1)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">1월</button><button id="cstktb2" onclick="showCsStaffKpi(2)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">2월</button><button id="cstktb3" onclick="showCsStaffKpi(3)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">3월</button><button id="cstktb4" onclick="showCsStaffKpi(4)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">4월</button><button id="cstktb5" onclick="showCsStaffKpi(5)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">5월</button><button id="cstktb6" onclick="showCsStaffKpi(6)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">6월</button></div>
-  
+
   <div class="kpi-row">
-    <div id="cstkpi1" class="kpi blue"><div class="kpi-label">조사 대상 기사</div>
+    <div class="kpi blue">
+      <div class="kpi-label">조사 대상 기사</div>
       <div class="kpi-value">19명</div>
       <div class="kpi-sub">총 1,998건 응답 집계</div>
     </div>
@@ -725,11 +729,13 @@ new Chart(el2,{
       <div class="kpi-value" style="font-size:20px">김병우</div>
       <div class="kpi-sub">3개월 연속 근무자 기준 · 누계 합계 99.5%</div>
     </div>
-    <div id="cstkpi3" class="kpi orange"><div class="kpi-label">집중 관리 필요</div>
+    <div class="kpi orange">
+      <div class="kpi-label">집중 관리 필요</div>
       <div class="kpi-value" style="font-size:18px">장동진</div>
       <div class="kpi-sub">3개월 연속 근무자 기준 · 누계 합계 92.3%</div>
     </div>
-    <div id="cstkpi4" class="kpi purple"><div class="kpi-label">전체 평균 만족률</div>
+    <div class="kpi purple">
+      <div class="kpi-label">전체 평균 만족률</div>
       <div class="kpi-value">96.5%</div>
       <div class="kpi-sub">3개 항목 평균 (누계 기준)</div>
     </div>
@@ -895,22 +901,25 @@ new Chart(el2,{
 
 <!-- ==================== 고객만족율: 불만접수 현황 ==================== -->
 <div id="tab-cs-complaint" class="tab-content">
-  <div style="padding:6px 30px 0;display:flex;gap:4px;flex-wrap:wrap;align-items:center;"><span style="font-size:11px;color:#666;font-weight:600;margin-right:4px;">월 선택:</span><button id="cctkb0" onclick="showCsCompKpi(0)" style="padding:3px 10px;border-radius:10px;background:#1a3a5c;color:#fff;border:none;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">누계</button><button id="cctkb1" onclick="showCsCompKpi(1)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">1월</button><button id="cctkb2" onclick="showCsCompKpi(2)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">2월</button><button id="cctkb3" onclick="showCsCompKpi(3)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">3월</button><button id="cctkb4" onclick="showCsCompKpi(4)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">4월</button><button id="cctkb5" onclick="showCsCompKpi(5)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">5월</button><button id="cctkb6" onclick="showCsCompKpi(6)" style="padding:3px 10px;border-radius:10px;background:#f8f9fa;color:#555;border:1px solid #ddd;cursor:pointer;font-size:10px;font-weight:600;margin-right:4px;">6월</button></div>
-  
+
   <div class="kpi-row">
-    <div id="ccpi1" class="kpi red"><div class="kpi-label">총 불만/매우불만 건수 (1월~6월)</div>
+    <div class="kpi red">
+      <div class="kpi-label">총 불만/매우불만 건수 (1월~6월)</div>
       <div class="kpi-value">49건</div>
       <div class="kpi-sub">전체 항목 응답 6,747건 중 0.73%</div>
     </div>
-    <div id="ccpi2" class="kpi orange"><div class="kpi-label">불만족 최다 월</div>
+    <div class="kpi orange">
+      <div class="kpi-label">불만족 최다 월</div>
       <div class="kpi-value" style="font-size:20px;">3월 (16건)</div>
       <div class="kpi-sub">1월 11건 · 2월 9건 · 4월 11건 · 5월 1건 · 6월 1건</div>
     </div>
-    <div id="ccpi3" class="kpi red"><div class="kpi-label">최다 불만 항목</div>
+    <div class="kpi red">
+      <div class="kpi-label">최다 불만 항목</div>
       <div class="kpi-value" style="font-size:18px;">정리상태</div>
       <div class="kpi-sub">누계 23건 (1.0%) — 항목 중 최다</div>
     </div>
-    <div id="ccpi4" class="kpi purple"><div class="kpi-label">응대태도 불만족</div>
+    <div class="kpi purple">
+      <div class="kpi-label">응대태도 불만족</div>
       <div class="kpi-value" style="font-size:18px;">20건 (0.9%)</div>
       <div class="kpi-sub">3월 집중 발생 (8건, 1.5%)</div>
     </div>
@@ -2359,56 +2368,6 @@ function showMonthlyKpi(idx){
     const el = document.getElementById("mkpi"+k); if(!el) continue;
     const lbl = d["c"+k+"_lbl"], val = d["c"+k+"_val"], sub = d["c"+k+"_sub"];
     let vs = (k===4||k===5) ? 'style="font-size:15px;"' : (k===3 ? 'style="font-size:18px"' : '');
-    el.innerHTML = '<div class="kpi-label">'+lbl+'</div><div class="kpi-value" '+vs+'>'+val+'</div><div class="kpi-sub">'+sub+'</div>';
-  }
-}
-</script>
-<script>
-const cmkpiTabData = {"0": {"c1_lbl": "총 응답건수 (1월~6월 누계)", "c1_val": "2,249건", "c1_sub": "24명 기사 · 6개월 집계", "c2_lbl": "매우만족+만족률 (평균)", "c2_val": "96.6%", "c2_sub": "3개 항목 평균 (누계)", "c3_lbl": "<span style=\"color:#3498db;\">■ 정리상태 만족률</span>", "c3_val": "96.9%", "c3_sub": "매우만족 + 만족 기준 (누계)", "c4_lbl": "<span style=\"color:#27ae60;\">■ 응대태도 만족률</span>", "c4_val": "96.8%", "c4_sub": "매우만족 + 만족 기준 (누계)", "c5_lbl": "<span style=\"color:#8e44ad;\">■ 용모복장 만족률</span>", "c5_val": "96.2%", "c5_sub": "매우만족 + 만족 기준 (누계)"}, "1": {"c1_lbl": "1월 응답건수", "c1_val": "444건", "c1_sub": "18명 기사 · 1월", "c2_lbl": "매우만족+만족률 (평균)", "c2_val": "96.7%", "c2_sub": "3개 항목 평균 (1월)", "c3_lbl": "<span style=\"color:#3498db;\">■ 정리상태 만족률</span>", "c3_val": "96.2%", "c3_sub": "매우만족 + 만족 기준 (1월)", "c4_lbl": "<span style=\"color:#27ae60;\">■ 응대태도 만족률</span>", "c4_val": "97.5%", "c4_sub": "매우만족 + 만족 기준 (1월)", "c5_lbl": "<span style=\"color:#8e44ad;\">■ 용모복장 만족률</span>", "c5_val": "96.4%", "c5_sub": "매우만족 + 만족 기준 (1월)"}, "2": {"c1_lbl": "2월 응답건수", "c1_val": "372건", "c1_sub": "21명 기사 · 2월", "c2_lbl": "매우만족+만족률 (평균)", "c2_val": "96.5%", "c2_sub": "3개 항목 평균 (2월)", "c3_lbl": "<span style=\"color:#3498db;\">■ 정리상태 만족률</span>", "c3_val": "97.0%", "c3_sub": "매우만족 + 만족 기준 (2월)", "c4_lbl": "<span style=\"color:#27ae60;\">■ 응대태도 만족률</span>", "c4_val": "96.5%", "c4_sub": "매우만족 + 만족 기준 (2월)", "c5_lbl": "<span style=\"color:#8e44ad;\">■ 용모복장 만족률</span>", "c5_val": "96.0%", "c5_sub": "매우만족 + 만족 기준 (2월)"}, "3": {"c1_lbl": "3월 응답건수", "c1_val": "523건", "c1_sub": "22명 기사 · 3월", "c2_lbl": "매우만족+만족률 (평균)", "c2_val": "96.8%", "c2_sub": "3개 항목 평균 (3월)", "c3_lbl": "<span style=\"color:#3498db;\">■ 정리상태 만족률</span>", "c3_val": "97.1%", "c3_sub": "매우만족 + 만족 기준 (3월)", "c4_lbl": "<span style=\"color:#27ae60;\">■ 응대태도 만족률</span>", "c4_val": "97.1%", "c4_sub": "매우만족 + 만족 기준 (3월)", "c5_lbl": "<span style=\"color:#8e44ad;\">■ 용모복장 만족률</span>", "c5_val": "96.2%", "c5_sub": "매우만족 + 만족 기준 (3월)"}, "4": {"c1_lbl": "4월 응답건수", "c1_val": "444건", "c1_sub": "20명 기사 · 4월", "c2_lbl": "매우만족+만족률 (평균)", "c2_val": "96.5%", "c2_sub": "3개 항목 평균 (4월)", "c3_lbl": "<span style=\"color:#3498db;\">■ 정리상태 만족률</span>", "c3_val": "97.1%", "c3_sub": "매우만족 + 만족 기준 (4월)", "c4_lbl": "<span style=\"color:#27ae60;\">■ 응대태도 만족률</span>", "c4_val": "96.6%", "c4_sub": "매우만족 + 만족 기준 (4월)", "c5_lbl": "<span style=\"color:#8e44ad;\">■ 용모복장 만족률</span>", "c5_val": "95.9%", "c5_sub": "매우만족 + 만족 기준 (4월)"}, "5": {"c1_lbl": "5월 응답건수", "c1_val": "415건", "c1_sub": "20명 기사 · 5월", "c2_lbl": "매우만족+만족률 (평균)", "c2_val": "97.1%", "c2_sub": "3개 항목 평균 (5월)", "c3_lbl": "<span style=\"color:#3498db;\">■ 정리상태 만족률</span>", "c3_val": "97.6%", "c3_sub": "매우만족 + 만족 기준 (5월)", "c4_lbl": "<span style=\"color:#27ae60;\">■ 응대태도 만족률</span>", "c4_val": "96.9%", "c4_sub": "매우만족 + 만족 기준 (5월)", "c5_lbl": "<span style=\"color:#8e44ad;\">■ 용모복장 만족률</span>", "c5_val": "96.9%", "c5_sub": "매우만족 + 만족 기준 (5월)"}, "6": {"c1_lbl": "6월 응답건수", "c1_val": "51건", "c1_sub": "16명 기사 · 6월", "c2_lbl": "매우만족+만족률 (평균)", "c2_val": "92.2%", "c2_sub": "3개 항목 평균 (6월)", "c3_lbl": "<span style=\"color:#3498db;\">■ 정리상태 만족률</span>", "c3_val": "92.2%", "c3_sub": "매우만족 + 만족 기준 (6월)", "c4_lbl": "<span style=\"color:#27ae60;\">■ 응대태도 만족률</span>", "c4_val": "92.2%", "c4_sub": "매우만족 + 만족 기준 (6월)", "c5_lbl": "<span style=\"color:#8e44ad;\">■ 용모복장 만족률</span>", "c5_val": "92.2%", "c5_sub": "매우만족 + 만족 기준 (6월)"}};
-function showCsMonthlyKpi(idx){
-  for(let i=0;i<=6;i++){
-    const btn=document.getElementById("cmktb"+i); if(!btn) continue;
-    if(i===idx){ btn.style.background="#1a3a5c"; btn.style.color="#fff"; btn.style.border="none"; }
-    else { btn.style.background="#f8f9fa"; btn.style.color="#555"; btn.style.border="1px solid #ddd"; }
-  }
-  const d = cmkpiTabData[idx]; if(!d) return;
-  for(let k=1;k<=5;k++){
-    const el = document.getElementById("cmkpi"+k); if(!el) continue;
-    const lbl = d["c"+k+"_lbl"], val = d["c"+k+"_val"], sub = d["c"+k+"_sub"];
-    el.innerHTML = '<div class="kpi-label">'+lbl+'</div><div class="kpi-value">'+val+'</div><div class="kpi-sub">'+sub+'</div>';
-  }
-}
-</script>
-<script>
-const cstkpiTabData = {"0": {"c1_lbl": "조사 대상 기사", "c1_val": "19명", "c1_sub": "총 1,998건 응답 집계", "c2_lbl": "최우수 기사", "c2_val": "김병우", "c2_sub": "3개월 연속 근무자 기준 · 누계 합계 99.5%", "c3_lbl": "집중 관리 필요", "c3_val": "장동진", "c3_sub": "3개월 연속 근무자 기준 · 누계 합계 92.3%", "c4_lbl": "전체 평균 만족률", "c4_val": "96.5%", "c4_sub": "3개 항목 평균 (누계 기준)"}, "1": {"c1_lbl": "1월 조사 대상", "c1_val": "13명", "c1_sub": "1월 응답받은 평가대상 기사", "c2_lbl": "최우수 기사", "c2_val": "이동한", "c2_sub": "1월 만족률 100.0%", "c3_lbl": "집중 관리 필요", "c3_val": "임지훈", "c3_sub": "1월 만족률 91.0%", "c4_lbl": "전체 평균 만족률", "c4_val": "96.6%", "c4_sub": "3개 항목 평균 (1월)"}, "2": {"c1_lbl": "2월 조사 대상", "c1_val": "15명", "c1_sub": "2월 응답받은 평가대상 기사", "c2_lbl": "최우수 기사", "c2_val": "김병우", "c2_sub": "2월 만족률 100.0%", "c3_lbl": "집중 관리 필요", "c3_val": "문민수", "c3_sub": "2월 만족률 79.2%", "c4_lbl": "전체 평균 만족률", "c4_val": "96.1%", "c4_sub": "3개 항목 평균 (2월)"}, "3": {"c1_lbl": "3월 조사 대상", "c1_val": "18명", "c1_sub": "3월 응답받은 평가대상 기사", "c2_lbl": "최우수 기사", "c2_val": "정용우", "c2_sub": "3월 만족률 100.0%", "c3_lbl": "집중 관리 필요", "c3_val": "임지훈", "c3_sub": "3월 만족률 90.0%", "c4_lbl": "전체 평균 만족률", "c4_val": "96.6%", "c4_sub": "3개 항목 평균 (3월)"}, "4": {"c1_lbl": "4월 조사 대상", "c1_val": "17명", "c1_sub": "4월 응답받은 평가대상 기사", "c2_lbl": "최우수 기사", "c2_val": "손명익", "c2_sub": "4월 만족률 100.0%", "c3_lbl": "집중 관리 필요", "c3_val": "김재희", "c3_sub": "4월 만족률 88.3%", "c4_lbl": "전체 평균 만족률", "c4_val": "96.2%", "c4_sub": "3개 항목 평균 (4월)"}, "5": {"c1_lbl": "5월 조사 대상", "c1_val": "17명", "c1_sub": "5월 응답받은 평가대상 기사", "c2_lbl": "최우수 기사", "c2_val": "손명익", "c2_sub": "5월 만족률 100.0%", "c3_lbl": "집중 관리 필요", "c3_val": "장동진", "c3_sub": "5월 만족률 83.3%", "c4_lbl": "전체 평균 만족률", "c4_val": "97.0%", "c4_sub": "3개 항목 평균 (5월)"}, "6": {"c1_lbl": "6월 조사 대상", "c1_val": "15명", "c1_sub": "6월 응답받은 평가대상 기사", "c2_lbl": "최우수 기사", "c2_val": "김병우", "c2_sub": "6월 만족률 100.0%", "c3_lbl": "집중 관리 필요", "c3_val": "정종철", "c3_sub": "6월 만족률 66.7%", "c4_lbl": "전체 평균 만족률", "c4_val": "93.8%", "c4_sub": "3개 항목 평균 (6월)"}};
-function showCsStaffKpi(idx){
-  for(let i=0;i<=6;i++){
-    const btn=document.getElementById("cstktb"+i); if(!btn) continue;
-    if(i===idx){ btn.style.background="#1a3a5c"; btn.style.color="#fff"; btn.style.border="none"; }
-    else { btn.style.background="#f8f9fa"; btn.style.color="#555"; btn.style.border="1px solid #ddd"; }
-  }
-  const d = cstkpiTabData[idx]; if(!d) return;
-  for(let k=1;k<=4;k++){
-    const el = document.getElementById("cstkpi"+k); if(!el) continue;
-    const lbl = d["c"+k+"_lbl"], val = d["c"+k+"_val"], sub = d["c"+k+"_sub"];
-    let vs = (k===2) ? 'style="font-size:20px"' : (k===3 ? 'style="font-size:18px"' : '');
-    el.innerHTML = '<div class="kpi-label">'+lbl+'</div><div class="kpi-value" '+vs+'>'+val+'</div><div class="kpi-sub">'+sub+'</div>';
-  }
-}
-</script>
-<script>
-const ccpiTabData = {"0": {"c1_lbl": "총 불만/매우불만 건수", "c1_val": "49건", "c1_sub": "전체 항목 응답 6,747건 중 0.73%", "c2_lbl": "불만족 최다 월", "c2_val": "3월 (16건)", "c2_sub": "1월 11건 · 2월 9건 · 4월 11건 · 5월 1건 · 6월 1건", "c3_lbl": "최다 불만 항목", "c3_val": "정리상태", "c3_sub": "누계 23건 (1.0%) — 항목 중 최다", "c4_lbl": "응대태도 불만족", "c4_val": "20건 (0.9%)", "c4_sub": "응대태도 불만/매우불만 누계"}, "1": {"c1_lbl": "1월 불만 건수", "c1_val": "11건", "c1_sub": "1월 응답 1,332건 중 0.83%", "c2_lbl": "1월", "c2_val": "1월", "c2_sub": "11건 불만/매우불만", "c3_lbl": "최다 불만 항목", "c3_val": "정리상태", "c3_sub": "1월 6건 (1.4%) — 항목 중 최다", "c4_lbl": "응대태도 불만족", "c4_val": "3건 (0.7%)", "c4_sub": "1월 응대태도 불만"}, "2": {"c1_lbl": "2월 불만 건수", "c1_val": "9건", "c1_sub": "2월 응답 1,116건 중 0.81%", "c2_lbl": "2월", "c2_val": "2월", "c2_sub": "9건 불만/매우불만", "c3_lbl": "최다 불만 항목", "c3_val": "정리상태", "c3_sub": "2월 5건 (1.3%) — 항목 중 최다", "c4_lbl": "응대태도 불만족", "c4_val": "3건 (0.8%)", "c4_sub": "2월 응대태도 불만"}, "3": {"c1_lbl": "3월 불만 건수", "c1_val": "16건", "c1_sub": "3월 응답 1,569건 중 1.02%", "c2_lbl": "3월", "c2_val": "3월", "c2_sub": "16건 불만/매우불만", "c3_lbl": "최다 불만 항목", "c3_val": "응대태도", "c3_sub": "3월 8건 (1.5%) — 항목 중 최다", "c4_lbl": "응대태도 불만족", "c4_val": "8건 (1.5%)", "c4_sub": "3월 응대태도 불만"}, "4": {"c1_lbl": "4월 불만 건수", "c1_val": "11건", "c1_sub": "4월 응답 1,332건 중 0.83%", "c2_lbl": "4월", "c2_val": "4월", "c2_sub": "11건 불만/매우불만", "c3_lbl": "최다 불만 항목", "c3_val": "정리상태", "c3_sub": "4월 5건 (1.1%) — 항목 중 최다", "c4_lbl": "응대태도 불만족", "c4_val": "5건 (1.1%)", "c4_sub": "4월 응대태도 불만"}, "5": {"c1_lbl": "5월 불만 건수", "c1_val": "1건", "c1_sub": "5월 응답 1,245건 중 0.08%", "c2_lbl": "5월", "c2_val": "5월", "c2_sub": "1건 불만/매우불만", "c3_lbl": "최다 불만 항목", "c3_val": "정리상태", "c3_sub": "5월 1건 (0.2%) — 항목 중 최다", "c4_lbl": "응대태도 불만족", "c4_val": "0건 (0.0%)", "c4_sub": "5월 응대태도 불만"}, "6": {"c1_lbl": "6월 불만 건수", "c1_val": "1건", "c1_sub": "6월 응답 153건 중 0.65%", "c2_lbl": "6월", "c2_val": "6월", "c2_sub": "1건 불만/매우불만", "c3_lbl": "최다 불만 항목", "c3_val": "응대태도", "c3_sub": "6월 1건 (2.0%) — 항목 중 최다", "c4_lbl": "응대태도 불만족", "c4_val": "1건 (2.0%)", "c4_sub": "6월 응대태도 불만"}};
-function showCsCompKpi(idx){
-  for(let i=0;i<=6;i++){
-    const btn=document.getElementById("cctkb"+i); if(!btn) continue;
-    if(i===idx){ btn.style.background="#1a3a5c"; btn.style.color="#fff"; btn.style.border="none"; }
-    else { btn.style.background="#f8f9fa"; btn.style.color="#555"; btn.style.border="1px solid #ddd"; }
-  }
-  const d = ccpiTabData[idx]; if(!d) return;
-  for(let k=1;k<=4;k++){
-    const el = document.getElementById("ccpi"+k); if(!el) continue;
-    const lbl = d["c"+k+"_lbl"], val = d["c"+k+"_val"], sub = d["c"+k+"_sub"];
-    let vs = (k===2||k===3) ? 'style="font-size:18px"' : '';
     el.innerHTML = '<div class="kpi-label">'+lbl+'</div><div class="kpi-value" '+vs+'>'+val+'</div><div class="kpi-sub">'+sub+'</div>';
   }
 }
